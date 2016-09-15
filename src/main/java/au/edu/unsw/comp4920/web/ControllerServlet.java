@@ -1,0 +1,237 @@
+package au.edu.unsw.comp4920.web;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.*;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+import au.edu.unsw.comp4920.common.CommonDAO;
+import au.edu.unsw.comp4920.common.Constants;
+//TODO
+//import edu.unsw.comp9321.common.DerbyDAOImpl;
+//import edu.unsw.comp9321.exception.ServiceLocatorException;
+import au.edu.unsw.comp4920.objects.User;
+
+public class ControllerServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private Map<String, Command> _commands;
+
+	protected CommonDAO _dao;
+	
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		//TODO
+		// Initialize database connection
+		/*try {
+			_dao = new DerbyDAOImpl();
+		} catch (ServiceLocatorException | SQLException e) {
+			System.out.println(e.getMessage());
+		}*/
+
+		// Initialize hashmap of commands
+		/*_commands = new HashMap<String, Command>();
+		_commands.put(Constants.SIGNIN_COMMAND,	 		new SignInCommand());
+		_commands.put(Constants.OWNER_SIGNIN_COMMAND,	new OwnerSignInCommand());
+		_commands.put(Constants.MANAGER_SIGNIN_COMMAND,	new ManagerSignInCommand());
+		_commands.put(Constants.SIGNOUT_COMMAND, 		new SignOutCommand());
+		_commands.put(Constants.SIGNUP_COMMAND, 		new SignUpCommand());
+		_commands.put(Constants.PROFILE_COMMAND, 		new ProfileCommand());
+		_commands.put(Constants.PUBLIC_COMMAND, 		new PublicCommand());
+		_commands.put(Constants.HOME_COMMAND, 			new HomeCommand());
+		_commands.put(Constants.MANAGER_COMMAND, 		new ManagerCommand());
+		_commands.put(Constants.OWNER_COMMAND, 			new OwnerCommand());
+		_commands.put(Constants.SUMMARY_COMMAND, 		new BookingSummaryCommand());
+		_commands.put(Constants.SEARCH_COMMAND,			new SearchCommand());
+		_commands.put(Constants.CART_COMMAND,			new CartCommand());
+		_commands.put(Constants.CHECKOUT_COMMAND,		new CheckoutCommand());
+		_commands.put(Constants.NOTFOUND_COMMAND, 		new ErrorCommand());
+		_commands.put(Constants.VALIDATE_COMMAND, 		new EmailValidationCommand());
+		_commands.put(Constants.ABOUT_COMMAND, 			new AboutCommand());*/
+
+		// Global Attributes to be accessed by JSP Files
+		/*ServletContext servletContext = getServletContext();
+        servletContext.setAttribute(Constants.WEB_NAME, 				Constants.WEB);
+        servletContext.setAttribute(Constants.ROUTER_SIGNIN, 			Constants.ROUTER + Constants.SIGNIN_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_OWNER_SIGNIN, 		Constants.ROUTER + Constants.OWNER_SIGNIN_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_MANAGER_SIGNIN, 	Constants.ROUTER + Constants.MANAGER_SIGNIN_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SIGNOUT, 			Constants.ROUTER + Constants.SIGNOUT_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SIGNUP, 			Constants.ROUTER + Constants.SIGNUP_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_PROFILE, 			Constants.ROUTER + Constants.PROFILE_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_PUBLIC, 			Constants.ROUTER + Constants.PUBLIC_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_HOME, 				Constants.ROUTER + Constants.HOME_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_MANAGER, 			Constants.ROUTER + Constants.MANAGER_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_OWNER, 			Constants.ROUTER + Constants.OWNER_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SUMMARY, 			Constants.ROUTER + Constants.SUMMARY_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_HOTEL, 			Constants.ROUTER + Constants.HOTEL_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SEARCH, 			Constants.ROUTER + Constants.SEARCH_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_CART, 				Constants.ROUTER + Constants.CART_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_CHECKOUT, 			Constants.ROUTER + Constants.CHECKOUT_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_NOTFOUND, 			Constants.ROUTER + Constants.NOTFOUND_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_VALIDATE, 			Constants.ROUTER + Constants.VALIDATE_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_ABOUT, 			Constants.ROUTER + Constants.ABOUT_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SUMMARY, 			Constants.ROUTER + Constants.SUMMARY_COMMAND);*/
+	}
+
+	/*
+	 * Process requests for both HTTP <code>GET</code> and <code>POST</code> methods *
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @param "operation" is the keyword that needs to be used for the commands
+	 */
+	protected void resolveCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Inside: resolveCommand");
+		String dest = request.getParameter(Constants.OPERATION);
+		System.out.println("Destination: " + dest);
+		
+		//TODO
+		/*if (this.getLoginStatus(request, response) == false) {
+			System.out.println("Inside: Not Signed In");
+
+			if (dest == null) {
+				dest = Constants.PUBLIC_COMMAND;
+			} else {
+				if (_commands.containsKey(dest)) {
+					if (dest.equals(Constants.OWNER_COMMAND)){
+						dest = Constants.OWNER_SIGNIN_COMMAND;
+					}
+					else if (dest.equals(Constants.MANAGER_COMMAND)){
+						dest = Constants.MANAGER_SIGNIN_COMMAND;
+					} else {
+						dest = (dest.equals(Constants.PUBLIC_COMMAND) 			||
+								dest.equals(Constants.SIGNUP_COMMAND) 			||
+								dest.equals(Constants.SEARCH_COMMAND) 			||
+								dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	||
+								dest.equals(Constants.MANAGER_SIGNIN_COMMAND) 	||
+								dest.equals(Constants.VALIDATE_COMMAND) 		||
+								dest.equals(Constants.NOTFOUND_COMMAND)			||
+								dest.equals(Constants.ABOUT_COMMAND) 			||
+								dest.equals(Constants.SUMMARY_COMMAND) 			||
+								dest.equals(Constants.SIGNIN_COMMAND)) 
+	
+								? dest : Constants.SIGNIN_COMMAND;
+					}
+				} else {
+					dest = Constants.NOTFOUND_COMMAND;
+				}
+			}
+		} else {
+			System.out.println("Inside: Signed In");
+			String userType = getUserType(request, response);
+
+			//If Signed In go to HomeCommand
+			if (dest == null) {
+				if (userType.equals(Constants.USER_TYPE)) {
+					dest = Constants.HOME_COMMAND;
+				}
+
+				if (userType.equals(Constants.MANAGER_TYPE)) {
+					dest = Constants.MANAGER_COMMAND;
+				}
+
+				if (userType.equals(Constants.OWNER_TYPE)) {
+					dest = Constants.OWNER_COMMAND;
+				}
+			} else {
+				// TODO : If you need to modify ask Timothy first
+
+				if (_commands.containsKey(dest)) {
+					if (userType.equals(Constants.USER_TYPE)) {
+						dest = (!dest.equals(Constants.PUBLIC_COMMAND) 			&&
+								!dest.equals(Constants.SIGNIN_COMMAND) 			&&
+								!dest.equals(Constants.SIGNUP_COMMAND)			&&
+								!dest.equals(Constants.MANAGER_SIGNIN_COMMAND)  &&
+								!dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	&&
+								!dest.equals(Constants.MANAGER_COMMAND) 		&&
+								!dest.equals(Constants.HOTEL_COMMAND)  			&&
+								!dest.equals(Constants.VALIDATE_COMMAND)  		&&
+								!dest.equals(Constants.OWNER_COMMAND))			
+								? dest : Constants.HOME_COMMAND;
+					}
+
+					if (userType.equals(Constants.MANAGER_TYPE)) {
+						dest = (!dest.equals(Constants.PUBLIC_COMMAND) 			&&
+								!dest.equals(Constants.SIGNIN_COMMAND) 			&&
+								!dest.equals(Constants.SIGNUP_COMMAND)			&&
+								!dest.equals(Constants.SEARCH_COMMAND)			&&
+								!dest.equals(Constants.MANAGER_SIGNIN_COMMAND)  &&
+								!dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	&&
+								!dest.equals(Constants.HOME_COMMAND) 			&&
+								!dest.equals(Constants.CART_COMMAND) 			&&
+								!dest.equals(Constants.CHECKOUT_COMMAND) 		&&
+								!dest.equals(Constants.SUMMARY_COMMAND) 		&&
+								!dest.equals(Constants.HOTEL_COMMAND)  			&&
+								!dest.equals(Constants.VALIDATE_COMMAND)  		&&
+								!dest.equals(Constants.OWNER_COMMAND))			
+
+								? dest : Constants.MANAGER_COMMAND;
+					}
+
+					if (userType.equals(Constants.OWNER_TYPE)) {
+						dest = (!dest.equals(Constants.PUBLIC_COMMAND) 			&&
+								!dest.equals(Constants.SIGNIN_COMMAND) 			&&
+								!dest.equals(Constants.SIGNUP_COMMAND)			&&
+								!dest.equals(Constants.SEARCH_COMMAND)			&&
+								!dest.equals(Constants.MANAGER_SIGNIN_COMMAND)  &&
+								!dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	&&
+								!dest.equals(Constants.MANAGER_COMMAND) 		&&
+								!dest.equals(Constants.CART_COMMAND) 			&&
+								!dest.equals(Constants.CHECKOUT_COMMAND) 		&&
+								!dest.equals(Constants.SUMMARY_COMMAND) 		&&
+								!dest.equals(Constants.HOTEL_COMMAND)  			&&
+								!dest.equals(Constants.VALIDATE_COMMAND)  		&&
+								!dest.equals(Constants.HOME_COMMAND))			
+								? dest : Constants.OWNER_COMMAND;
+					}
+				} else {
+					dest = Constants.NOTFOUND_COMMAND;
+				}
+			}
+		}*/
+
+		Command cmd = (Command) _commands.get(dest) == null ? (Command) _commands.get(Constants.NOTFOUND_COMMAND) : (Command) _commands.get(dest);
+		cmd.execute(request,response, _dao);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Inside: doGet");
+		this.resolveCommand(request, response);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Inside: doPost");
+		this.resolveCommand(request, response);
+	}
+
+	/*
+	 * Return user status: logged in or not
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 */
+	private boolean getLoginStatus(HttpServletRequest request, HttpServletResponse response) {
+		// Query in Session table with current sessionID
+		// If current sessionID exists, that means user is already logged in
+		// Else that means user has not logged in yet
+		String sid = request.getSession().getId();
+		Object uid = request.getSession().getAttribute(Constants.PERSONID);
+
+		// Query here
+		if (uid == null) return false;
+		//TODO return _dao.getUserLoginStatus((int) uid, sid);
+		return false;
+	}
+	
+}
