@@ -22,20 +22,35 @@ public final class Constants {
 	public static final String ROUTER					= "router?operation=";
 	public static final String SERVER					= "http://localhost:8080/COMP4920-Project/";
 	
+	// Request Parameters
+	public static final String ACTION 					= "action";
+	public static final String OPERATION 				= "operation";
+	public static final String ERROR 					= "errorFlg";
+	public static final String ERRORMSG					= "errorMessage";
+	
 	// Session Parameters
 	public static final String PERSONID 				= "personID";
 	public static final String SID 						= "sessionID";
 	public static final String SEARCHRESULT				= "searchResult";
-	
-	// Request Parameters
-	public static final String ACTION 					= "action";
-	public static final String OPERATION 				= "operation";
 	
 	// Naming
 	public static final String WEB						= "COMP420 Project";
 	
 	// Integer
 	public static final int DEFAULT						= -1;
+	
+	// Servlet Global Attributes
+	public static final String WEB_NAME					= "WEB_NAME";
+	public static final String ROUTER_SIGNIN			= "ROUTER_SIGNIN";
+	public static final String ROUTER_SIGNOUT			= "ROUTER_SIGNOUT";
+	public static final String ROUTER_SIGNUP			= "ROUTER_SIGNUP";
+	public static final String ROUTER_PROFILE			= "ROUTER_PROFILE";
+	public static final String ROUTER_PUBLIC			= "ROUTER_PUBLIC";
+	public static final String ROUTER_HOME				= "ROUTER_HOME";
+	public static final String ROUTER_SEARCH			= "ROUTER_SEARCH";
+	public static final String ROUTER_NOTFOUND			= "ROUTER_NOTFOUND";
+	public static final String ROUTER_VALIDATE			= "ROUTER_VALIDATE";
+	public static final String ROUTER_ABOUT				= "ROUTER_ABOUT";
 	
 	// Prevent instantiation
 	private Constants() {};
