@@ -13,7 +13,7 @@ import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 //TODO
 //import edu.unsw.comp9321.common.DerbyDAOImpl;
-//import edu.unsw.comp9321.exception.ServiceLocatorException;
+import au.edu.unsw.comp4920.exception.ServiceLocatorException;
 import au.edu.unsw.comp4920.objects.User;
 
 public class ControllerServlet extends HttpServlet {
@@ -33,47 +33,31 @@ public class ControllerServlet extends HttpServlet {
 		}*/
 
 		// Initialize hashmap of commands
-		/*_commands = new HashMap<String, Command>();
+		_commands = new HashMap<String, Command>();
 		_commands.put(Constants.SIGNIN_COMMAND,	 		new SignInCommand());
-		_commands.put(Constants.OWNER_SIGNIN_COMMAND,	new OwnerSignInCommand());
-		_commands.put(Constants.MANAGER_SIGNIN_COMMAND,	new ManagerSignInCommand());
 		_commands.put(Constants.SIGNOUT_COMMAND, 		new SignOutCommand());
 		_commands.put(Constants.SIGNUP_COMMAND, 		new SignUpCommand());
 		_commands.put(Constants.PROFILE_COMMAND, 		new ProfileCommand());
 		_commands.put(Constants.PUBLIC_COMMAND, 		new PublicCommand());
 		_commands.put(Constants.HOME_COMMAND, 			new HomeCommand());
-		_commands.put(Constants.MANAGER_COMMAND, 		new ManagerCommand());
-		_commands.put(Constants.OWNER_COMMAND, 			new OwnerCommand());
-		_commands.put(Constants.SUMMARY_COMMAND, 		new BookingSummaryCommand());
 		_commands.put(Constants.SEARCH_COMMAND,			new SearchCommand());
-		_commands.put(Constants.CART_COMMAND,			new CartCommand());
-		_commands.put(Constants.CHECKOUT_COMMAND,		new CheckoutCommand());
 		_commands.put(Constants.NOTFOUND_COMMAND, 		new ErrorCommand());
 		_commands.put(Constants.VALIDATE_COMMAND, 		new EmailValidationCommand());
-		_commands.put(Constants.ABOUT_COMMAND, 			new AboutCommand());*/
+		_commands.put(Constants.ABOUT_COMMAND, 			new AboutCommand());
 
 		// Global Attributes to be accessed by JSP Files
-		/*ServletContext servletContext = getServletContext();
+		ServletContext servletContext = getServletContext();
         servletContext.setAttribute(Constants.WEB_NAME, 				Constants.WEB);
         servletContext.setAttribute(Constants.ROUTER_SIGNIN, 			Constants.ROUTER + Constants.SIGNIN_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_OWNER_SIGNIN, 		Constants.ROUTER + Constants.OWNER_SIGNIN_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_MANAGER_SIGNIN, 	Constants.ROUTER + Constants.MANAGER_SIGNIN_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_SIGNOUT, 			Constants.ROUTER + Constants.SIGNOUT_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_SIGNUP, 			Constants.ROUTER + Constants.SIGNUP_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_PROFILE, 			Constants.ROUTER + Constants.PROFILE_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_PUBLIC, 			Constants.ROUTER + Constants.PUBLIC_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_HOME, 				Constants.ROUTER + Constants.HOME_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_MANAGER, 			Constants.ROUTER + Constants.MANAGER_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_OWNER, 			Constants.ROUTER + Constants.OWNER_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_SUMMARY, 			Constants.ROUTER + Constants.SUMMARY_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_HOTEL, 			Constants.ROUTER + Constants.HOTEL_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_SEARCH, 			Constants.ROUTER + Constants.SEARCH_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_CART, 				Constants.ROUTER + Constants.CART_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_CHECKOUT, 			Constants.ROUTER + Constants.CHECKOUT_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_NOTFOUND, 			Constants.ROUTER + Constants.NOTFOUND_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VALIDATE, 			Constants.ROUTER + Constants.VALIDATE_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ABOUT, 			Constants.ROUTER + Constants.ABOUT_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_SUMMARY, 			Constants.ROUTER + Constants.SUMMARY_COMMAND);*/
 	}
 
 	/*
@@ -192,7 +176,9 @@ public class ControllerServlet extends HttpServlet {
 				}
 			}
 		}*/
-
+		
+		dest = Constants.PUBLIC_COMMAND;
+		
 		Command cmd = (Command) _commands.get(dest) == null ? (Command) _commands.get(Constants.NOTFOUND_COMMAND) : (Command) _commands.get(dest);
 		cmd.execute(request,response, _dao);
 	}
