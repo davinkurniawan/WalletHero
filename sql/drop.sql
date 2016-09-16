@@ -1,0 +1,9 @@
+ALTER TABLE "Transactions" DROP CONSTRAINT IF EXISTS "Transactions_fk0";
+
+ALTER TABLE "Session" DROP CONSTRAINT IF EXISTS "Session_fk0";
+
+DROP TABLE IF EXISTS "User";
+
+DROP TABLE IF EXISTS "Transactions";
+
+DROP TABLE IF EXISTS "Session";
