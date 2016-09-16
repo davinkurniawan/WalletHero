@@ -10,7 +10,7 @@ CREATE TABLE "user" (
 	"last_name" varchar NOT NULL,
 	"token" varchar NOT NULL,
 	"status_id" int NOT NULL,
-	"budget" int NOT NULL,
+	"budget" NUMERIC NOT NULL,
 	CONSTRAINT user_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -24,9 +24,8 @@ CREATE TABLE "transaction" (
 	"date" varchar NOT NULL,
 	"recur_id" int,
 	"detail" varchar,
-	"amount" DECIMAL NOT NULL,
+	"amount" NUMERIC NOT NULL,
 	"category_id" int,
-	"is_income" BOOLEAN NOT NULL,
 	CONSTRAINT transaction_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -106,7 +105,7 @@ CREATE TABLE "goal" (
 	"user_id" int NOT NULL,
 	"recur_id" int NOT NULL,
 	"end_date" varchar NOT NULL,
-	"goal_amount" varchar NOT NULL,
+	"goal_amount" NUMERIC NOT NULL,
 	"active" BOOLEAN NOT NULL,
 	CONSTRAINT goal_pk PRIMARY KEY ("id")
 ) WITH (
