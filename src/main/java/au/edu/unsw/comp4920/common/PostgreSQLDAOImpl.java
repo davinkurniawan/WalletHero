@@ -42,55 +42,53 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	
 	@Override
 	public boolean createUser(User u) {
-		
-		// first test if user already exists
-		/*if (userExists(user.getUsername()) || emailExists(user.getEmail())) {
+		// Check if the user name or email already exist
+		if (getUser(u.getUsername(), null) != null || getUser(u.getEmail(), null) != null) {
 			System.out.println("Not creating user because username and/or email already exists!");
 			return false;
 		} else {
-			System.out.println("creating user = " + user.getUsername());
+			System.out.println("creating user = " + u.getUsername());
 		}
 
 		Connection con = null;
 		try {
 			con = services.createConnection();
 			PreparedStatement stmt = con.prepareStatement(
-					"insert into people (username, password, email, nickname, first_name, last_name, birth_year, "
-							+ "address, account_activated, ban) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					"insert into user (username, email, password, salt_hash, first_name,"
+							+ " last_name, token, status_id, budget) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-			stmt.setString(1, user.getUsername());
-			stmt.setString(2, user.getPassword());
-			stmt.setString(3, user.getEmail());
-			stmt.setString(4, user.getNickname());
-			stmt.setString(5, user.getFirstName());
-			stmt.setString(6, user.getLastName());
-			stmt.setLong(7, user.getBirthYear());
-			stmt.setString(8, user.getAddressString());
-			stmt.setBoolean(9, false);
-			stmt.setBoolean(10, false);
+			stmt.setString(1, u.getUsername());
+			stmt.setString(2, u.getEmail());
+			stmt.setString(3, u.getPassword());
+			stmt.setString(4, "lol");
+			stmt.setString(5, u.getFirstName());
+			stmt.setString(6, u.getLastName());
+			stmt.setString(7, "inactivated");
+			stmt.setInt(8, 0);
 
 			int n = stmt.executeUpdate();
 			if (n != 1)
-				throw new DataAccessException("Did not insert one row into database");
+				throw new DataSourceException("Did not insert one row into database");
 			stmt.close();
 
 		} catch (ServiceLocatorException e) {
-			throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+			throw new DataSourceException("Unable to retrieve connection; " + e.getMessage(), e);
 		} catch (SQLException e) {
-			throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+			throw new DataSourceException("Unable to execute query; " + e.getMessage(), e);
 		} finally {
 			if (con != null) {
 				try {
 					con.close();
+					services.close();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
+				} catch (NamingException e) {
+					e.printStackTrace();
 				}
 			}
 		}
 
-		insertBuyersAndSellers(user);
-		return true;*/
-		return false;
+		return true;
 	}
 
 	@Override
