@@ -6,14 +6,14 @@ public class User {
 	private int personID;
 	private String username;
 	private String password;
-	private String nickName;
 	private String firstName;
+	private String middleName;
 	private String lastName;
 	private String email;
-	private String address;
-	private String creditCard;
 	private String token;
-	private String type;
+	private String status_id;
+	private String salt;
+	private double budget;
 	
 	public User() {}
 
@@ -31,14 +31,6 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
 	}
 
 	public String getLastName() {
@@ -65,22 +57,6 @@ public class User {
 		this.email = email;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getCreditCard() {
-		return creditCard;
-	}
-
-	public void setCreditCard(String creditCard) {
-		this.creditCard = creditCard;
-	}
-
 	public String getToken() {
 		return token;
 	}
@@ -89,12 +65,68 @@ public class User {
 		this.token = token;
 	}
 
-	public String getType() {
-		return type;
+	public int getPersonID() {
+		return personID;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setPersonID(int personID) {
+		this.personID = personID;
+	}
+
+	/**
+	 * @return the salt
+	 */
+	public String getSalt() {
+		return salt;
+	}
+
+	/**
+	 * @param salt the salt to set
+	 */
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	/**
+	 * @return the middleName
+	 */
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	/**
+	 * @param middleName the middleName to set
+	 */
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	/**
+	 * @return the status_id
+	 */
+	public String getStatus_id() {
+		return status_id;
+	}
+
+	/**
+	 * @param status_id the status_id to set
+	 */
+	public void setStatus_id(String status_id) {
+		this.status_id = status_id;
+	}
+
+	/**
+	 * @return the budget
+	 */
+	public double getBudget() {
+		return budget;
+	}
+
+	/**
+	 * @param budget the budget to set
+	 */
+	public void setBudget(double budget) {
+		this.budget = budget;
 	}
 	
 	

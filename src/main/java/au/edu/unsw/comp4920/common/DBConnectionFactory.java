@@ -28,16 +28,16 @@ public class DBConnectionFactory {
 
 	public void open() throws ServiceLocatorException, SQLException{
 		//TODO
-		/*try{
+		try{
 			ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/cs9321");
+			ds = (DataSource) ctx.lookup("jdbc:postgresql://localhost:5432/postgres");
 			logger.info("Database found: " + ds.toString());
 		}
 		catch(NamingException e){
 			logger.severe("Cannot find context, throwing exception " + e.getMessage());
 			e.printStackTrace();
 			throw new ServiceLocatorException("Cannot find context, throwing exception " + e.getMessage());
-		}*/
+		}
 	} 
 	
 	public Connection getConnection() throws ServiceLocatorException, SQLException{
