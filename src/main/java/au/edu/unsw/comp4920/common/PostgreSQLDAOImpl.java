@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.regex.Pattern;
 
 import javax.naming.NamingException;
 
@@ -32,13 +31,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			e.printStackTrace();
 		}
 	}
-	/*
-	 * public User getUserDetails(String username) { // TODO Auto-generated
-	 * method stub return null; }
-	 * 
-	 * public User getUserDetails(int uid) { // TODO Auto-generated method stub
-	 * return null; }
-	 */
 	
 	@Override
 	public boolean createUser(User u) {
@@ -52,7 +44,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		Connection con = null;
 		try {
-			con = services.createConnection();
+			con = services.getConnection();
 			PreparedStatement stmt = con.prepareStatement(
 					"insert into user (username, email, password, salt_hash, first_name,"
 							+ " last_name, token, status_id, budget) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -72,9 +64,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			stmt.close();
 
 		} catch (ServiceLocatorException e) {
-			throw new DataSourceException("Unable to retrieve connection; " + e.getMessage(), e);
+			e.printStackTrace();
 		} catch (SQLException e) {
-			throw new DataSourceException("Unable to execute query; " + e.getMessage(), e);
+			e.printStackTrace();
+		} catch (DataSourceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			if (con != null) {
 				try {
