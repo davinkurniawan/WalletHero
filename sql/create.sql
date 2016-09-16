@@ -6,6 +6,7 @@ CREATE TABLE "user" (
 	"password" varchar NOT NULL,
 	"salt_hash" varchar NOT NULL,
 	"first_name" varchar NOT NULL,
+	"middle_name" varchar,
 	"last_name" varchar NOT NULL,
 	"token" varchar NOT NULL,
 	"status_id" int NOT NULL,
