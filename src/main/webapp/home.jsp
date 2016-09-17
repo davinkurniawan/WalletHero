@@ -11,6 +11,8 @@
 	<title>${applicationScope['WEB_NAME']} - Home</title>
 </head>
 <body>
-	<h2>Empty Page</h2>
+	<h2>Welcome, ...</h2>
+	
+	<%@ include file="bottom.jsp" %>
 </body>
 </html>

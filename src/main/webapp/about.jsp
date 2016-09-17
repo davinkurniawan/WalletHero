@@ -11,6 +11,12 @@
 	<title>${applicationScope['WEB_NAME']} - About</title>
 </head>
 <body>
-	<h2>Empty Page</h2>
+	<h2>About</h2>
+	
+	<h2>Team Members</h2>
+	
+	<h2>Acknowledgement</h2>
+	
+	<%@ include file="bottom.jsp" %>
 </body>
 </html>

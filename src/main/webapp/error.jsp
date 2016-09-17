@@ -12,5 +12,7 @@
 </head>
 <body>
 	<h2>You got kicked to this Page? Seriously???</h2>
+	
+	<%@ include file="bottom.jsp" %>
 </body>
 </html>
