@@ -26,6 +26,8 @@ public final class Constants {
 	public static final String OPERATION 				= "operation";
 	public static final String ERROR 					= "errorFlg";
 	public static final String ERRORMSG					= "errorMessage";
+	public static final String RESULT					= "result";
+	public static final String SEARCH					= "search";
 	
 	// Session Parameters
 	public static final String PERSONID 				= "personID";
@@ -33,7 +35,7 @@ public final class Constants {
 	public static final String SEARCHRESULT				= "searchResult";
 	
 	// Naming
-	public static final String WEB						= "COMP420 Project";
+	public static final String WEB						= "WalletHero";
 	
 	// Integer
 	public static final int DEFAULT						= -1;

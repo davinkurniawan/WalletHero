@@ -11,8 +11,7 @@ import javax.servlet.http.*;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
-//TODO
-//import edu.unsw.comp9321.common.DerbyDAOImpl;
+import au.edu.unsw.comp4920.common.PostgreSQLDAOImpl;
 import au.edu.unsw.comp4920.exception.ServiceLocatorException;
 import au.edu.unsw.comp4920.objects.User;
 
@@ -72,112 +71,47 @@ public class ControllerServlet extends HttpServlet {
 		String dest = request.getParameter(Constants.OPERATION);
 		System.out.println("Destination: " + dest);
 		
-		//TODO
-		/*if (this.getLoginStatus(request, response) == false) {
+		if (this.getLoginStatus(request, response) == false) {
 			System.out.println("Inside: Not Signed In");
 
 			if (dest == null) {
 				dest = Constants.PUBLIC_COMMAND;
-			} else {
+			} 
+			else {
 				if (_commands.containsKey(dest)) {
-					if (dest.equals(Constants.OWNER_COMMAND)){
-						dest = Constants.OWNER_SIGNIN_COMMAND;
-					}
-					else if (dest.equals(Constants.MANAGER_COMMAND)){
-						dest = Constants.MANAGER_SIGNIN_COMMAND;
-					} else {
-						dest = (dest.equals(Constants.PUBLIC_COMMAND) 			||
-								dest.equals(Constants.SIGNUP_COMMAND) 			||
-								dest.equals(Constants.SEARCH_COMMAND) 			||
-								dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	||
-								dest.equals(Constants.MANAGER_SIGNIN_COMMAND) 	||
-								dest.equals(Constants.VALIDATE_COMMAND) 		||
-								dest.equals(Constants.NOTFOUND_COMMAND)			||
-								dest.equals(Constants.ABOUT_COMMAND) 			||
-								dest.equals(Constants.SUMMARY_COMMAND) 			||
-								dest.equals(Constants.SIGNIN_COMMAND)) 
-	
-								? dest : Constants.SIGNIN_COMMAND;
-					}
-				} else {
+					dest = (dest.equals(Constants.PUBLIC_COMMAND) 			||
+							dest.equals(Constants.SIGNUP_COMMAND) 			||
+							dest.equals(Constants.VALIDATE_COMMAND) 		||
+							dest.equals(Constants.NOTFOUND_COMMAND)			||
+							dest.equals(Constants.ABOUT_COMMAND) 			||
+							dest.equals(Constants.SIGNIN_COMMAND)) 
+
+							? dest : Constants.SIGNIN_COMMAND;
+				}
+				else {
 					dest = Constants.NOTFOUND_COMMAND;
 				}
 			}
-		} else {
+		}
+		else {
 			System.out.println("Inside: Signed In");
-			String userType = getUserType(request, response);
-
-			//If Signed In go to HomeCommand
+			
 			if (dest == null) {
-				if (userType.equals(Constants.USER_TYPE)) {
-					dest = Constants.HOME_COMMAND;
-				}
-
-				if (userType.equals(Constants.MANAGER_TYPE)) {
-					dest = Constants.MANAGER_COMMAND;
-				}
-
-				if (userType.equals(Constants.OWNER_TYPE)) {
-					dest = Constants.OWNER_COMMAND;
-				}
-			} else {
-				// TODO : If you need to modify ask Timothy first
-
+				dest = Constants.HOME_COMMAND;
+			}
+			else{
 				if (_commands.containsKey(dest)) {
-					if (userType.equals(Constants.USER_TYPE)) {
-						dest = (!dest.equals(Constants.PUBLIC_COMMAND) 			&&
-								!dest.equals(Constants.SIGNIN_COMMAND) 			&&
-								!dest.equals(Constants.SIGNUP_COMMAND)			&&
-								!dest.equals(Constants.MANAGER_SIGNIN_COMMAND)  &&
-								!dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	&&
-								!dest.equals(Constants.MANAGER_COMMAND) 		&&
-								!dest.equals(Constants.HOTEL_COMMAND)  			&&
-								!dest.equals(Constants.VALIDATE_COMMAND)  		&&
-								!dest.equals(Constants.OWNER_COMMAND))			
-								? dest : Constants.HOME_COMMAND;
-					}
-
-					if (userType.equals(Constants.MANAGER_TYPE)) {
-						dest = (!dest.equals(Constants.PUBLIC_COMMAND) 			&&
-								!dest.equals(Constants.SIGNIN_COMMAND) 			&&
-								!dest.equals(Constants.SIGNUP_COMMAND)			&&
-								!dest.equals(Constants.SEARCH_COMMAND)			&&
-								!dest.equals(Constants.MANAGER_SIGNIN_COMMAND)  &&
-								!dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	&&
-								!dest.equals(Constants.HOME_COMMAND) 			&&
-								!dest.equals(Constants.CART_COMMAND) 			&&
-								!dest.equals(Constants.CHECKOUT_COMMAND) 		&&
-								!dest.equals(Constants.SUMMARY_COMMAND) 		&&
-								!dest.equals(Constants.HOTEL_COMMAND)  			&&
-								!dest.equals(Constants.VALIDATE_COMMAND)  		&&
-								!dest.equals(Constants.OWNER_COMMAND))			
-
-								? dest : Constants.MANAGER_COMMAND;
-					}
-
-					if (userType.equals(Constants.OWNER_TYPE)) {
-						dest = (!dest.equals(Constants.PUBLIC_COMMAND) 			&&
-								!dest.equals(Constants.SIGNIN_COMMAND) 			&&
-								!dest.equals(Constants.SIGNUP_COMMAND)			&&
-								!dest.equals(Constants.SEARCH_COMMAND)			&&
-								!dest.equals(Constants.MANAGER_SIGNIN_COMMAND)  &&
-								!dest.equals(Constants.OWNER_SIGNIN_COMMAND) 	&&
-								!dest.equals(Constants.MANAGER_COMMAND) 		&&
-								!dest.equals(Constants.CART_COMMAND) 			&&
-								!dest.equals(Constants.CHECKOUT_COMMAND) 		&&
-								!dest.equals(Constants.SUMMARY_COMMAND) 		&&
-								!dest.equals(Constants.HOTEL_COMMAND)  			&&
-								!dest.equals(Constants.VALIDATE_COMMAND)  		&&
-								!dest.equals(Constants.HOME_COMMAND))			
-								? dest : Constants.OWNER_COMMAND;
-					}
-				} else {
+					dest = (!dest.equals(Constants.PUBLIC_COMMAND) 			&&
+							!dest.equals(Constants.SIGNIN_COMMAND) 			&&
+							!dest.equals(Constants.SIGNUP_COMMAND)			&&
+							!dest.equals(Constants.VALIDATE_COMMAND))
+							? dest : Constants.HOME_COMMAND;
+				}
+				else {
 					dest = Constants.NOTFOUND_COMMAND;
 				}
 			}
-		}*/
-		
-		dest = Constants.PUBLIC_COMMAND;
+		}
 		
 		Command cmd = (Command) _commands.get(dest) == null ? (Command) _commands.get(Constants.NOTFOUND_COMMAND) : (Command) _commands.get(dest);
 		cmd.execute(request,response, _dao);
