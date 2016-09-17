@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
- * Basic transaction implementation, no support for recurring incomes and expenses nor categories.
+ * Basic transaction implementation, no support for recurring incomes and
+ * expenses nor categories.
+ * 
  * @author samt1995
  *
  */
@@ -14,16 +16,17 @@ public class Transaction {
 	private Date date;
 	private String details;
 	private BigDecimal amount;
-	private boolean isIncome;
-	
-	public Transaction() {}
+	private Boolean isIncome;
 
-	public int getId() {
+	public Transaction() {
+	}
+
+	public int getTransactionID() {
 		return transactionID;
 	}
 
-	public void setId(int id) {
-		this.transactionID = id;
+	public void setTransactionID(int transactionID) {
+		this.transactionID = transactionID;
 	}
 
 	public int getPersonID() {
@@ -62,11 +65,22 @@ public class Transaction {
 		return isIncome;
 	}
 
+	public void setIsIncome(boolean isIncome) {
+		this.isIncome = isIncome;
+	}
+
 	public void setExpense() {
 		this.isIncome = false;
 	}
-	
+
 	public void setIncome() {
 		this.isIncome = true;
 	}
+
+	@Override
+	public String toString() {
+		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", date=" + date
+				+ ", details=" + details + ", amount=" + amount + ", isIncome=" + isIncome + "]";
+	}
+
 }

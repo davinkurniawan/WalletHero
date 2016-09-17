@@ -26,6 +26,7 @@ CREATE TABLE transaction (
 	detail varchar,
 	amount NUMERIC NOT NULL,
 	category_id int,
+	is_income BOOLEAN NOT NULL,
 	CONSTRAINT transaction_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
