@@ -69,7 +69,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DataSourceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (con != null) {
@@ -132,10 +131,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				con.close();
 				services.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NamingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

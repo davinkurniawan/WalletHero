@@ -27,7 +27,6 @@ public class DBConnectionFactory {
 	}
 
 	public void open() throws ServiceLocatorException, SQLException{
-		//TODO
 		try{
 			ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup("jdbc:postgresql://localhost:5432/postgres");

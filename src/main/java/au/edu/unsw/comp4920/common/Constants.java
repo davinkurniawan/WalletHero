@@ -6,7 +6,6 @@ package au.edu.unsw.comp4920.common;
  * Nothing else
  */
 public final class Constants {
-	//TODO
 	
 	// Router Commands
 	public static final String SIGNIN_COMMAND 			= "signIn";

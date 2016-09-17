@@ -1,7 +1,5 @@
 package au.edu.unsw.comp4920.objects;
 
-import au.edu.unsw.comp4920.common.Constants;
-
 public class User {
 	private int personID;
 	private String username;
@@ -128,8 +126,4 @@ public class User {
 	public void setBudget(double budget) {
 		this.budget = budget;
 	}
-	
-	
-	
-	//TODO
 }
