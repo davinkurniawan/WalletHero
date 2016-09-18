@@ -61,6 +61,6 @@
 		 <input type=submit value="Update"></input>
 	</form>
 	
-	<%@ include file="footer.jsp" %>
+	<%@ include file="bottom.jsp" %>
 </body>
 </html>

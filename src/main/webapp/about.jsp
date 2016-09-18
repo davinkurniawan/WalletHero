@@ -17,6 +17,6 @@
 	
 	<h2>Acknowledgement</h2>
 	
-	<%@ include file="footer.jsp" %>
+	<%@ include file="bottom.jsp" %>
 </body>
 </html>
