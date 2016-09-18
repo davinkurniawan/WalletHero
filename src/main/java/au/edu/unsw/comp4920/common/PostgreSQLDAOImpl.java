@@ -4,13 +4,13 @@ import au.edu.unsw.comp4920.objects.*;
 import au.edu.unsw.comp4920.exception.*;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import javax.naming.NamingException;
 
@@ -43,12 +43,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			System.out.println("creating user = " + u.getUsername());
 		}
 
-		Connection con = null;
 		try {
-			con = services.getConnection();
 			PreparedStatement stmt = con
 					.prepareStatement("insert into user (username, email, password, salt_hash, first_name,"
-							+ " last_name, token, status_id, budget) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+							+ " last_name, token, status_id, budget) values (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
 			stmt.setString(1, u.getUsername());
 			stmt.setString(2, u.getEmail());
@@ -64,8 +62,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				throw new DataSourceException("Did not insert one row into database");
 			stmt.close();
 
-		} catch (ServiceLocatorException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DataSourceException e) {
@@ -121,7 +117,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u.setMiddleName(rs.getString("middle_name"));
 				u.setLastName(rs.getString("last_name"));
 				u.setToken(rs.getString("token"));
-				u.setStatus_id(rs.getString("status_id"));
+				u.setStatus_id(rs.getInt("status_id"));
 				u.setBudget(rs.getDouble("budget"));
 			}
 		} catch (SQLException e) {
@@ -146,7 +142,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			con = services.getConnection();
 
 			PreparedStatement stmt = con.prepareStatement(
-					"INSERT INTO transaction (user_id, date, detail, amount, is_income) VALUES (?, ?, ?, ?, ?)");
+					"INSERT INTO transaction (user_id, date, detail, amount, is_income) VALUES (?, ?, ?, ?, ?);");
 
 			stmt.setInt(1, t.getPersonID());
 			stmt.setDate(2, t.getDate());
@@ -177,7 +173,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -200,6 +195,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				query.append(" AND is_income = " + isIncome);
 			}
 
+			query.append(";");
+			
 			PreparedStatement stmt = con.prepareStatement(query.toString());
 			stmt.setInt(1, personID);
 			ResultSet rs = stmt.executeQuery();
@@ -245,6 +242,68 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	@Override
 	public List<Transaction> getAllExpenses(int personID) {
 		return this.getTransactions(personID, null, null, false);
+	}
+
+	@Override
+	public void createSession(Session session) {
+		try {
+			PreparedStatement stmt = con
+					.prepareStatement("insert into session (id, user_id, last_access) values (?, ?, ?);");
+
+			stmt.setString(1, session.getSessionId());
+			stmt.setInt(2, session.getUserId());
+			stmt.setString(3, session.getLastAccess());
+
+			int n = stmt.executeUpdate();
+			if (n != 1)
+				throw new DataSourceException("Did not insert one row into database");
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataSourceException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				services.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	@Override
+	public Session getSession(String sessionId) {
+		Session s = null;
+		String query = "select * from user where id = '" + sessionId + "';";
+		Statement statement;
+		try {
+			statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.next()) {
+				s = new Session();
+				s.setSessionId(rs.getString("id"));
+				s.setUserId(rs.getInt("user_id"));
+				s.setLastAccess(rs.getString("last_access"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				services.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
+		}
+		return s;
 	}
 
 }

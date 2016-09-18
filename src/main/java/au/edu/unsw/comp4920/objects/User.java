@@ -9,11 +9,12 @@ public class User {
 	private String lastName;
 	private String email;
 	private String token;
-	private String status_id;
+	private int status_id;
 	private String salt;
 	private double budget;
-	
-	public User() {}
+
+	public User() {
+	}
 
 	public String getUsername() {
 		return username;
@@ -79,7 +80,8 @@ public class User {
 	}
 
 	/**
-	 * @param salt the salt to set
+	 * @param salt
+	 *            the salt to set
 	 */
 	public void setSalt(String salt) {
 		this.salt = salt;
@@ -93,7 +95,8 @@ public class User {
 	}
 
 	/**
-	 * @param middleName the middleName to set
+	 * @param middleName
+	 *            the middleName to set
 	 */
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
@@ -102,14 +105,15 @@ public class User {
 	/**
 	 * @return the status_id
 	 */
-	public String getStatus_id() {
+	public int getStatus_id() {
 		return status_id;
 	}
 
 	/**
-	 * @param status_id the status_id to set
+	 * @param status_id
+	 *            the status_id to set
 	 */
-	public void setStatus_id(String status_id) {
+	public void setStatus_id(int status_id) {
 		this.status_id = status_id;
 	}
 
@@ -121,7 +125,8 @@ public class User {
 	}
 
 	/**
-	 * @param budget the budget to set
+	 * @param budget
+	 *            the budget to set
 	 */
 	public void setBudget(double budget) {
 		this.budget = budget;

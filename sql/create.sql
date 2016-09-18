@@ -35,7 +35,7 @@ CREATE TABLE transaction (
 
 
 CREATE TABLE session (
-	id serial NOT NULL,
+	id varchar NOT NULL,
 	user_id int NOT NULL,
 	last_access varchar NOT NULL,
 	CONSTRAINT session_pk PRIMARY KEY (id)
