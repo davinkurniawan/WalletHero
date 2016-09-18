@@ -39,14 +39,17 @@ public class SignUpCommand implements Command {
 
 		System.out.println("Inside: SignUpCommand");
 		String action = request.getParameter(Constants.ACTION);
+		System.out.println("action is " + action);
 		String nextPage = "/signup.jsp";
-		if (action != null && action.equalsIgnoreCase("update")) {
+		if (action != null && action.equalsIgnoreCase(Constants.SIGNUP_COMMAND)) {
+			System.out.println("creating user");
 			User user = new User();
 			user.setUsername(request.getParameter("username"));
 			user.setEmail(request.getParameter("email"));
 			user.setFirstName(request.getParameter("firstname"));
 			user.setLastName(request.getParameter("lastname"));
 			if(dao.createUser(user)) {
+				System.out.println("sending email");
 				// Send email here  
 				String token = Common.generateToken(user.getUsername() + user.getEmail()+ user.getPassword());
 				String content = Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;

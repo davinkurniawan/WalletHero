@@ -8,7 +8,8 @@
 </head>
 <body>
 <h3>Register as a new user:</h3>
-<form action="${PROFILE_COMMAND}" method="POST">
+<form action="ControllerServlet?operation=signUp" method="POST">
+  <input type="hidden" name="action" value="signUp">
   <table><tbody>
 	<tr>
 	  <td>Username:</td>
@@ -16,7 +17,7 @@
 	</tr>
 	<tr>
 	  <td>Password:</td> 
-	  <td><input type="text" name="password" /></td>
+	  <td><input type="password" name="password" /></td>
 	</tr>
 	<tr>
 	  <td>Email:</td> 
@@ -31,7 +32,7 @@
 	  <td><input type="text" name="last_name" /></td>
 	</tr>
   </tbody></table>
-  <input type=submit />
+  <button type=submit>register</button>
 </form>
 </body>
 </html>

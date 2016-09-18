@@ -69,7 +69,7 @@ public class ControllerServlet extends HttpServlet {
 	protected void resolveCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Inside: resolveCommand");
 		String dest = request.getParameter(Constants.OPERATION);
-		System.out.println("Destination: " + dest);
+		System.out.println("Destinationnnnn: " + dest);
 		
 		if (this.getLoginStatus(request, response) == false) {
 			System.out.println("Inside: Not Signed In");
