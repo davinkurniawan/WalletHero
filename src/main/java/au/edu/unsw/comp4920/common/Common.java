@@ -13,5 +13,17 @@ public class Common {
 		// Test your fucntions/methods here
 	}
 	
+	public static String generateToken(String toEncrypt) {
+		MessageDigest messageDigest;
+		String encryptedString = toEncrypt;
+		try {
+			messageDigest = MessageDigest.getInstance("SHA-384");
+			messageDigest.update(toEncrypt.getBytes());
+			encryptedString = new String(messageDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return encryptedString;
+	}
 	//TODO
 }

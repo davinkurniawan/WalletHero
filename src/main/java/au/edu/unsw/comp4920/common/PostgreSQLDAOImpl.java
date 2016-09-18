@@ -43,12 +43,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			System.out.println("creating user = " + u.getUsername());
 		}
 
-		Connection con = null;
 		try {
-			con = services.getConnection();
 			PreparedStatement stmt = con
 					.prepareStatement("insert into user (username, email, password, salt_hash, first_name,"
-							+ " last_name, token, status_id, budget) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+							+ " last_name, token, status_id, budget) values (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
 			stmt.setString(1, u.getUsername());
 			stmt.setString(2, u.getEmail());
@@ -64,8 +62,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				throw new DataSourceException("Did not insert one row into database");
 			stmt.close();
 
-		} catch (ServiceLocatorException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DataSourceException e) {
@@ -146,7 +142,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			con = services.getConnection();
 
 			PreparedStatement stmt = con.prepareStatement(
-					"INSERT INTO transaction (user_id, date, detail, amount, is_income) VALUES (?, ?, ?, ?, ?)");
+					"INSERT INTO transaction (user_id, date, detail, amount, is_income) VALUES (?, ?, ?, ?, ?);");
 
 			stmt.setInt(1, t.getPersonID());
 			stmt.setDate(2, t.getDate());
@@ -177,7 +173,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -200,6 +195,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				query.append(" AND is_income = " + isIncome);
 			}
 
+			query.append(";");
+			
 			PreparedStatement stmt = con.prepareStatement(query.toString());
 			stmt.setInt(1, personID);
 			ResultSet rs = stmt.executeQuery();
