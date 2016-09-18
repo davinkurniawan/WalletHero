@@ -4,13 +4,13 @@ import au.edu.unsw.comp4920.objects.*;
 import au.edu.unsw.comp4920.exception.*;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import javax.naming.NamingException;
 
@@ -117,7 +117,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u.setMiddleName(rs.getString("middle_name"));
 				u.setLastName(rs.getString("last_name"));
 				u.setToken(rs.getString("token"));
-				u.setStatus_id(rs.getString("status_id"));
+				u.setStatus_id(rs.getInt("status_id"));
 				u.setBudget(rs.getDouble("budget"));
 			}
 		} catch (SQLException e) {
@@ -242,6 +242,68 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	@Override
 	public List<Transaction> getAllExpenses(int personID) {
 		return this.getTransactions(personID, null, null, false);
+	}
+
+	@Override
+	public void createSession(Session session) {
+		try {
+			PreparedStatement stmt = con
+					.prepareStatement("insert into session (id, user_id, last_access) values (?, ?, ?);");
+
+			stmt.setString(1, session.getSessionId());
+			stmt.setInt(2, session.getUserId());
+			stmt.setString(3, session.getLastAccess());
+
+			int n = stmt.executeUpdate();
+			if (n != 1)
+				throw new DataSourceException("Did not insert one row into database");
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataSourceException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				services.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	@Override
+	public Session getSession(String sessionId) {
+		Session s = null;
+		String query = "select * from user where id = '" + sessionId + "';";
+		Statement statement;
+		try {
+			statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.next()) {
+				s = new Session();
+				s.setSessionId(rs.getString("id"));
+				s.setUserId(rs.getInt("user_id"));
+				s.setLastAccess(rs.getString("last_access"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				services.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
+		}
+		return s;
 	}
 
 }
