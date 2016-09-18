@@ -4,16 +4,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
 <title>Add a new transaction.</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<h3>Please enter transaction details:</h3>
-	<!--ADDTRANSACTION_COMMAND-->
-	<form action="${ADDTRANSACTION_COMMAND}" method="POST">
+
+	<form action="router?operation=addTransaction" method="POST">
 		<table>
 			<tbody>
 				<tr>
@@ -22,7 +19,7 @@
 				</tr>
 				<tr>
 					<td>Amount:</td>
-					<td>$<input type="number" name="value" step="0.01" min="0.00" /></td>
+					<td>$<input type="number" name="amount" step="0.01" min="0.00" /></td>
 				</tr>
 				<tr>
 					<td>Transaction type:&nbsp&nbsp</td>
@@ -33,7 +30,12 @@
 				</tr>
 			</tbody>
 		</table>
+		<p></p>
 		<input type=submit value="Confirm" class="btn btn-primary" />
 	</form>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
