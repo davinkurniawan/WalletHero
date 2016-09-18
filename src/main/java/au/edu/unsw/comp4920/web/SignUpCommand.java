@@ -59,10 +59,9 @@ public class SignUpCommand implements Command {
 				request.setAttribute(Constants.ACTION, true);
 				nextPage = "/signin.jsp";
 			}
-		}
-	} 
-	RequestDispatcher rd = request.getRequestDispatcher(nextPage);
-	rd.forward(request, response);
+		} 
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
+		rd.forward(request, response);
 	}	
 	
 	public static void sendMail(String email_sender, String email_receiver,
