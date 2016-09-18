@@ -13,6 +13,6 @@
 <body>
 	<h2>Welcome, ...</h2>
 	
-	<%@ include file="bottom.jsp" %>
+	<%@ include file="footer.jsp" %>
 </body>
 </html>
