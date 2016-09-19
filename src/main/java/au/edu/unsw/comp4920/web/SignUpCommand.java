@@ -41,28 +41,21 @@ public class SignUpCommand implements Command {
 		String action = request.getParameter(Constants.ACTION);
 		System.out.println("action is " + action);
 		String nextPage = "/signup.jsp";
-		if (action != null && action.equalsIgnoreCase(Constants.SIGNUP_COMMAND)) {
-			System.out.println("creating user");
-			User user = new User();
-			user.setUsername(request.getParameter("username"));
-			user.setEmail(request.getParameter("email"));
-			user.setFirstName(request.getParameter("firstname"));
-			user.setLastName(request.getParameter("lastname"));
-			if(dao.createUser(user)) {
-				System.out.println("sending email");
-				// Send email here  
-				String token = Common.generateToken(user.getUsername() + user.getEmail()+ user.getPassword());
-				String content = Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
-				content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
-				sendMail("support@wallethero.com", user.getEmail(), "Validate Your Email.", content);
-				nextPage = "/signup.jsp";
-			} else {
-				// Let JSP know error happens
-				request.setAttribute(Constants.ERROR, true);
-				request.setAttribute(Constants.ACTION, true);
-				nextPage = "/signin.jsp";
-			}
-		} 
+		System.out.println("creating user");
+		User user = new User();
+		user.setUsername(request.getParameter("username"));
+		user.setEmail(request.getParameter("email"));
+		user.setFirstName(request.getParameter("firstname"));
+		user.setLastName(request.getParameter("lastname"));
+		if(dao.createUser(user)) {
+			System.out.println("sending email");
+			// Send email here  
+			String token = Common.generateToken(user.getUsername() + user.getEmail()+ user.getPassword());
+			String content = Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
+			content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
+			sendMail("support@wallethero.com", user.getEmail(), "Validate Your Email.", content);
+			nextPage = "/signup.jsp";
+		}
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}	
