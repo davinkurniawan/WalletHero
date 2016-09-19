@@ -37,7 +37,7 @@ public class SignUpCommand implements Command {
 		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
 		System.out.println("SignUpCommand: Action is " + action);
 
-		if (action != null && action.equalsIgnoreCase("create")) {
+		if (action != null && action.equalsIgnoreCase("signUp")) {
 		
 			if (request.getParameter("username") != null && 
 				request.getParameter("password") != null &&
@@ -51,10 +51,11 @@ public class SignUpCommand implements Command {
 				if (dao.getUserDetails(request.getParameter("username")) == null){
 					User user = new User();
 					user.setUsername(request.getParameter("username"));
-					user.setPassword(request.getParameter("username"));
+					user.setPassword(request.getParameter("password"));
 					user.setEmail(request.getParameter("email"));
-					user.setFirstName(request.getParameter("firstname"));
-					user.setLastName(request.getParameter("lastname"));
+					user.setFirstName(request.getParameter("first_name"));
+					user.setMiddleName(request.getParameter("middle_name"));
+					user.setLastName(request.getParameter("last_name"));
 					
 					if(dao.createUser(user)) {
 						System.out.println("sending email");

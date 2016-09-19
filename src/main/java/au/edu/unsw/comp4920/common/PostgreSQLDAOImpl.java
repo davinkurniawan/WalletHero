@@ -51,7 +51,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(6, (u.getMiddleName() != null)?u.getMiddleName() : "");
 				stmt.setString(7, u.getLastName());
 				stmt.setString(8, "lol"); //TODO change this later
-				stmt.setInt(9, 0); //0 for Inactive, 1 for Active, 2 for Disabled
+				stmt.setInt(9, 1); //1 for Inactive, 2 for Active, 3 for Disabled
 				stmt.setDouble(10, 0.0); //Default to $0.0
 	
 				int n = stmt.executeUpdate();
@@ -102,7 +102,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			passwordQuery = ";";
 		}
 
-		String query = "SELECT * FROM Users WHERE " + idQuery + passwordQuery;
+		String query = "SELECT * FROM users WHERE " + idQuery + passwordQuery;
 		Statement statement;
 		try {
 			_factory.open();
@@ -141,6 +141,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 		}
 		
+		if(u != null) {
+			System.out.println("found user");
+		}
 		return u;
 	}
 

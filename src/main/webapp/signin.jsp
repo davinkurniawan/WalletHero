@@ -17,7 +17,7 @@
 <form action="${PROFILE_COMMAND}" method="POST">
   <table><tbody>
 	<tr>
-	  <td>Username:</td>
+	  <td>Username/Email:</td>
 	  <td><input type="text" name="username" /></td>
 	</tr>
 	<tr>
