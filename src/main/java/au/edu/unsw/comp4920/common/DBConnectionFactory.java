@@ -1,12 +1,9 @@
 package au.edu.unsw.comp4920.common;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 import au.edu.unsw.comp4920.exception.ServiceLocatorException;
 
@@ -19,8 +16,7 @@ import au.edu.unsw.comp4920.exception.ServiceLocatorException;
 public class DBConnectionFactory {
 	
 	static Logger logger = Logger.getLogger(DBConnectionFactory.class.getName());
-	private DataSource ds = null;
-	private InitialContext ctx;
+	private Connection conn = null;
 	
 	public DBConnectionFactory() {
 		
@@ -28,24 +24,30 @@ public class DBConnectionFactory {
 
 	public void open() throws ServiceLocatorException, SQLException{
 		try{
-			ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("jdbc:postgresql://localhost:5432/postgres");
-			logger.info("Database found: " + ds.toString());
+			Class.forName("org.postgresql.Driver");
+			
+			conn = DriverManager.getConnection(
+					"jdbc:postgresql://127.0.0.1:5432/postgres", "wallethero",
+					"w4ll3th3r0");
 		}
-		catch(NamingException e){
-			logger.severe("Cannot find context, throwing exception " + e.getMessage());
+		catch(ClassNotFoundException e){
+			logger.severe("Cannot find class, throwing exception " + e.getMessage());
 			e.printStackTrace();
-			throw new ServiceLocatorException("Cannot find context, throwing exception " + e.getMessage());
+			throw new ServiceLocatorException("Cannot find class, throwing exception " + e.getMessage());
+		}
+		catch (SQLException e){
+			logger.severe("Cannot open DB, throwing exception " + e.getMessage());
+			e.printStackTrace();
+			throw new ServiceLocatorException("Cannot open DB, throwing exception " + e.getMessage());
 		}
 	} 
 	
 	public Connection getConnection() throws ServiceLocatorException, SQLException{
-		Connection conn = ds.getConnection();
 		return conn;
 	}
 	
-	public void close() throws NamingException {
+	public void close() throws SQLException {
 		// destroy connection
-		ctx.close();
+		conn.close();
 	}
 }

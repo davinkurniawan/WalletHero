@@ -22,7 +22,6 @@ public class SignOutCommand implements Command {
 	}
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException{
-
 		System.out.println("Inside: SignOutCommand");
 
 		RequestDispatcher rd = request.getRequestDispatcher("/signout.jsp");

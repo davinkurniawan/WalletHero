@@ -13,7 +13,6 @@ import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.PostgreSQLDAOImpl;
 import au.edu.unsw.comp4920.exception.ServiceLocatorException;
-import au.edu.unsw.comp4920.objects.User;
 
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -23,9 +22,13 @@ public class ControllerServlet extends HttpServlet {
 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		//TODO
-		// Initialize database connection
-		_dao = new PostgreSQLDAOImpl();
+		
+		// Initialize database connections
+		try {
+			_dao = new PostgreSQLDAOImpl();
+		} catch (ServiceLocatorException | SQLException e) {
+			System.out.println(e.getMessage());
+		}
 
 		// Initialize hashmap of commands
 		_commands = new HashMap<String, Command>();
@@ -45,22 +48,20 @@ public class ControllerServlet extends HttpServlet {
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
-        servletContext.setAttribute(Constants.WEB_NAME, 				Constants.WEB);
-        servletContext.setAttribute(Constants.ROUTER_SIGNIN, 			Constants.ROUTER + Constants.SIGNIN_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_SIGNOUT, 			Constants.ROUTER + Constants.SIGNOUT_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_SIGNUP, 			Constants.ROUTER + Constants.SIGNUP_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_PROFILE, 			Constants.ROUTER + Constants.PROFILE_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_PUBLIC, 			Constants.ROUTER + Constants.PUBLIC_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_HOME, 				Constants.ROUTER + Constants.HOME_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_SEARCH, 			Constants.ROUTER + Constants.SEARCH_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_NOTFOUND, 			Constants.ROUTER + Constants.NOTFOUND_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_VALIDATE, 			Constants.ROUTER + Constants.VALIDATE_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_ABOUT, 			Constants.ROUTER + Constants.ABOUT_COMMAND);
+        servletContext.setAttribute(Constants.WEB_NAME, 					Constants.WEB);
+        servletContext.setAttribute(Constants.ROUTER_SIGNIN, 				Constants.ROUTER + Constants.SIGNIN_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SIGNOUT, 				Constants.ROUTER + Constants.SIGNOUT_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SIGNUP, 				Constants.ROUTER + Constants.SIGNUP_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_PROFILE, 				Constants.ROUTER + Constants.PROFILE_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_PUBLIC, 				Constants.ROUTER + Constants.PUBLIC_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_HOME, 					Constants.ROUTER + Constants.HOME_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_SEARCH, 				Constants.ROUTER + Constants.SEARCH_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_NOTFOUND, 				Constants.ROUTER + Constants.NOTFOUND_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_VALIDATE, 				Constants.ROUTER + Constants.VALIDATE_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_ABOUT, 				Constants.ROUTER + Constants.ABOUT_COMMAND);
         
-        servletContext.setAttribute(Constants.ROUTER_ADDTRANSACTION,    Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_VIEWTRANSACTIONS,    Constants.ROUTER + Constants.VIEWTRANSACTIONS_COMMAND);
-        
-        
+        servletContext.setAttribute(Constants.ROUTER_ADDTRANSACTION,    	Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_VIEWTRANSACTIONS,    	Constants.ROUTER + Constants.VIEWTRANSACTIONS_COMMAND);
 	}
 
 	/*
@@ -73,7 +74,7 @@ public class ControllerServlet extends HttpServlet {
 	protected void resolveCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Inside: resolveCommand");
 		String dest = request.getParameter(Constants.OPERATION);
-		System.out.println("Destinationnnnn: " + dest);
+		System.out.println("Destination: " + dest);
 		
 		if (this.getLoginStatus(request, response) == false) {
 			System.out.println("Inside: Not Signed In");

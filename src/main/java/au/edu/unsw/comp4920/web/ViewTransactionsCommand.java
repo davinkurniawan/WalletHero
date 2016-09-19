@@ -18,12 +18,10 @@ public class ViewTransactionsCommand implements Command {
 	public ViewTransactionsCommand() {
 	}
 
-	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
-			throws ServletException, IOException {
-
-		// TODO: Replace daoTEMP with dao
-		PostgreSQLDAOImpl daoTEMP = new PostgreSQLDAOImpl();
-		List<Transaction> transactions = daoTEMP.getAllTransactions(1);
+	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
+		System.out.println("Inside: ViewTransactionsCommand");
+		
+		List<Transaction> transactions = dao.getAllTransactions(1);
 
 		request.setAttribute("transactionList", transactions);
 

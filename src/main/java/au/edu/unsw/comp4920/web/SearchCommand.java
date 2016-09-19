@@ -22,7 +22,6 @@ public class SearchCommand implements Command {
 	}
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException{
-
 		System.out.println("Inside: SearchCommand");
 
 		RequestDispatcher rd = request.getRequestDispatcher("/search.jsp");

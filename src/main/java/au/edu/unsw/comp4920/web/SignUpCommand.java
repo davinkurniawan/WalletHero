@@ -1,13 +1,11 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
-import java.util.*;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.naming.Context;
@@ -19,10 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
-import au.edu.unsw.comp4920.objects.*;
 import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.Constants;
-import au.edu.unsw.comp4920.common.MailHelper;
 import au.edu.unsw.comp4920.objects.User;
 
 /**
@@ -36,27 +32,53 @@ public class SignUpCommand implements Command {
 	}
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
-
 		System.out.println("Inside: SignUpCommand");
-		String action = request.getParameter(Constants.ACTION);
-		System.out.println("action is " + action);
-		String nextPage = "/signup.jsp";
-		System.out.println("creating user");
-		User user = new User();
-		user.setUsername(request.getParameter("username"));
-		user.setEmail(request.getParameter("email"));
-		user.setFirstName(request.getParameter("firstname"));
-		user.setLastName(request.getParameter("lastname"));
-		if(dao.createUser(user)) {
-			System.out.println("sending email");
-			// Send email here  
-			String token = Common.generateToken(user.getUsername() + user.getEmail()+ user.getPassword());
-			String content = Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
-			content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
-			sendMail("support@wallethero.com", user.getEmail(), "Validate Your Email.", content);
-			nextPage = "/signup.jsp";
+		
+		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+		System.out.println("SignUpCommand: Action is " + action);
+
+		if (action != null && action.equalsIgnoreCase("create")) {
+		
+			if (request.getParameter("username") != null && 
+				request.getParameter("password") != null &&
+				request.getParameter("email") != null &&
+				request.getParameter("first_name") != null &&
+				request.getParameter("middle_name") != null &&
+				request.getParameter("last_name") != null) {
+			
+				System.out.println("SignUpCommand: Creating user");
+				
+				if (dao.getUserDetails(request.getParameter("username")) == null){
+					User user = new User();
+					user.setUsername(request.getParameter("username"));
+					user.setPassword(request.getParameter("username"));
+					user.setEmail(request.getParameter("email"));
+					user.setFirstName(request.getParameter("firstname"));
+					user.setLastName(request.getParameter("lastname"));
+					
+					if(dao.createUser(user)) {
+						System.out.println("sending email");
+						// Send email here  
+						String token = Common.generateToken(user.getUsername() + user.getEmail()+ user.getPassword());
+						String content = Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
+						content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
+						sendMail("support@wallethero.com", user.getEmail(), "Validate Your Email.", content);
+
+						// Redirect to appropriate page: public view
+						response.sendRedirect(Constants.ROUTER + Constants.SIGNUP_COMMAND + "&success=yes");
+						return;
+					}
+					else{
+						System.err.println("SignUpCommand: Failed to create user account!");
+					}
+				}
+				else{
+					System.err.println("SignUpCommand: User account exists!");
+				}
+			}
 		}
-		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
 		rd.forward(request, response);
 	}	
 	
@@ -78,11 +100,8 @@ public class SignUpCommand implements Command {
 			message.setSubject(subject);
 			message.setContent(content, "text/plain");
 			Transport.send(message);
-		} catch (AddressException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
+		} 
+		catch (NamingException | MessagingException e) {
 			e.printStackTrace();
 		}
 	}

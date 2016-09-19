@@ -1,9 +1,7 @@
 package au.edu.unsw.comp4920.common;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +11,19 @@ public class Common {
 		// Test your fucntions/methods here
 	}
 	
+	public static Date convertStringtoDate(String date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
+		Date out = null;
+		try {
+			out = dateFormat.parse(date);
+		} 
+		catch (ParseException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return out;
+	}
+	
 	public static String generateToken(String toEncrypt) {
 		MessageDigest messageDigest;
 		String encryptedString = toEncrypt;
@@ -20,10 +31,10 @@ public class Common {
 			messageDigest = MessageDigest.getInstance("SHA-384");
 			messageDigest.update(toEncrypt.getBytes());
 			encryptedString = new String(messageDigest.digest());
-		} catch (NoSuchAlgorithmException e) {
+		} 
+		catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 		return encryptedString;
 	}
-	//TODO
 }

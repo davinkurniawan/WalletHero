@@ -1,6 +1,5 @@
 package au.edu.unsw.comp4920.objects;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -14,11 +13,25 @@ public class Transaction {
 	private int transactionID;
 	private int personID;
 	private Date date;
-	private String details;
-	private BigDecimal amount;
-	private Boolean isIncome;
+	private String detail;
+	private double amount;
+	private String category;
+	private boolean isIncome;
 
 	public Transaction() {
+		
+	}
+
+	public Transaction(int transactionID, int personID, Date date, String detail, double amount, String category,
+			boolean isIncome) {
+		super();
+		this.transactionID = transactionID;
+		this.personID = personID;
+		this.date = date;
+		this.detail = detail;
+		this.amount = amount;
+		this.category = category;
+		this.isIncome = isIncome;
 	}
 
 	public int getTransactionID() {
@@ -45,21 +58,28 @@ public class Transaction {
 		this.date = date;
 	}
 
-	public String getDetails() {
-		return details;
+	public String getDetail() {
+		return detail;
 	}
 
-	public void setDetails(String details) {
-		this.details = details;
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 
-	public BigDecimal getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
-		this.amount = this.amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public boolean isIncome() {
@@ -70,26 +90,9 @@ public class Transaction {
 		this.isIncome = isIncome;
 	}
 
-	public void setExpense() {
-		this.isIncome = false;
-	}
-
-	public void setIncome() {
-		this.isIncome = true;
-	}
-
-	public String getTransactionType() {
-		if (this.isIncome()) {
-			return "Income";
-		} else {
-			return "Expense";
-		}
-	}
-
 	@Override
 	public String toString() {
-		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", date=" + date
-				+ ", details=" + details + ", amount=" + amount + ", isIncome=" + isIncome + "]";
+		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", date=" + date + ", detail="
+				+ detail + ", amount=" + amount + ", category=" + category + ", isIncome=" + isIncome + "]";
 	}
-
 }

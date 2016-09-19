@@ -44,6 +44,9 @@ public final class Constants {
 	// Integer
 	public static final int DEFAULT						= -1;
 	
+	// Date format
+	public static final String DEFAULT_DATE_FORMAT		= "dd MMMM yyyy hh:mm:ss";
+	
 	// Servlet Global Attributes
 	public static final String WEB_NAME					= "WEB_NAME";
 	public static final String ROUTER_SIGNIN			= "ROUTER_SIGNIN";

@@ -8,6 +8,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	
 	<title>${applicationScope['WEB_NAME']} - Profile</title>
 </head>
 <body>
@@ -29,14 +31,18 @@
 		</tr>
 		<tr>
 		  <td>Middle Name:</td> 
-		  <td><input type="text" name="first_name" /></td>
+		  <td><input type="text" name="middle_name" /></td>
 		</tr>
 		<tr>
 		  <td>Last Name <label style="color:red">*</label>:</td> 
 		  <td><input type="text" name="last_name" /></td>
 		</tr>
 	  </tbody></table>
-	  <input type=submit value="Update"></input>
+	  
+	  <h2>CAPTCHA HERE</h2>
+	  
+	  <input type="hidden" name="action" value="update_profile"/>	
+	  <input type="submit" value="Update"></input>
 	</form>
 	
 	<h2>Update Your Password</h2>
@@ -45,20 +51,23 @@
 	  <table><tbody>
 		<tr>
 		  <td>Password <label style="color:red">*</label>:</td> 
-		  <td><input type="text" name="password" /></td>
+		  <td><input type="password" name="password" /></td>
 		</tr>
 		<tr>
 		  <td>Re-Enter Password <label style="color:red">*</label>:</td> 
-		  <td><input type="text" name="repassword" /></td>
+		  <td><input type="password" name="repassword" /></td>
 		</tr>
 	  </tbody></table>
-	  <input type=submit value="Update"></input>
+	  
+	  <input type="hidden" name="action" value="update_password"/>	
+	  <input type="submit" value="Update"></input>
 	</form>
 	
 	<h2>Update Your Preferences</h2>
 	
 	<form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
-		 <input type=submit value="Update"></input>
+		 <input type="hidden" name="action" value="update_preferences"/>	
+		 <input type="submit" value="Update"></input>
 	</form>
 	
 	<%@ include file="bottom.jsp" %>
