@@ -59,6 +59,7 @@ public class Transaction {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+		this.amount = this.amount.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public boolean isIncome() {
@@ -75,6 +76,14 @@ public class Transaction {
 
 	public void setIncome() {
 		this.isIncome = true;
+	}
+
+	public String getTransactionType() {
+		if (this.isIncome()) {
+			return "Income";
+		} else {
+			return "Expense";
+		}
 	}
 
 	@Override
