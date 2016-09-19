@@ -8,7 +8,7 @@
 </head>
 <body>
 <h3>Register as a new user:</h3>
-<form action="ControllerServlet?operation=signUp" method="POST">
+<form action="?operation=signUp" method="POST">
   <input type="hidden" name="action" value="signUp">
   <table><tbody>
 	<tr>
@@ -25,11 +25,11 @@
 	</tr>
 	<tr>
 	  <td>First Name:</td> 
-	  <td><input type="text" name="first_name" /></td>
+	  <td><input type="text" name="firstname" /></td>
 	</tr>
 	<tr>
 	  <td>Last Name:</td> 
-	  <td><input type="text" name="last_name" /></td>
+	  <td><input type="text" name="lastname" /></td>
 	</tr>
   </tbody></table>
   <button type=submit>register</button>

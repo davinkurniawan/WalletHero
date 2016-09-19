@@ -23,7 +23,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 	public PostgreSQLDAOImpl() {
 		services = new DBConnectionFactory();
+		System.out.println("constructing postgres");
 		try {
+			System.out.println("getting connection");
 			services.open();
 			con = services.getConnection();
 		} catch (ServiceLocatorException e) {

@@ -25,11 +25,7 @@ public class ControllerServlet extends HttpServlet {
 		super.init(config);
 		//TODO
 		// Initialize database connection
-		/*try {
-			_dao = new DerbyDAOImpl();
-		} catch (ServiceLocatorException | SQLException e) {
-			System.out.println(e.getMessage());
-		}*/
+		_dao = new PostgreSQLDAOImpl();
 
 		// Initialize hashmap of commands
 		_commands = new HashMap<String, Command>();

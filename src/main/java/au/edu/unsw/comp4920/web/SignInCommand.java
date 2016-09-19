@@ -25,31 +25,29 @@ public class SignInCommand implements Command {
 
 		String nextPage = "/signin.jsp";
 		System.out.println("Inside: SignInCommand");
-		if (request.getParameter(Constants.ACTION) != null) {
-			String id = request.getParameter("id");
-			String password = request.getParameter("password");
-			User u = dao.getUser(id, password);
-			if (u == null) {
-				request.setAttribute(Constants.ERROR, 1);
-				request.setAttribute(Constants.ERRORMSG, "Login failed. Incorrect ID or password.");
-			} else if (u.getStatus_id() == 2) {
-				request.setAttribute(Constants.ERROR, 1);
-				request.setAttribute(Constants.ERRORMSG, "Login failed. Please activate your account.");
-			} else {
-				HttpSession session = request.getSession(true);
-				session.setAttribute(Constants.PERSONID, u.getPersonID());
-				session.setAttribute(Constants.SID, session.getId());
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+		User u = dao.getUser(id, password);
+		if (u == null) {
+			request.setAttribute(Constants.ERROR, 1);
+			request.setAttribute(Constants.ERRORMSG, "Login failed. Incorrect ID or password.");
+		} else if (u.getStatus_id() == 2) {
+			request.setAttribute(Constants.ERROR, 1);
+			request.setAttribute(Constants.ERRORMSG, "Login failed. Please activate your account.");
+		} else {
+			HttpSession session = request.getSession(true);
+			session.setAttribute(Constants.PERSONID, u.getPersonID());
+			session.setAttribute(Constants.SID, session.getId());
 				
-				Session s = new Session();
-				s.setSessionId(session.getId());
-				s.setUserId((Integer)session.getAttribute(Constants.PERSONID));
-				DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-				Date date = new Date();
-				s.setLastAccess(df.format(date));
+			Session s = new Session();
+			s.setSessionId(session.getId());
+			s.setUserId((Integer)session.getAttribute(Constants.PERSONID));
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date date = new Date();
+			s.setLastAccess(df.format(date));
 				
-				dao.createSession(s);
-				nextPage = "/home.jsp";
-			}
+			dao.createSession(s);
+			nextPage = "/home.jsp";
 		}
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
