@@ -46,7 +46,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(1, u.getUsername());
 				stmt.setString(2, u.getEmail());
 				stmt.setString(3, u.getPassword());
-				stmt.setString(4, "lol"); //TODO change this later
+				stmt.setString(4, "lol"); //TODO change this later - salt_hash
 				stmt.setString(5, u.getFirstName());
 				stmt.setString(6, (u.getMiddleName() != null)?u.getMiddleName() : "");
 				stmt.setString(7, u.getLastName());
@@ -123,6 +123,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u.setToken(rs.getString("token"));
 				u.setStatus_id(rs.getInt("status_id"));
 				u.setBudget(rs.getDouble("budget"));
+				//System.out.println("UserDTO successfully created.");
 			}
 			
 			statement.close();
