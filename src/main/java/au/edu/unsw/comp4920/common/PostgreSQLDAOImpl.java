@@ -343,4 +343,32 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	public User getUserDetails(String username) {
 		return getUser(username, null);
 	}
+	
+	@Override
+	public void deleteSession(String sessionId) {
+		String query = "DELETE FROM session WHERE id = '"+ sessionId + "';";
+		Statement statement;
+		Connection conn = null;
+		
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			
+			statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			statement.executeUpdate(query);
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+	}
 }

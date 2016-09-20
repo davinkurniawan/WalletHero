@@ -17,4 +17,5 @@ public interface CommonDAO {
 	
 	public void createSession(Session session);
 	public Session getSession(String sessionId);
+	public void deleteSession(String sessionId);
 }
