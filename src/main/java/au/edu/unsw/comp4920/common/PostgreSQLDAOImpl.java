@@ -305,7 +305,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	@Override
 	public Session getSession(String sessionId) {
 		Session s = null;
-		String query = "SELECT * FROM user WHERE id = '" + sessionId + "';";
+		String query = "SELECT * FROM Session WHERE id = '" + sessionId + "';";
 		Statement statement;
 		Connection conn = null;
 		
@@ -342,5 +342,66 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	@Override
 	public User getUserDetails(String username) {
 		return getUser(username, null);
+	}
+
+	@Override
+	public String getToken(User u) {
+		String query = "SELECT token FROM users WHERE id = '" + u.getUsername() + "';";
+		Connection conn = null;
+		Statement statement;
+		String token = null;
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement.executeQuery(query);
+			token = rs.getString("token");
+			statement.close();
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		
+		if(token != null) {
+			System.out.println("found user");
+		}
+		return token;
+	}
+
+	@Override
+	public void setStatus(User u) {
+		String query = "UPDATE users SET status_id = 2 WHERE username = '"+ u.getUsername() + "';";
+		Connection conn = null;
+		Statement statement;
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			@SuppressWarnings("unused")
+			int tmp = statement.executeUpdate(query);
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
 	}
 }

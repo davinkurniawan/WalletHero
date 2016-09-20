@@ -17,4 +17,7 @@ public interface CommonDAO {
 	
 	public void createSession(Session session);
 	public Session getSession(String sessionId);
+	
+	public String getToken(User u);
+	public void setStatus(User u);
 }
