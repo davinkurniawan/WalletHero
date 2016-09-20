@@ -87,7 +87,9 @@ public class ControllerServlet extends HttpServlet {
 							dest.equals(Constants.VALIDATE_COMMAND) 		||
 							dest.equals(Constants.NOTFOUND_COMMAND)			||
 							dest.equals(Constants.ABOUT_COMMAND) 			||
-							//TODO For testing purposes:
+							
+							//TODO For testing purposes (temporary):
+							dest.equals(Constants.PROFILE_COMMAND) 			||
 							dest.equals(Constants.VIEWTRANSACTIONS_COMMAND) ||
 							dest.equals(Constants.ADDTRANSACTION_COMMAND) 	||
 							dest.equals(Constants.SIGNIN_COMMAND)) 
@@ -159,5 +161,4 @@ public class ControllerServlet extends HttpServlet {
 		//TODO return _dao.getUserLoginStatus((int) uid, sid);
 		return false;
 	}
-	
 }

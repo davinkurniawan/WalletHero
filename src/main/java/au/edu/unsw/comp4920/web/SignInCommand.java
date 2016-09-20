@@ -21,62 +21,68 @@ public class SignInCommand implements Command {
 
 	}
 
-	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
-			throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: SignInCommand");
 
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		User user = null;
-		System.out.println("Logging in ... " + "username = " + username + " password= " + password);
+		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+		System.out.println("SignInCommand: Action is " + action);
 
-		if (username != null && password != null) {
-			user = dao.getUser(username, password);
-	
-			// if user is not found in the database (returned null), then
-			// either username/email and/or password is wrong
-			if (user == null) {
-				System.out.println("SignInCommand: User not found in database");
-	
-				request.setAttribute(Constants.ERROR, 1);
-				request.setAttribute(Constants.ERRORMSG, "Invalid credentials.");
-				
-			} else if (user.getStatus_id() == 2) {
-				System.out.println("SignInCommand: Active user");
-	
-				// TODO implement the hash
-	
-				HttpSession session = request.getSession(true);
-				session.setAttribute(Constants.PERSONID, user.getPersonID());
-				session.setAttribute(Constants.SID, session.getId());
-	
-				Session s = new Session();
-				s.setSessionId(session.getId());
-				s.setUserId((Integer) session.getAttribute(Constants.PERSONID));
-				DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
-				Date date = new Date();
-				s.setLastAccess(df.format(date));
-	
-				dao.createSession(s);
-	
-				System.out.println("Login successful.");
-				response.sendRedirect(Constants.ROUTER + Constants.PUBLIC_COMMAND);
-				return;
+		if (action != null && action.equalsIgnoreCase("login")) {
 		
-			} else if (user.getStatus_id() == 1) {
-				System.out.println("SignInCommand: Not Actived user");
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			User user = null;
+			
+			System.out.println("Logging in ... " + "username = " + username + " password= " + password);
 	
-				request.setAttribute(Constants.ERROR, 1);
-				request.setAttribute(Constants.ERRORMSG, "Login failed. Please activate your account.");
-				
-			} else if (user.getStatus_id() == 3) {
-				System.out.println("SignInCommand: Disabled user");
-	
-				request.setAttribute(Constants.ERROR, 1);
-				request.setAttribute(Constants.ERRORMSG, "Login failed. Your account has been disabled.");
+			if (username != null && password != null) {
+				user = dao.getUser(username, password);
+		
+				// if user is not found in the database (returned null), then
+				// either username/email and/or password is wrong
+				if (user == null) {
+					System.out.println("SignInCommand: User not found in database");
+		
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Invalid credentials.");
+					
+				} else if (user.getStatus_id() == 2) {
+					System.out.println("SignInCommand: Active user");
+		
+					// TODO implement the hash
+		
+					HttpSession session = request.getSession(true);
+					session.setAttribute(Constants.PERSONID, user.getPersonID());
+					session.setAttribute(Constants.SID, session.getId());
+		
+					Session s = new Session();
+					s.setSessionId(session.getId());
+					s.setUserId((Integer) session.getAttribute(Constants.PERSONID));
+					DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
+					Date date = new Date();
+					s.setLastAccess(df.format(date));
+		
+					dao.createSession(s);
+		
+					System.out.println("Login successful.");
+					response.sendRedirect(Constants.ROUTER + Constants.PUBLIC_COMMAND);
+					return;
+			
+				} else if (user.getStatus_id() == 1) {
+					System.out.println("SignInCommand: Not Actived user");
+		
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Login failed. Please activate your account.");
+					
+				} else if (user.getStatus_id() == 3) {
+					System.out.println("SignInCommand: Disabled user");
+		
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Login failed. Your account has been disabled.");
+				}
 			}
 		}
-
+		
 		// Display log in page
 		RequestDispatcher rd = request.getRequestDispatcher("/signin.jsp");
 		rd.forward(request, response);

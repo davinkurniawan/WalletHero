@@ -27,11 +27,10 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="${applicationScope['ROUTER_PUBLIC']}">Home</a></li>
+                <li><a href="./">Home</a></li>
                 <li><a href="${applicationScope['ROUTER_SIGNIN']}">Sign In</a></li>
                 <li><a href="${applicationScope['ROUTER_SIGNUP']}">Sign Up</a></li>
-                <li class="active"><a href="./">About</a></li>
-
+                <li class="active"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
 
                 <!--<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -106,9 +105,6 @@
       </div>
 
       <hr class="featurette-divider">
-
-      <!-- /END THE FEATURETTES -->
-
 
   	   <%@ include file="footer.jsp" %>
     </div><!-- /.container -->
