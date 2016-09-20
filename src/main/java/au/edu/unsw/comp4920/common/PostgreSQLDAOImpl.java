@@ -8,9 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -183,7 +180,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return result;
 	}
 
-	public List<Transaction> getTransactions(int personID, LocalDate from, LocalDate to, Boolean isIncome) {
+	public List<Transaction> getTransactions(int personID, Date from, Date to, Boolean isIncome) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		Connection conn = null;
 
@@ -240,7 +237,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public List<Transaction> getTransactionsByDate(int personID, LocalDate from, LocalDate to) {
+	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to) {
 		return this.getTransactions(personID, from, to, null);
 	}
 

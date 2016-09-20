@@ -16,7 +16,7 @@ public interface CommonDAO {
 	public List<Transaction> getAllTransactions(int personID);
 	public List<Transaction> getAllExpenses(int personID);
 	public List<Transaction> getAllIncomes(int personID);
-	public List<Transaction> getTransactionsByDate(int personID, LocalDate from, LocalDate to);
+	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to);
 	
 	public void createSession(Session session);
 	public Session getSession(String sessionId);
