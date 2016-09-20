@@ -1,5 +1,6 @@
 package au.edu.unsw.comp4920.objects;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -14,15 +15,15 @@ public class Transaction {
 	private int personID;
 	private Date date;
 	private String detail;
-	private double amount;
+	private BigDecimal amount;
 	private String category;
 	private boolean isIncome;
 
 	public Transaction() {
-		
+
 	}
 
-	public Transaction(int transactionID, int personID, Date date, String detail, double amount, String category,
+	public Transaction(int transactionID, int personID, Date date, String detail, BigDecimal amount, String category,
 			boolean isIncome) {
 		super();
 		this.transactionID = transactionID;
@@ -66,12 +67,14 @@ public class Transaction {
 		this.detail = detail;
 	}
 
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+		this.amount = this.amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+
 	}
 
 	public String getCategory() {
@@ -89,7 +92,8 @@ public class Transaction {
 	public void setIsIncome(boolean isIncome) {
 		this.isIncome = isIncome;
 	}
-	
+
+	// Don't delete this, used in viewtransactions.jsp.
 	public String getTransactionType() {
 		if (this.isIncome()) {
 			return "Income";

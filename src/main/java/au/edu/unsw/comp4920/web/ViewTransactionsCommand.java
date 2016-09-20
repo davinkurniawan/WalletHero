@@ -40,7 +40,9 @@ public class ViewTransactionsCommand implements Command {
 			LocalDate from = LocalDate.parse(fromDate);
 			LocalDate to = LocalDate.parse(toDate);
 			transactionRange = "Viewing transactions from " + from.toString() + " to " + to.toString() + ".";
-			// Hack because dates are stored weird in database. i.e: "2016-09-20 +10".
+			
+			// Hack because PostgreSQL stores dates weird in database. i.e: "2016-09-20 +10".
+			// TODO: Don't use hack.
 			to = to.plusDays(1);
 			transactions = dao.getTransactionsByDate(personID, from, to);
 

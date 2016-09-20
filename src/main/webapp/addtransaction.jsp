@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,6 +15,18 @@
 </head>
 <body>
 	<h3>Please enter transaction details:</h3>
+
+	<c:if test="${requestScope.error}">
+		<div class="alert alert-danger">
+			<strong>Error!</strong> Please fill in all fields.
+		</div>
+	</c:if>
+
+	<c:if test="${requestScope.success}">
+		<div class="alert alert-success">
+			<strong>Transaction successfully inserted!</strong>
+		</div>
+	</c:if>
 
 	<form action="router?operation=addTransaction" method="POST">
 		<table>
@@ -31,12 +44,33 @@
 						checked /> Income&nbsp&nbsp</td>
 					<td><input type="radio" name="transactionType" value="expense" />
 						Expense</td>
-				</tr><tr>
-			
-				<td><input type="radio" name="oneOff" value="true" checked>One-off&nbsp&nbsp</td>
-				<td><input type="radio" name="oneOff" value="false">
-					Recurring</td>
-				</tr></tbody>
+				</tr>
+				<tr>
+
+					<td><input type="radio" name="oneOff" value="true" checked>One-off&nbsp&nbsp</td>
+					<td><input type="radio" name="oneOff" value="false">
+						Recurring</td>
+				</tr>
+
+				<!---
+				<tr>
+					<td><select name="recurrenceType">
+							<option value="week">Weekly</option>
+							<option value="fortnight">Fortnightly</option>
+							<option value="month">Monthly</option>
+							<option value="quarter">Quarterly</option>
+							<option value="half">Half yearly</option>
+							<option value="yearly">Yearly</option>
+					</select></td>
+
+				<tr>
+
+					<td><input type="radio" name="recurrenceNumber" value="indefinite" checked>Indefinite&nbsp&nbsp</td>
+					<td><input type="radio" name="recurrenceNumber" value="amount">Number of payments: <input type="number" name="payments" /></td>
+				</tr> 
+				-->
+
+			</tbody>
 		</table>
 		<p></p>
 		<input type=submit value="Confirm" class="btn btn-primary" />

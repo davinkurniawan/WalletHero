@@ -36,7 +36,7 @@
 	<form action="router?operation=viewTransactions" method="POST">
 		From date: <input type="text" class="datepicker" name="from_date" />
 		To date: <input type="text" class="datepicker" name="to_date" /> <input
-			type=submit value="Confirm" class="btn btn-primary" /> 
+			type=submit value="Confirm" class="btn btn-primary" />
 	</form>
 
 	<p></p>
