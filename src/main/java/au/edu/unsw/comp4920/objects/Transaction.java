@@ -89,6 +89,14 @@ public class Transaction {
 	public void setIsIncome(boolean isIncome) {
 		this.isIncome = isIncome;
 	}
+	
+	public String getTransactionType() {
+		if (this.isIncome()) {
+			return "Income";
+		} else {
+			return "Expense";
+		}
+	}
 
 	@Override
 	public String toString() {

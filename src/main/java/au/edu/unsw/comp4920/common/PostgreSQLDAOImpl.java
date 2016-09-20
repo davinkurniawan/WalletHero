@@ -8,10 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.Date;
+import java.sql.Date;
 
 import au.edu.unsw.comp4920.common.DBConnectionFactory;
 
@@ -158,8 +161,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 
 			PreparedStatement stmt = conn.prepareStatement(
-					"INSERT INTO Transaction (user_id, date, detail, amount, is_income) VALUES (?, ?, ?, ?, ?);");
-
+					"INSERT INTO transaction (user_id, date, detail, amount, is_income) VALUES (?, ?, ?, ?, ?);");		
+			
 			stmt.setInt(1, t.getPersonID());
 			stmt.setDate(2, t.getDate());
 			stmt.setString(3, t.getDetail());
@@ -192,7 +195,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return result;
 	}
 
-	public List<Transaction> getTransactions(int personID, Date from, Date to, Boolean isIncome) {
+	public List<Transaction> getTransactions(int personID, LocalDate from, LocalDate to, Boolean isIncome) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		Connection conn = null;
 		
@@ -202,12 +205,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			
 			StringBuilder query = new StringBuilder();
 			query.append("SELECT id, user_id, date, detail, amount, is_income FROM transaction WHERE user_id = ?");
-
+			
 			if (from != null) {
-				query.append(" AND date >= " + from);
+				query.append(" AND date >= \'" + from + "\'");
 			}
 			if (to != null) {
-				query.append(" AND date <= " + to);
+				query.append(" AND date <= \'" + to + "\'");
 			}
 			if (isIncome != null) {
 				query.append(" AND is_income = " + isIncome);
@@ -215,6 +218,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			query.append(";");
 			
+			System.out.println(query);
+						
 			PreparedStatement stmt = conn.prepareStatement(query.toString());
 			stmt.setInt(1, personID);
 			ResultSet rs = stmt.executeQuery();
@@ -247,6 +252,11 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		}
 
 		return transactions;
+	}
+	
+	@Override
+	public List<Transaction> getTransactionsByDate(int personID, LocalDate from, LocalDate to) {
+		return this.getTransactions(personID, from, to, null);
 	}
 
 	@Override
