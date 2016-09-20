@@ -33,7 +33,6 @@
                 <li><a href="${applicationScope['ROUTER_SIGNUP']}">Sign Up</a></li>
                 <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
 
-
                 <!--<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                   <ul class="dropdown-menu">
@@ -154,7 +153,6 @@
       <hr class="featurette-divider">
 
       <!-- /END THE FEATURETTES -->
-
 
   	   <%@ include file="footer.jsp" %>
     </div><!-- /.container -->
