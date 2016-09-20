@@ -87,7 +87,7 @@ public class ControllerServlet extends HttpServlet {
 							dest.equals(Constants.VALIDATE_COMMAND) 		||
 							dest.equals(Constants.NOTFOUND_COMMAND)			||
 							dest.equals(Constants.ABOUT_COMMAND) 			||
-							// For testing purposes:
+							//TODO For testing purposes:
 							dest.equals(Constants.VIEWTRANSACTIONS_COMMAND) ||
 							dest.equals(Constants.ADDTRANSACTION_COMMAND) 	||
 							dest.equals(Constants.SIGNIN_COMMAND)) 
