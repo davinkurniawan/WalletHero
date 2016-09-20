@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.Constants;
+import au.edu.unsw.comp4920.common.MailHelper;
 import au.edu.unsw.comp4920.objects.User;
 
 /**
@@ -63,7 +64,8 @@ public class SignUpCommand implements Command {
 						String token = Common.generateToken(user.getUsername() + user.getEmail()+ user.getPassword());
 						String content = Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
 						content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
-						sendMail("support@wallethero.com", user.getEmail(), "Validate Your Email.", content);
+						MailHelper mh = new MailHelper();
+						mh.sendEmail(user.getEmail(), "Validate Your Email.", content);
 
 						// Redirect to appropriate page: public view
 						response.sendRedirect(Constants.ROUTER + Constants.SIGNUP_COMMAND + "&success=yes");
@@ -82,28 +84,5 @@ public class SignUpCommand implements Command {
 		RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
 		rd.forward(request, response);
 	}	
-	
-	public static void sendMail(String email_sender, String email_receiver,
-			String subject, String content) {
-		try {
-			// get context and session
-			Context initital_context = new InitialContext();
-			Context env_context = (Context) initital_context.lookup("java:comp/env");
-			Session session = (Session) env_context.lookup("mail/Session");
-			
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(email_sender));
-			
-			InternetAddress to[] = new InternetAddress[1];
-			to[0] = new InternetAddress(email_receiver);
-			
-			message.setRecipients(Message.RecipientType.TO, to);
-			message.setSubject(subject);
-			message.setContent(content, "text/plain");
-			Transport.send(message);
-		} 
-		catch (NamingException | MessagingException e) {
-			e.printStackTrace();
-		}
-	}
+
 }
