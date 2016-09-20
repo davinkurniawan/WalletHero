@@ -35,7 +35,8 @@ public class EmailValidationCommand implements Command {
 		} else {
 			String user_token = dao.getToken(user);
 			if (user_token.equals(input_token)) {
-				dao.setStatus(user);
+				dao.setStatus(user, 2);
+				dao.setToken(user, "");
 			} else {
 				System.out.println("EmailValidationCommand: Invalid token");
 				
