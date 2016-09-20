@@ -42,7 +42,6 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.NOTFOUND_COMMAND, 		new ErrorCommand());
 		_commands.put(Constants.VALIDATE_COMMAND, 		new EmailValidationCommand());
 		_commands.put(Constants.ABOUT_COMMAND, 			new AboutCommand());
-		
 		_commands.put(Constants.ADDTRANSACTION_COMMAND, new AddTransactionCommand());
 		_commands.put(Constants.VIEWTRANSACTIONS_COMMAND, new ViewTransactionsCommand());
 
@@ -59,7 +58,6 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_NOTFOUND, 				Constants.ROUTER + Constants.NOTFOUND_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VALIDATE, 				Constants.ROUTER + Constants.VALIDATE_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ABOUT, 				Constants.ROUTER + Constants.ABOUT_COMMAND);
-        
         servletContext.setAttribute(Constants.ROUTER_ADDTRANSACTION,    	Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VIEWTRANSACTIONS,    	Constants.ROUTER + Constants.VIEWTRANSACTIONS_COMMAND);
 	}

@@ -19,7 +19,7 @@ public final class Constants {
 	public static final String ABOUT_COMMAND 			= "about";
 	
 	public static final String ADDTRANSACTION_COMMAND   = "addTransaction";
-	public static final String VIEWTRANSACTIONS_COMMAND   = "viewTransactions";
+	public static final String VIEWTRANSACTIONS_COMMAND = "viewTransactions";
 	
 	public static final String VALIDATE_COMMAND 		= "emailvalidation";
 	public static final String ROUTER					= "router?operation=";
@@ -59,7 +59,6 @@ public final class Constants {
 	public static final String ROUTER_NOTFOUND			= "ROUTER_NOTFOUND";
 	public static final String ROUTER_VALIDATE			= "ROUTER_VALIDATE";
 	public static final String ROUTER_ABOUT				= "ROUTER_ABOUT";
-	
 	public static final String ROUTER_ADDTRANSACTION	= "ROUTER_ADDTRANSACTION";
 	public static final String ROUTER_VIEWTRANSACTIONS	= "ROUTER_VIEWTRANSACTIONS";
 	
