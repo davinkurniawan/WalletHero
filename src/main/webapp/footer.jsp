@@ -1,4 +1,5 @@
 <footer>
+	<p class="pull-right"><a href="#">Back to top</a></p>
 	<div class="small-print" style="background-color:transparent">
 		<div class="container">
     		<p style="color:Black">

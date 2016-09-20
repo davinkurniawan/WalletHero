@@ -7,69 +7,142 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-	
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	
+		
 	<title>${applicationScope['WEB_NAME']} - Profile</title>
+	<%@ include file="bootstrapHeader.jsp" %>
 </head>
 <body>
-	<h2>Update Your Profile</h2>
-	
-	<form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
-	  <table><tbody>
-		<tr>
-		  <td>Username <label style="color:red">*</label>:</td>
-		  <td><input type="text" name="username" /></td>
-		</tr>
-		<tr>
-		  <td>Email <label style="color:red">*</label>:</td> 
-		  <td><input type="text" name="email" /></td>
-		</tr>
-		<tr>
-		  <td>First Name <label style="color:red">*</label>:</td> 
-		  <td><input type="text" name="first_name" /></td>
-		</tr>
-		<tr>
-		  <td>Middle Name:</td> 
-		  <td><input type="text" name="middle_name" /></td>
-		</tr>
-		<tr>
-		  <td>Last Name <label style="color:red">*</label>:</td> 
-		  <td><input type="text" name="last_name" /></td>
-		</tr>
-	  </tbody></table>
-	  
-	  <h2>CAPTCHA HERE</h2>
-	  
-	  <input type="hidden" name="action" value="update_profile"/>	
-	  <input type="submit" value="Update"></input>
-	</form>
-	
-	<h2>Update Your Password</h2>
-	
-	<form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
-	  <table><tbody>
-		<tr>
-		  <td>Password <label style="color:red">*</label>:</td> 
-		  <td><input type="password" name="password" /></td>
-		</tr>
-		<tr>
-		  <td>Re-Enter Password <label style="color:red">*</label>:</td> 
-		  <td><input type="password" name="repassword" /></td>
-		</tr>
-	  </tbody></table>
-	  
-	  <input type="hidden" name="action" value="update_password"/>	
-	  <input type="submit" value="Update"></input>
-	</form>
-	
-	<h2>Update Your Preferences</h2>
-	
-	<form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
-		 <input type="hidden" name="action" value="update_preferences"/>	
-		 <input type="submit" value="Update"></input>
-	</form>
-	
-	<%@ include file="bottom.jsp" %>
+	<div class="navbar-wrapper">
+      <div class="container">
+        <nav class="navbar navbar-custom navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="${applicationScope['ROUTER_PUBLIC']}">WalletHero</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
+                <li><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
+                <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
+
+                <!--<li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li class="dropdown-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li>-->
+
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container marketing">
+
+      <!-- START THE FEATURETTES -->
+	  <h2>Update Your Profile</h2>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-6">
+          <h2 class="featurette-heading">Your User Details</h2>
+          
+          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
+			  
+		  	<div class="form-group" id="div-username" name="div-username">
+		  		<label>Username <label style="color:red">*</label></label>
+				<!-- <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="${user.getUsername()}"/>  -->
+				<input type="text" class="form-control" id="username" name="username" placeholder="Username..." value=""/>
+			</div>
+			
+			<div class="form-group" id="div-email" name="div-email">
+		  		<label>Email <label style="color:red">*</label></label>
+				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.getEmail()}"/>  -->
+				<input type="text" class="form-control" id="email" name="email" placeholder="Email..." value=""/>
+			</div>
+			
+			<div class="form-group" id="div-email" name="div-email">
+		  		<label>First Name <label style="color:red">*</label></label>
+				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.firstName()}"/>  -->
+				<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name..." value=""/>
+			</div>
+			
+			<div class="form-group" id="div-email" name="div-email">
+		  		<label>Middle Name</label>
+				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.middleName()}"/>  -->
+				<input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middle Name..." value=""/>
+			</div>
+			
+			<div class="form-group" id="div-email" name="div-email">
+		  		<label>Last Name <label style="color:red">*</label></label>
+				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.lastName()}"/>  -->
+				<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name..." value=""/>
+			</div>
+			 			  
+			<input type="hidden" name="action" value="update_profile"/>	
+			<button type="submit" class="btn btn-default">Update</button>	
+		  </form>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+      
+       <div class="row featurette">
+        <div class="col-md-6">
+          <h2 class="featurette-heading">Update Your Password</h2>
+          
+          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
+			  
+		  	<div class="form-group" id="div-username" name="div-username">
+		  		<label>Password <label style="color:red">*</label></label>
+				<input type="text" class="form-control" id="password" name="password" placeholder="Password..." value=""/>
+			</div>
+			
+			<div class="form-group" id="div-email" name="div-email">
+		  		<label>Retype Password <label style="color:red">*</label></label>
+				<input type="text" class="form-control" id="repassword" name="repassword" placeholder="Retype Password..." value=""/>
+			</div>
+			
+			<input type="hidden" name="action" value="update_password"/>	
+			<button type="submit" class="btn btn-default">Update</button>	
+		  </form>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+      
+       <div class="row featurette">
+        <div class="col-md-6">
+          <h2 class="featurette-heading">Update Your Preferences</h2>
+          
+          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
+          
+          	<input type="hidden" name="action" value="update_preferences"/>	
+			<button type="submit" class="btn btn-default">Update</button>	
+		  </form>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+  	   <%@ include file="footer.jsp" %>
+    </div><!-- /.container -->
 </body>
 </html>

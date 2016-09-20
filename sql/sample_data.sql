@@ -1,10 +1,16 @@
-INSERT INTO status (name) VALUES ('blabla');
+INSERT INTO status (id, name) VALUES (1, 'Inactive');
+INSERT INTO status (id, name) VALUES (2, 'Active');
+INSERT INTO status (id, name) VALUES (3, 'Disabled');
 
-INSERT INTO users (username, email, password, salt_hash, first_name, last_name, token, status_id, budget) 
-	VALUES ('as', 'ads', 'asads', 'gagas', 'asdas', 'ada', 'anan', 1, -50.56);
+INSERT INTO occupation(id, name) VALUES(1, 'Student');
+
+INSERT INTO users (username, email, password, salt_hash, first_name, middle_name, last_name, token, status_id, budget) 
+	VALUES ('wallethero', 'wallethero@wallethero.com', 'wallethero', 'gagas', 'Wallet', 'Something', 'Hero', 'lol', 2, 0.0);
 	
-SELECT * FROM users;
+INSERT INTO user_detail(id, user_id, currency, age, gender, occupation_id)
+	VALUES (1, 1, 'AUD', 22, 'M', 1);
 
-INSERT INTO status (name) VALUES ('Inactive');
-INSERT INTO status (name) VALUES ('Active');
-INSERT INTO status (name) VALUES ('Disabled');
+SELECT * FROM status;
+SELECT * FROM occupation;
+SELECT * FROM users;
+SELECT * FROM user_detail;

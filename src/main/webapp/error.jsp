@@ -15,6 +15,6 @@
 <body>
 	<h2>You got kicked to this Page? Seriously???</h2>
 	
-	<%@ include file="bottom.jsp" %>
+	<%@ include file="footer.jsp" %>
 </body>
 </html>
