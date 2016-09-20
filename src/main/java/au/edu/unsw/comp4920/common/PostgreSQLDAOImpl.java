@@ -343,10 +343,4 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	public User getUserDetails(String username) {
 		return getUser(username, null);
 	}
-
-	@Override
-	public User getUserDetails(int uid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -71,7 +71,7 @@ CREATE TABLE category (
 
 CREATE TABLE occupation (
 	id serial NOT NULL,
-	name serial NOT NULL,
+	name varchar NOT NULL,
 	CONSTRAINT occupation_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
