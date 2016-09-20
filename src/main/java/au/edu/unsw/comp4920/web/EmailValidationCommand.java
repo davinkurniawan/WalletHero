@@ -28,7 +28,7 @@ public class EmailValidationCommand implements Command {
 		User user = dao.getUser(request.getParameter("username"), null);
 		String nextPage = "/index.jsp";
 		if (user == null) {
-			System.out.println("EmailValidationCommand: User not found in database");
+			System.err.println("EmailValidationCommand: User not found in database");
 			
 			request.setAttribute(Constants.ERROR, 1);
 			request.setAttribute(Constants.ERRORMSG, "User does not exist.");
@@ -37,8 +37,9 @@ public class EmailValidationCommand implements Command {
 			if (user_token.equals(input_token)) {
 				dao.setStatus(user, 2);
 				dao.setToken(user, "");
+				nextPage = "/signin.jsp";
 			} else {
-				System.out.println("EmailValidationCommand: Invalid token");
+				System.err.println("EmailValidationCommand: Invalid token");
 				
 				request.setAttribute(Constants.ERROR, 1);
 				request.setAttribute(Constants.ERRORMSG, "Invalid token.");
