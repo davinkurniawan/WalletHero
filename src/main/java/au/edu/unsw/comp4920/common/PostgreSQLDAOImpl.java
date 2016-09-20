@@ -38,8 +38,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				_factory.open();
 				conn = _factory.getConnection();
 
-				PreparedStatement stmt = conn.prepareStatement(
-						"INSERT INTO Users (username, email, password, salt_hash, first_name, middle_name, "
+				PreparedStatement stmt = conn
+						.prepareStatement("INSERT INTO users (username, email, password, salt_hash, first_name, middle_name, "
 								+ " last_name, token, status_id, budget) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
 				stmt.setString(1, u.getUsername());
