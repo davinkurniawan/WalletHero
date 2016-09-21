@@ -61,11 +61,15 @@ public class SignInCommand implements Command {
 					DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
 					Date date = new Date();
 					s.setLastAccess(df.format(date));
+					
+					System.out.println("Created Session ID: " + session.getAttribute(Constants.SID));
+					System.out.println("Stored User ID in Session: " + session.getAttribute(Constants.PERSONID));
+					System.out.println("Created Session (s) ID: " + s.getSessionId());
 		
 					dao.createSession(s);
 		
 					System.out.println("Login successful.");
-					response.sendRedirect(Constants.ROUTER + Constants.PUBLIC_COMMAND);
+					response.sendRedirect(Constants.ROUTER + Constants.HOME_COMMAND);
 					return;
 			
 				} else if (user.getStatus_id() == 1) {

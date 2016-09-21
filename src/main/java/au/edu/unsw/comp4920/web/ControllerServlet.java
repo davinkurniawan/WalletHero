@@ -13,6 +13,7 @@ import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.PostgreSQLDAOImpl;
 import au.edu.unsw.comp4920.exception.ServiceLocatorException;
+import au.edu.unsw.comp4920.objects.Session;
 
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -152,12 +153,10 @@ public class ControllerServlet extends HttpServlet {
 		// If current sessionID exists, that means user is already logged in
 		// Else that means user has not logged in yet
 		String sid = request.getSession().getId();
-		Object uid = request.getSession().getAttribute(Constants.PERSONID);
-
+		Session s = _dao.getSession(sid);
+		
 		// Query here
-		if (uid == null) return false;
-		//TODO return _dao.getUserLoginStatus((int) uid, sid);
-		return false;
+		if (s == null) return false;
+		return true;
 	}
-	
 }
