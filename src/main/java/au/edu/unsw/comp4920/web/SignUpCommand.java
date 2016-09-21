@@ -33,6 +33,7 @@ public class SignUpCommand implements Command {
 		
 			if (request.getParameter("username") != null && 
 				request.getParameter("password") != null &&
+				request.getParameter("repassword") != null &&
 				request.getParameter("email") != null &&
 				request.getParameter("first_name") != null &&
 				request.getParameter("middle_name") != null &&
@@ -46,6 +47,10 @@ public class SignUpCommand implements Command {
 					System.err.println("SignUpCommand: Password does not contain special characters.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password must contains at least 1 non-alphanumeric character(s).");
+				} else if (!request.getParameter("password").equals(request.getParameter("repassword"))) {
+					System.err.println("SignUpCommand: Password and re-password did not match.");
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Your password did not match the re-typed password.");
 				} else {
 					System.out.println("SignUpCommand: Creating user");
 					
