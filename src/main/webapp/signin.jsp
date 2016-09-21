@@ -72,8 +72,6 @@
 		  <input type="hidden" name="action" value="login"/>	
 		  <button type="submit" class="btn btn-default">Sign In</button>	 
 		</form>
-	  
-	 <hr class="featurette-divider">
 	
 	<%@ include file="footer.jsp" %>
     </div><!-- /.container -->

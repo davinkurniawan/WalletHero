@@ -98,7 +98,6 @@
 		  <button type="submit" class="btn btn-default">Sign Up</button>	
 		</form>
 		
-	<hr class="featurette-divider">
 	
 	<%@ include file="footer.jsp" %>
     </div><!-- /.container -->

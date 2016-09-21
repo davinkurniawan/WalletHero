@@ -8,31 +8,31 @@ public class User {
 	private String username;
 	private String email;
 	private String password;
-	private String saltHash;
-	private String firstName;
-	private String middleName;
-	private String lastName;
+	private String salt_hash;
+	private String first_name;
+	private String middle_name;
+	private String last_name;
 	private String token;
-	private int statusID;
+	private int status_id;
 	private double budget;
 	
 	public User(){
 		
 	}
 
-	public User(int userID, String username, String email, String password, String saltHash, String firstName,
-			String middleName, String lastName, String token, int statusID, double budget) {
+	public User(int userID, String username, String email, String password, String salt_hash, String first_name,
+			String middle_name, String last_name, String token, int status_id, double budget) {
 		super();
 		this.userID 	= userID;
 		this.username 	= username;
 		this.email 		= email;
 		this.password 	= password;
-		this.saltHash 	= saltHash;
-		this.firstName 	= firstName;
-		this.middleName = middleName;
-		this.lastName 	= lastName;
+		this.salt_hash 	= salt_hash;
+		this.first_name 	= first_name;
+		this.middle_name = middle_name;
+		this.last_name 	= last_name;
 		this.token 		= token;
-		this.statusID 	= statusID;
+		this.status_id 	= status_id;
 		this.budget 	= budget;
 	}
 	
@@ -41,12 +41,12 @@ public class User {
 			this.userID 	= rs.getInt("id");
 			this.username 	= rs.getString("username");
 			this.password 	= rs.getString("email");
-			this.saltHash 	= rs.getString("saltHash");
-			this.firstName 	= rs.getString("first_name");
-			this.middleName = rs.getString("middle_name");
-			this.lastName 	= rs.getString("last_name");
+			this.salt_hash 	= rs.getString("salt_hash");
+			this.first_name 	= rs.getString("first_name");
+			this.middle_name = rs.getString("middle_name");
+			this.last_name 	= rs.getString("last_name");
 			this.token 		= rs.getString("token");
-			this.statusID 	= rs.getInt("statusID");
+			this.status_id 	= rs.getInt("status_id");
 			this.budget 	= rs.getDouble("budget");
 		} catch (SQLException e) {
 			throw e;
@@ -86,36 +86,36 @@ public class User {
 		this.password = password;
 	}
 
-	public String getSaltHash() {
-		return saltHash;
+	public String getSalt_hash() {
+		return salt_hash;
 	}
 
-	public void setSaltHash(String saltHash) {
-		this.saltHash = saltHash;
+	public void setSalt_hash(String salt_hash) {
+		this.salt_hash = salt_hash;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getFirst_name() {
+		return first_name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
 	}
 
-	public String getMiddleName() {
-		return middleName;
+	public String getMiddle_name() {
+		return middle_name;
 	}
 
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
+	public void setMiddle_name(String middle_name) {
+		this.middle_name = middle_name;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getLast_name() {
+		return last_name;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
 	}
 
 	public String getToken() {
@@ -126,12 +126,12 @@ public class User {
 		this.token = token;
 	}
 
-	public int getStatusID() {
-		return statusID;
+	public int getStatus_id() {
+		return status_id;
 	}
 
-	public void setStatusID(int statusID) {
-		this.statusID = statusID;
+	public void setStatus_id(int status_id) {
+		this.status_id = status_id;
 	}
 
 	public double getBudget() {
@@ -145,7 +145,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userID=" + userID + ", username=" + username + ", email=" + email + ", password=" + password
-				+ ", saltHash=" + saltHash + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
-				+ lastName + ", token=" + token + ", statusID=" + statusID + ", budget=" + budget + "]";
+				+ ", salt_hash=" + salt_hash + ", first_name=" + first_name + ", middle_name=" + middle_name + ", last_name="
+				+ last_name + ", token=" + token + ", status_id=" + status_id + ", budget=" + budget + "]";
 	}
 }

@@ -154,10 +154,10 @@ public class ControllerServlet extends HttpServlet {
 		// Else that means user has not logged in yet
 		
 		HttpSession session = request.getSession();
-		if (session == null || request.getSession().getId() == null || request.getSession().getAttribute(Constants.PERSONID) == null) return false;
+		if (session == null || request.getSession().getId() == null || request.getSession().getAttribute(Constants.USERID) == null) return false;
 		
 		String sid = request.getSession().getId();
-		String uid = request.getSession().getAttribute(Constants.PERSONID).toString();
+		String uid = request.getSession().getAttribute(Constants.USERID).toString();
 		Session s = _dao.getUserSession(uid, sid);
 		
 		// Query here

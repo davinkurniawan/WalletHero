@@ -46,7 +46,7 @@ public class SignInCommand implements Command {
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Invalid credentials.");
 					
-				} else if (user.getStatusID() == 2) {
+				} else if (user.getStatus_id() == 2) {
 					System.out.println("SignInCommand: Active user");
 		
 					// TODO implement the hash
@@ -72,13 +72,13 @@ public class SignInCommand implements Command {
 					response.sendRedirect(Constants.ROUTER + Constants.HOME_COMMAND);
 					return;
 			
-				} else if (user.getStatusID() == 1) {
+				} else if (user.getStatus_id() == 1) {
 					System.out.println("SignInCommand: Not Actived user");
 		
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Login failed. Please activate your account.");
 					
-				} else if (user.getStatusID() == 3) {
+				} else if (user.getStatus_id() == 3) {
 					System.out.println("SignInCommand: Disabled user");
 		
 					request.setAttribute(Constants.ERROR, 1);

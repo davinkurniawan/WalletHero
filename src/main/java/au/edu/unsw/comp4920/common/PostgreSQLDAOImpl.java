@@ -50,9 +50,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(2, u.getEmail());
 				stmt.setString(3, u.getPassword());
 				stmt.setString(4, "lol"); // TODO change this later - salt_hash
-				stmt.setString(5, u.getFirstName());
-				stmt.setString(6, (u.getMiddleName() != null) ? u.getMiddleName() : "");
-				stmt.setString(7, u.getLastName());
+				stmt.setString(5, u.getFirst_name());
+				stmt.setString(6, (u.getMiddle_name() != null) ? u.getMiddle_name() : "");
+				stmt.setString(7, u.getLast_name());
 				stmt.setString(8, u.getToken());
 				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for
 									// Disabled
@@ -153,12 +153,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u.setUserID(rs.getInt("id"));
 				u.setUsername(rs.getString("username"));
 				u.setPassword(rs.getString("email"));
-				u.setSaltHash(rs.getString("salt_hash"));
-				u.setFirstName(rs.getString("first_name"));
-				u.setMiddleName(rs.getString("middle_name"));
-				u.setLastName(rs.getString("last_name"));
+				u.setSalt_hash(rs.getString("salt_hash"));
+				u.setFirst_name(rs.getString("first_name"));
+				u.setMiddle_name(rs.getString("middle_name"));
+				u.setLast_name(rs.getString("last_name"));
 				u.setToken(rs.getString("token"));
-				u.setStatusID(rs.getInt("status_id"));
+				u.setStatus_id(rs.getInt("status_id"));
 				u.setBudget(rs.getDouble("budget"));
 			}
 

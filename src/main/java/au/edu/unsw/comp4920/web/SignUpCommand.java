@@ -60,9 +60,9 @@ public class SignUpCommand implements Command {
 						user.setUsername(request.getParameter("username"));
 						user.setPassword(request.getParameter("password"));
 						user.setEmail(request.getParameter("email"));
-						user.setFirstName(request.getParameter("first_name"));
-						user.setMiddleName(request.getParameter("middle_name"));
-						user.setLastName(request.getParameter("last_name"));
+						user.setFirst_name(request.getParameter("first_name"));
+						user.setMiddle_name(request.getParameter("middle_name"));
+						user.setLast_name(request.getParameter("last_name"));
 						
 						String token = UUID.randomUUID().toString();
 						user.setToken(token);
@@ -72,7 +72,7 @@ public class SignUpCommand implements Command {
 							System.out.println("sending email");
 							// Send email here 
 							
-							String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
+							String content = "Hi " + user.getFirst_name() + "," + "<br/><br/>";
 							content += "Please confirm your email using the following link below" + "<br/>";
 							content += Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
 							content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
