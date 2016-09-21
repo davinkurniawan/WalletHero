@@ -467,4 +467,49 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 		}
 	}
+
+	@Override
+	public Session getUserSession(String userId, String sessionId) {
+		Session s = null;
+		String query = "SELECT * FROM Session WHERE id = '" + sessionId + "' AND user_id = '" + userId + "';";
+		Statement statement;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.next()) {
+				s = new Session();
+				s.setSessionId(rs.getString("id"));
+				s.setUserId(rs.getInt("user_id"));
+				s.setLastAccess(rs.getString("last_access"));
+				
+				DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
+				Date sessionDate = (Date)df.parse(s.getLastAccess());
+				Date currentDate = new Date();
+				
+				long diff = currentDate.getTime() - sessionDate.getTime();
+				long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+			    System.out.println ("Days: " + days);
+			    if (days > 7){
+			    	s = null;
+			    }
+			}
+		} catch (SQLException | ServiceLocatorException | ParseException e) {
+			System.err.println(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return s;
+	}
 }

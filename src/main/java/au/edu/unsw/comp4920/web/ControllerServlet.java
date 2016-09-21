@@ -153,7 +153,8 @@ public class ControllerServlet extends HttpServlet {
 		// If current sessionID exists, that means user is already logged in
 		// Else that means user has not logged in yet
 		String sid = request.getSession().getId();
-		Session s = _dao.getSession(sid);
+		String uid = request.getSession().getAttribute(Constants.PERSONID).toString();
+		Session s = _dao.getUserSession(uid, sid);
 		
 		// Query here
 		if (s == null) return false;
