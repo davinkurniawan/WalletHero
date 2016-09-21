@@ -20,4 +20,8 @@ public interface CommonDAO {
 	public void createSession(Session session);
 	public Session getSession(String sessionId);
 	public void deleteSession(String sessionId);
+	
+	public String getToken(User u);
+	public void setToken(User u, String token);
+	public void setStatus(User u, int Status);
 }
