@@ -43,7 +43,7 @@ public class SignUpCommand implements Command {
 					System.err.println("SignUpCommand: Password less than 6 characters.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password must be at least 6 characters long.");
-				} else if (!request.getParameter("password").matches("[!@#$%^&*()<>?,./]+")) {
+				} else if (!request.getParameter("password").matches(".*[!@#$%^&*()<>?,./]+.*")) {
 					System.err.println("SignUpCommand: Password does not contain special characters.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password must contains at least 1 non-alphanumeric character(s).");
