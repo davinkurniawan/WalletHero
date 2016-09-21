@@ -121,7 +121,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u = new User();
 				u.setPersonID(rs.getInt("id"));
 				u.setUsername(rs.getString("username"));
-				u.setPassword(rs.getString("email"));
+				u.setEmail(rs.getString("email"));
+				u.setPassword(rs.getString("password"));
 				u.setSalt_hash(rs.getString("salt_hash"));
 				u.setFirstName(rs.getString("first_name"));
 				u.setMiddleName(rs.getString("middle_name"));

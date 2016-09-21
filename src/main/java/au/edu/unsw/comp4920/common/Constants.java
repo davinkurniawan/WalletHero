@@ -25,6 +25,9 @@ public final class Constants {
 	public static final String ROUTER					= "router?operation=";
 	public static final String SERVER					= "http://localhost:8080/COMP4920-Project/";
 	
+	public static final String FORGOTPASSWORD_COMMAND   = "forgotPassword";
+	public static final String RESETPASSWORD_COMMAND	= "resetPassword";
+	
 	// Request Parameters
 	public static final String ACTION 					= "action";
 	public static final String OPERATION 				= "operation";
@@ -61,6 +64,8 @@ public final class Constants {
 	public static final String ROUTER_ABOUT				= "ROUTER_ABOUT";
 	public static final String ROUTER_ADDTRANSACTION	= "ROUTER_ADDTRANSACTION";
 	public static final String ROUTER_VIEWTRANSACTIONS	= "ROUTER_VIEWTRANSACTIONS";
+	public static final String ROUTER_FORGOTPASSWORD	= "ROUTER_FORGOTPASSWORD";
+	public static final String ROUTER_RESETPASSWORD		= "ROUTER_RESETPASSWORD";
 	
 	// Prevent instantiation
 	private Constants() {};
