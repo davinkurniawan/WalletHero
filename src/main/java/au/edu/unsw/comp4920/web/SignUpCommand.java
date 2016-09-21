@@ -29,7 +29,7 @@ public class SignUpCommand implements Command {
 		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
 		System.out.println("SignUpCommand: Action is " + action);
 
-		if (action != null && action.equalsIgnoreCase("create")) {
+		if (action != null && action.equalsIgnoreCase("signUp")) {
 		
 			if (request.getParameter("username") != null && 
 				request.getParameter("password") != null &&
