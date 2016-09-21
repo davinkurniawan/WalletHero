@@ -512,4 +512,45 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return s;
 	}
+
+	@Override
+	public User getUser(String userinfo, String firstName, String lastName) {
+		User u = getUser(userinfo, null);
+		if (u == null) return null;
+		if (!u.getFirstName().equalsIgnoreCase(firstName) ||
+				!u.getLastName().equalsIgnoreCase(lastName)) {
+			return null;
+		}
+		return u;
+	}
+
+	@Override
+	public void setPassword(User u, String hashedPassword) {
+		System.out.println("Inside setPassword: Now resetting password.");
+		String query = "UPDATE users SET password = ? WHERE username = '"+ u.getUsername() + "';";
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(query.toString());
+			stmt.setString(1, hashedPassword);
+			stmt.execute();
+			System.out.println("Success");
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		
+	}
 }
