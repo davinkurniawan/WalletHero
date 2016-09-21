@@ -38,6 +38,9 @@ public class Common {
 		return encryptedString;
 	}
 	
+	/* Code on hashing referenced from: 
+	 * http://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/ 
+	 */
 	public static String hashPassword(String password, String salt) {
 		String pwd = null;
         try {
