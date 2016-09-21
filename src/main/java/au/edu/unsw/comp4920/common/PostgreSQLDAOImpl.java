@@ -49,7 +49,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(1, u.getUsername());
 				stmt.setString(2, u.getEmail());
 				stmt.setString(3, u.getPassword());
-				stmt.setString(4, "lol"); // TODO change this later - salt_hash
+				stmt.setString(4, u.getSalt_hash()); // TODO change this later - salt_hash
 				stmt.setString(5, u.getFirstName());
 				stmt.setString(6, (u.getMiddleName() != null) ? u.getMiddleName() : "");
 				stmt.setString(7, u.getLastName());
@@ -94,9 +94,16 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		} else {
 			idQuery = "username = '" + userinfo + "'";
 		}
-
+		
 		if (password != null) {
-			passwordQuery = " and password = '" + password + "';";
+			String salt = getSalt(userinfo);
+			if (salt != null) {
+				String pwd = null;
+				pwd = Common.hashPassword(password, salt);
+				passwordQuery = " and password = '" + pwd + "';";
+			} else {
+				passwordQuery = ";";
+			}
 		} else {
 			passwordQuery = ";";
 		}
@@ -122,6 +129,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u.setToken(rs.getString("token"));
 				u.setStatus_id(rs.getInt("status_id"));
 				u.setBudget(rs.getDouble("budget"));
+				// System.out.println("UserDTO successfully created.");
 			}
 
 			statement.close();
@@ -512,7 +520,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return s;
 	}
-
+	
 	@Override
 	public User getUser(String userinfo, String firstName, String lastName) {
 		User u = getUser(userinfo, null);
@@ -551,6 +559,44 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+	}
+	
+	@Override
+	public String getSalt(String userinfo) {
+		String query = "SELECT salt_hash FROM users WHERE username = '" + userinfo + "';";
+		if (userinfo.contains("@")) {
+			query = "SELECT salt_hash FROM users WHERE email = '" + userinfo + "';";
+		}
+		Connection conn = null;
+		Statement statement;
+		String salt = null;
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+			salt = rs.getString(1);
+			System.out.println("DAO: getSalt(): " + salt);
+			statement.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		if(salt != null) {
+			System.out.println("in DAO getSalt(): found user, salt is " + salt);
+		}
+		return salt;
 	}
 }

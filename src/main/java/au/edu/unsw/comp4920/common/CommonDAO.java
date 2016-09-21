@@ -27,4 +27,5 @@ public interface CommonDAO {
 	public void setStatus(User u, int Status);
 	
 	public void setPassword(User u, String hashedPassword);
+	public String getSalt(String userinfo);
 }

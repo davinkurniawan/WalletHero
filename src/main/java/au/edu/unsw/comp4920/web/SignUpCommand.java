@@ -1,6 +1,8 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
@@ -8,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.MailHelper;
@@ -39,15 +42,23 @@ public class SignUpCommand implements Command {
 				request.getParameter("middle_name") != null &&
 				request.getParameter("last_name") != null) {
 			
-				if (request.getParameter("password").length() < 6) {
+				if (request.getParameter("username").length() < 3) {
+					System.err.println("SignUpCommand: User less than 3 characters.");
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Your username must be at least 3 characters long.");
+				} else if (request.getParameter("username").matches(".*[^A-Za-z0-9-_.]+.*")) {
+					System.err.println("SignUpCommand: Username can only contains alphanumeric characters, hyphen, underscore, and full stop.");
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Username can only contains alphanumeric characters, hyphen, underscore, and full stop.");
+				} else if (request.getParameter("password").length() < 6) {
 					System.err.println("SignUpCommand: Password less than 6 characters.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password must be at least 6 characters long.");
-				} /*else if (!request.getParameter("password").matches(".*[!@#$%^&*()<>?,./]+.*")) {
+				} else if (!request.getParameter("password").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
 					System.err.println("SignUpCommand: Password does not contain special characters.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password must contains at least 1 non-alphanumeric character(s).");
-				}*/ else if (!request.getParameter("password").equals(request.getParameter("repassword"))) {
+				} else if (!request.getParameter("password").equals(request.getParameter("repassword"))) {
 					System.err.println("SignUpCommand: Password and re-password did not match.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password did not match the re-typed password.");
@@ -58,11 +69,12 @@ public class SignUpCommand implements Command {
 	
 						User user = new User();
 						user.setUsername(request.getParameter("username"));
-						user.setPassword(request.getParameter("password"));
 						user.setEmail(request.getParameter("email"));
 						user.setFirstName(request.getParameter("first_name"));
 						user.setMiddleName(request.getParameter("middle_name"));
 						user.setLastName(request.getParameter("last_name"));
+						user.setSalt_hash(generateSalt());
+						user.setPassword(Common.hashPassword(request.getParameter("password"), user.getSalt_hash()));
 						
 						String token = UUID.randomUUID().toString();
 						user.setToken(token);
@@ -78,7 +90,7 @@ public class SignUpCommand implements Command {
 							content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
 							content += "<br/><br/>";
 							content += "Regards,<br/>";
-							content += "Code4Food Team";
+							content += "WalletHero Support Team";
 							
 							MailHelper mh = new MailHelper();
 							mh.sendEmail(user.getEmail(), "Welcome to WalletHero. Please validate Your Email Account.", content);
@@ -104,5 +116,10 @@ public class SignUpCommand implements Command {
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
 		rd.forward(request, response);
-	}	
+	}
+	
+	private String generateSalt() {
+		SecureRandom random = new SecureRandom();
+		return new BigInteger(130, random).toString(32);
+	}
 }
