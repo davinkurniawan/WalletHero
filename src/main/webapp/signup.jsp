@@ -12,7 +12,7 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	
 	<title>${applicationScope['WEB_NAME']} - Sign Up</title>
-	<%@ include file="bootstrapHeader.jsp" %>
+	<%@ include file="bootstrapheader.jsp" %>
 </head>
 <body>
     <div class="navbar-wrapper">

@@ -1,44 +1,65 @@
 package au.edu.unsw.comp4920.objects;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class User {
-	private int personID;
+	private int userID;
 	private String username;
 	private String email;
 	private String password;
-	private String salt_hash;
+	private String saltHash;
 	private String firstName;
 	private String middleName;
 	private String lastName;
 	private String token;
-	private int status_id;
+	private int statusID;
 	private double budget;
 	
 	public User(){
 		
 	}
 
-	public User(int personID, String username, String email, String password, String salt_hash, String firstName,
-			String middleName, String lastName, String token, int status_id, double budget) {
+	public User(int userID, String username, String email, String password, String saltHash, String firstName,
+			String middleName, String lastName, String token, int statusID, double budget) {
 		super();
-		this.personID = personID;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.salt_hash = salt_hash;
-		this.firstName = firstName;
+		this.userID 	= userID;
+		this.username 	= username;
+		this.email 		= email;
+		this.password 	= password;
+		this.saltHash 	= saltHash;
+		this.firstName 	= firstName;
 		this.middleName = middleName;
-		this.lastName = lastName;
-		this.token = token;
-		this.status_id = status_id;
-		this.budget = budget;
+		this.lastName 	= lastName;
+		this.token 		= token;
+		this.statusID 	= statusID;
+		this.budget 	= budget;
+	}
+	
+	public User(ResultSet rs) throws SQLException {
+		try {
+			this.userID 	= rs.getInt("id");
+			this.username 	= rs.getString("username");
+			this.password 	= rs.getString("email");
+			this.saltHash 	= rs.getString("saltHash");
+			this.firstName 	= rs.getString("first_name");
+			this.middleName = rs.getString("middle_name");
+			this.lastName 	= rs.getString("last_name");
+			this.token 		= rs.getString("token");
+			this.statusID 	= rs.getInt("statusID");
+			this.budget 	= rs.getDouble("budget");
+		} catch (SQLException e) {
+			throw e;
+		}
+		
 	}
 
-	public int getPersonID() {
-		return personID;
+	public int getUserID() {
+		return userID;
 	}
 
-	public void setPersonID(int personID) {
-		this.personID = personID;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	public String getUsername() {
@@ -65,12 +86,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getSalt_hash() {
-		return salt_hash;
+	public String getSaltHash() {
+		return saltHash;
 	}
 
-	public void setSalt_hash(String salt_hash) {
-		this.salt_hash = salt_hash;
+	public void setSaltHash(String saltHash) {
+		this.saltHash = saltHash;
 	}
 
 	public String getFirstName() {
@@ -105,12 +126,12 @@ public class User {
 		this.token = token;
 	}
 
-	public int getStatus_id() {
-		return status_id;
+	public int getStatusID() {
+		return statusID;
 	}
 
-	public void setStatus_id(int status_id) {
-		this.status_id = status_id;
+	public void setStatusID(int statusID) {
+		this.statusID = statusID;
 	}
 
 	public double getBudget() {
@@ -123,8 +144,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [personID=" + personID + ", username=" + username + ", email=" + email + ", password=" + password
-				+ ", salt_hash=" + salt_hash + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
-				+ lastName + ", token=" + token + ", status_id=" + status_id + ", budget=" + budget + "]";
+		return "User [userID=" + userID + ", username=" + username + ", email=" + email + ", password=" + password
+				+ ", saltHash=" + saltHash + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
+				+ lastName + ", token=" + token + ", statusID=" + statusID + ", budget=" + budget + "]";
 	}
 }

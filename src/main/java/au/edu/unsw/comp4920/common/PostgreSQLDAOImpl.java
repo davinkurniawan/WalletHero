@@ -111,17 +111,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			ResultSet rs = statement.executeQuery(query);
 			if (rs.next()) {
 				// pull all information out of results and put it into userDTO
-				u = new User();
-				u.setPersonID(rs.getInt("id"));
-				u.setUsername(rs.getString("username"));
-				u.setPassword(rs.getString("email"));
-				u.setSalt_hash(rs.getString("salt_hash"));
-				u.setFirstName(rs.getString("first_name"));
-				u.setMiddleName(rs.getString("middle_name"));
-				u.setLastName(rs.getString("last_name"));
-				u.setToken(rs.getString("token"));
-				u.setStatus_id(rs.getInt("status_id"));
-				u.setBudget(rs.getDouble("budget"));
+				u = new User(rs);
 			}
 
 			statement.close();
@@ -140,6 +130,51 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		if (u != null) {
 			System.out.println("found user");
 		}
+		return u;
+	}
+	
+
+	@Override
+	public User getUser(String sid) {
+		Connection conn = null;
+		User u = null;
+
+		String query = "SELECT U.* FROM users U INNER JOIN session S ON U.id = S.user_id WHERE S.id='" + sid + "'";
+		Statement statement;
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.next()) {
+				// pull all information out of results and put it into userDTO
+				u = new User();
+				u.setUserID(rs.getInt("id"));
+				u.setUsername(rs.getString("username"));
+				u.setPassword(rs.getString("email"));
+				u.setSaltHash(rs.getString("salt_hash"));
+				u.setFirstName(rs.getString("first_name"));
+				u.setMiddleName(rs.getString("middle_name"));
+				u.setLastName(rs.getString("last_name"));
+				u.setToken(rs.getString("token"));
+				u.setStatusID(rs.getInt("status_id"));
+				u.setBudget(rs.getDouble("budget"));
+			}
+
+			statement.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
 		return u;
 	}
 

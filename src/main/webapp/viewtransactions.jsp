@@ -17,50 +17,58 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+	
+<%@ include file="bootstrapheader.jsp" %>
 
 <title>${applicationScope['WEB_NAME']}-TransactionsOverview</title>
 </head>
 <body>
+	<%@ include file="signedinnavbar.jsp" %>
 
-	<h3>${requestScope.transactionRange}</h3>
 
-	<label class="checkbox-inline"><input type="checkbox"
-		id="incomesButton" value="" checked="checked"> Show incomes? </label>
-
-	<label class="checkbox-inline"><input type="checkbox"
-		id="expensesButton" value="" checked="checked"> Show expenses?
-	</label>
-
-	<p></p>
-
-	<form action="router?operation=viewTransactions" method="POST">
-		From date: <input type="text" class="datepicker" name="from_date" />
-		To date: <input type="text" class="datepicker" name="to_date" /> <input
-			type=submit value="Confirm" class="btn btn-primary" />
-	</form>
-
-	<p></p>
-
-	<table class="table table-bordered" style="table-layout: fixed">
-		<tbody>
-			<tr>
-				<th>Transaction ID</th>
-				<th>Details</th>
-				<th>Amount</th>
-				<th>Date</th>
-				<th>Type</th>
-			</tr>
-			<c:forEach items="${requestScope.transactionList}" var="t">
-				<tr class="${t.getTransactionType()}">
-					<td><c:out value="${t.transactionID}"></c:out></td>
-					<td><c:out value="${t.detail}"></c:out></td>
-					<td>$<c:out value="${t.amount}"></c:out></td>
-					<td><c:out value="${t.date}"></c:out></td>
-					<td><c:out value="${t.getTransactionType()}"></c:out></td>
+    <div class="container marketing">
+		<h3>${requestScope.transactionRange}</h3>
+	
+		<label class="checkbox-inline"><input type="checkbox"
+			id="incomesButton" value="" checked="checked"> Show incomes? </label>
+	
+		<label class="checkbox-inline"><input type="checkbox"
+			id="expensesButton" value="" checked="checked"> Show expenses?
+		</label>
+	
+		<p></p>
+	
+		<form action="router?operation=viewTransactions" method="POST">
+			From date: <input type="text" class="datepicker" name="from_date" />
+			To date: <input type="text" class="datepicker" name="to_date" /> <input
+				type=submit value="Confirm" class="btn btn-primary" />
+		</form>
+	
+		<p></p>
+	
+		<table class="table table-bordered" style="table-layout: fixed">
+			<tbody>
+				<tr>
+					<th>Transaction ID</th>
+					<th>Details</th>
+					<th>Amount</th>
+					<th>Date</th>
+					<th>Type</th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+				<c:forEach items="${requestScope.transactionList}" var="t">
+					<tr class="${t.getTransactionType()}">
+						<td><c:out value="${t.transactionID}"></c:out></td>
+						<td><c:out value="${t.detail}"></c:out></td>
+						<td>$<c:out value="${t.amount}"></c:out></td>
+						<td><c:out value="${t.date}"></c:out></td>
+						<td><c:out value="${t.getTransactionType()}"></c:out></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		
+		<%@ include file="footer.jsp" %>
+	</div>
 
 	<script>
 		$("#incomesButton").change(function() {
@@ -81,7 +89,6 @@
 			$(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
 		});
 	</script>
-
 
 </body>
 </html>

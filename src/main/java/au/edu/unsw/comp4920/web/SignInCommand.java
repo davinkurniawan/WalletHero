@@ -46,24 +46,24 @@ public class SignInCommand implements Command {
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Invalid credentials.");
 					
-				} else if (user.getStatus_id() == 2) {
+				} else if (user.getStatusID() == 2) {
 					System.out.println("SignInCommand: Active user");
 		
 					// TODO implement the hash
 		
 					HttpSession session = request.getSession(true);
-					session.setAttribute(Constants.PERSONID, user.getPersonID());
+					session.setAttribute(Constants.USERID, user.getUserID());
 					session.setAttribute(Constants.SID, session.getId());
 		
 					Session s = new Session();
 					s.setSessionId(session.getId());
-					s.setUserId((Integer) session.getAttribute(Constants.PERSONID));
+					s.setUserId((Integer) session.getAttribute(Constants.USERID));
 					DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
 					Date date = new Date();
 					s.setLastAccess(df.format(date));
 					
 					System.out.println("Created Session ID: " + session.getAttribute(Constants.SID));
-					System.out.println("Stored User ID in Session: " + session.getAttribute(Constants.PERSONID));
+					System.out.println("Stored User ID in Session: " + session.getAttribute(Constants.USERID));
 					System.out.println("Created Session (s) ID: " + s.getSessionId());
 		
 					dao.createSession(s);
@@ -72,13 +72,13 @@ public class SignInCommand implements Command {
 					response.sendRedirect(Constants.ROUTER + Constants.HOME_COMMAND);
 					return;
 			
-				} else if (user.getStatus_id() == 1) {
+				} else if (user.getStatusID() == 1) {
 					System.out.println("SignInCommand: Not Actived user");
 		
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Login failed. Please activate your account.");
 					
-				} else if (user.getStatus_id() == 3) {
+				} else if (user.getStatusID() == 3) {
 					System.out.println("SignInCommand: Disabled user");
 		
 					request.setAttribute(Constants.ERROR, 1);

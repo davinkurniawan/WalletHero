@@ -1,3 +1,5 @@
+
+<hr class="featurette-divider">
 <footer>
 	<p class="pull-right"><a href="#">Back to top</a></p>
 	<div class="small-print" style="background-color:transparent">

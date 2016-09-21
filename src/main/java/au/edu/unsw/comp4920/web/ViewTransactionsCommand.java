@@ -3,16 +3,17 @@ package au.edu.unsw.comp4920.web;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
-import au.edu.unsw.comp4920.objects.*;
+import au.edu.unsw.comp4920.objects.Transaction;
 
 public class ViewTransactionsCommand implements Command {
 
@@ -23,7 +24,8 @@ public class ViewTransactionsCommand implements Command {
 			throws ServletException, IOException {
 		System.out.println("Inside: ViewTransactionsCommand");
 
-		int personID = (int) request.getSession().getAttribute(Constants.PERSONID);
+		HttpSession session = request.getSession();
+		int personID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
 
 		String fromDate = request.getParameter("from_date");
 		String toDate = request.getParameter("to_date");

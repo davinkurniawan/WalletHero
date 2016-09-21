@@ -11,7 +11,7 @@ public final class Constants {
 	public static final String SIGNIN_COMMAND 			= "signIn";
 	public static final String SIGNOUT_COMMAND 			= "signOut";
 	public static final String SIGNUP_COMMAND 			= "signUp";
-	public static final String PROFILE_COMMAND 			= "viewEditProfile";
+	public static final String PROFILE_COMMAND 			= "profile";
 	public static final String PUBLIC_COMMAND 			= "public";
 	public static final String HOME_COMMAND				= "home";
 	public static final String SEARCH_COMMAND 			= "search";
@@ -34,7 +34,7 @@ public final class Constants {
 	public static final String SEARCH					= "search";
 	
 	// Session Parameters
-	public static final String PERSONID 				= "personID";
+	public static final String USERID	 				= "userID";
 	public static final String SID 						= "sessionID";
 	public static final String SEARCHRESULT				= "searchResult";
 	

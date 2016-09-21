@@ -27,7 +27,7 @@ public class AddTransactionCommand implements Command {
 			String transactionType = request.getParameter("transactionType");
 			BigDecimal value = new BigDecimal(request.getParameter("amount"));
 
-			int personID = (int) request.getSession().getAttribute(Constants.PERSONID);
+			int personID = (int) request.getSession().getAttribute(Constants.USERID);
 
 			Boolean isIncome = null;
 			if (transactionType.equals("income")) {
