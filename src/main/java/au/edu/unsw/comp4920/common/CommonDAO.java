@@ -1,6 +1,6 @@
 package au.edu.unsw.comp4920.common;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import au.edu.unsw.comp4920.objects.*;

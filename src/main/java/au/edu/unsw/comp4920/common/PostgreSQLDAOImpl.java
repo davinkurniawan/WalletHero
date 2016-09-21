@@ -8,10 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-import java.sql.Date;
 
 import au.edu.unsw.comp4920.common.DBConnectionFactory;
 
@@ -309,8 +313,19 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				s.setSessionId(rs.getString("id"));
 				s.setUserId(rs.getInt("user_id"));
 				s.setLastAccess(rs.getString("last_access"));
+				
+				DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
+				Date sessionDate = (Date)df.parse(s.getLastAccess());
+				Date currentDate = new Date();
+				
+				long diff = currentDate.getTime() - sessionDate.getTime();
+				long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+			    System.out.println ("Days: " + days);
+			    if (days > 7){
+			    	s = null;
+			    }
 			}
-		} catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException | ParseException e) {
 			System.err.println(e.getMessage());
 		} finally {
 			if (conn != null) {
