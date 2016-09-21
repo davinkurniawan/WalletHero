@@ -45,7 +45,7 @@ public class SignUpCommand implements Command {
 				if (request.getParameter("username").length() < 3) {
 					System.err.println("SignUpCommand: User less than 3 characters.");
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Your password must be at least 3 characters long.");
+					request.setAttribute(Constants.ERRORMSG, "Your username must be at least 3 characters long.");
 				} else if (request.getParameter("username").matches(".*[^A-Za-z0-9-_.]+.*")) {
 					System.err.println("SignUpCommand: Username can only contains alphanumeric characters, hyphen, underscore, and full stop.");
 					request.setAttribute(Constants.ERROR, 1);
