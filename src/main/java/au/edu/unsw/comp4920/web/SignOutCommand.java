@@ -1,7 +1,6 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
-import java.util.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
-import au.edu.unsw.comp4920.objects.*;
 
 /**
  * @author Timothy

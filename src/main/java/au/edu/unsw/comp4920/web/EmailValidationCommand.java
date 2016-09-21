@@ -1,7 +1,6 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
-import java.util.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,6 +26,9 @@ public class EmailValidationCommand implements Command {
 		String input_token = request.getParameter("token");
 		User user = dao.getUser(request.getParameter("username"), null);
 		String nextPage = "/index.jsp";
+		
+		//TODO should redirect to emailvalidation.jsp with message
+		
 		if (user == null) {
 			System.err.println("EmailValidationCommand: User not found in database");
 			
@@ -45,6 +47,7 @@ public class EmailValidationCommand implements Command {
 				request.setAttribute(Constants.ERRORMSG, "Invalid token.");
 			}
 		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}	
