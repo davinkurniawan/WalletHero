@@ -6,7 +6,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.CommonDAO;
@@ -60,7 +59,5 @@ public class ResetPasswordCommand implements Command {
 
 		RequestDispatcher rd = request.getRequestDispatcher("/resetpassword.jsp");
 		rd.forward(request, response);
-
 	}
-
 }

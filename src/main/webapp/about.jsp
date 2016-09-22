@@ -29,14 +29,14 @@
       <hr class="featurette-divider">
 
       <div class="row featurette">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <h2 class="featurette-heading">About</h2>
           Once upon a time there was an international student studying in Australia. The student has their parents send them money 
           monthly. That fixed sum would have to be enough to sustain them for the full month including rent transport and food.
           Usually they were able to manage their money carefully in order to have enough money to last the month. However they 
           were careless one day and ate at a restaurant for dinner. When they were about to pay the bill, it turns out they didn't 
           have enough money in their wallets. They had to call up a friend to quickly save them.
-          <br/>
+          <br/><br/>
           Our aim is to be a hero to prevent such scenarios and save your wallet.
         </div>
       </div>
@@ -44,7 +44,7 @@
       <hr class="featurette-divider">
       
        <div class="row featurette">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <h2 class="featurette-heading">Team Members</h2>
 			<ul>
 				<li>
@@ -69,7 +69,7 @@
       <hr class="featurette-divider">
       
        <div class="row featurette">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <h2 class="featurette-heading">Credits and Acknowledgement</h2>
           	<ul>
           		<li style="color:red">
