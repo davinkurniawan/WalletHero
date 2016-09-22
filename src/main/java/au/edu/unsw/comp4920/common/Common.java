@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Common {
 	public static void main(String[] args) { 
-		// Test your fucntions/methods here
+		// Test your functions/methods here
 	}
 	
 	public static Date convertStringtoDate(String date) {
@@ -54,8 +54,7 @@ public class Common {
             }
             pwd = sb.toString();
         } 
-        catch (NoSuchAlgorithmException e) 
-        {
+        catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return pwd;

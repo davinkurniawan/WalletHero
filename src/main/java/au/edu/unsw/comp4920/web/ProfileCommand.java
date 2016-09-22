@@ -25,12 +25,28 @@ public class ProfileCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException{
 		System.out.println("Inside: ProfileCommand");
 		
-		HttpSession session = request.getSession();
-		String sid = session.getAttribute(Constants.SID).toString();
-		
-		User user = dao.getUser(sid);
-		session.setAttribute("user", user);
+		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+		System.out.println("SignInCommand: Action is " + action);
 
+		if (action != null && action.equalsIgnoreCase("update_profile")) {
+			//TODO stuff
+		}
+		else if (action != null && action.equalsIgnoreCase("update_password")) {
+			//TODO stuff
+		}
+		else if (action != null && action.equalsIgnoreCase("update_preferences")) {
+			//TODO stuff
+		}
+		else{
+			HttpSession session = request.getSession();
+			String sid = session.getAttribute(Constants.SID).toString();
+			
+			User user = dao.getUser(sid);
+			session.setAttribute("user", user);
+
+			request.setAttribute(Constants.USER, user);
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
 		rd.forward(request, response);
 	}	

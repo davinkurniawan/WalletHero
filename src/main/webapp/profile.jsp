@@ -31,6 +31,7 @@
                 <li><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
                 <li><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
                 <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
+                <li><a href="${applicationScope['ROUTER_SIGNOUT']}">Sign Out</a></li>
 
                 <!--<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -65,32 +66,27 @@
 			  
 		  	<div class="form-group" id="div-username" name="div-username">
 		  		<label>Username <label style="color:red">*</label></label>
-				<!-- <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="${user.getUsername()}"/>  -->
-				<input type="text" class="form-control" id="username" name="username" placeholder="Username..." value=""/>
+				<input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="${user.getUsername()}" readonly/>
 			</div>
 			
 			<div class="form-group" id="div-email" name="div-email">
 		  		<label>Email <label style="color:red">*</label></label>
-				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.getEmail()}"/>  -->
-				<input type="text" class="form-control" id="email" name="email" placeholder="Email..." value=""/>
+				<input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.getEmail()}"/>
 			</div>
 			
 			<div class="form-group" id="div-firstname" name="div-firstname">
 		  		<label>First Name <label style="color:red">*</label></label>
-				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.firstName()}"/>  -->
-				<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name..." value=""/>
+				<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name..." value="${user.getFirst_name()}"/>
 			</div>
 			
 			<div class="form-group" id="div-middlename" name="div-middlename">
 		  		<label>Middle Name</label>
-				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.middleName()}"/>  -->
-				<input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name..." value=""/>
+				<input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name..." value="${user.getMiddle_name()}"/>
 			</div>
 			
 			<div class="form-group" id="div-lastname" name="div-lastname">
 		  		<label>Last Name <label style="color:red">*</label></label>
-				<!-- <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${user.lastName()}"/>  -->
-				<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name..." value=""/>
+				<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name..." value="${user.getLast_name()}"/>
 			</div>
 			 			  
 			<input type="hidden" name="action" value="update_profile"/>	

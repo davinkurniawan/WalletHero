@@ -40,6 +40,7 @@ public final class Constants {
 	public static final String USERID	 				= "userID";
 	public static final String SID 						= "sessionID";
 	public static final String SEARCHRESULT				= "searchResult";
+	public static final String USER 					= "user";
 	
 	// Naming
 	public static final String WEB						= "WalletHero";
