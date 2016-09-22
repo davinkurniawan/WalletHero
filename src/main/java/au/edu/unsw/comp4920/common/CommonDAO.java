@@ -26,4 +26,5 @@ public interface CommonDAO {
 	public String getToken(User u);
 	public void setToken(User u, String token);
 	public void setStatus(User u, int Status);
+	public String getSalt(String userinfo);
 }
