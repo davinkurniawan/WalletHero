@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
-import au.edu.unsw.comp4920.common.Constants;
 
 /**
  * @author Timothy
@@ -26,7 +25,7 @@ public class SignOutCommand implements Command {
 
 		HttpSession session = request.getSession(false);
 		if (session != null) {
-			dao.deleteSession(Constants.SID);
+			dao.deleteSession(request.getSession().getId());
 			session.invalidate();
 			System.out.println("Session invalidated.");
 		}

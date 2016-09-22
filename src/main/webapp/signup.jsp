@@ -57,49 +57,221 @@
 	
 	<div class="container marketing">
 
-      <!-- START THE FEATURETTES -->
-	  <h2>Sign Up Now</h2>
-	  <c:if test="${errorMessage != null}">
-   	    <font color="red"><c:out value="${errorMessage}"/></font>
+	  <h2>Sign Up Now to ${applicationScope['WEB_NAME']}</h2>
+
+	  <hr class="featurette-divider">
+
+	  <c:if test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
+		<h5 style="color:Green">Successful Registering your Account!</h5>
 	  </c:if>
-		<form action="${applicationScope['ROUTER_SIGNUP']}" method="POST">
-		  <table><tbody>
-			<tr>
-			  <td>Username:</td>
-			  <td><input type="text" name="username" /></td>
-			</tr>
-			<tr>
-			  <td>Password:</td> 
-			  <td><input type="password" name="password" /></td>
-			</tr>
-			<tr>
-			  <td>Re-Password:</td> 
-			  <td><input type="password" name="repassword" /></td>
-			</tr>
-			<tr>
-			  <td>Email:</td> 
-			  <td><input type="text" name="email" /></td>
-			</tr>
-			<tr>
-			  <td>First Name:</td> 
-			  <td><input type="text" name="first_name" /></td>
-			</tr>
-			<tr>
-			  <td>Middle Name:</td> 
-			  <td><input type="text" name="middle_name" /></td>
-			</tr>
-			<tr>
-			  <td>Last Name:</td> 
-			  <td><input type="text" name="last_name" /></td>
-			</tr>
-		  </tbody></table>
-		  
-		  <input type="hidden" name="action" value="signUp"/>	
-		  <button type="submit" class="btn btn-default">Sign Up</button>	
-		</form>
-		
-	
+	  <h5 style="color:Red" name="error_message" id="error_message">
+        <c:if test="${errorMessage != null}">
+          ${errorMessage}
+        </c:if>
+      </h5>
+
+      <div class="row featurette">
+      	<div class="col-md-6"> 
+
+	      <form action="${applicationScope['ROUTER_SIGNUP']}" method="POST" onSubmit="return validator_signup(this)">
+
+		  	<div class="form-group" id="div-username" name="div-username">
+		  		<label>Username <label style="color:red">*</label></label>
+				<input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="${param['username']}"/>
+			</div>
+
+			<div class="form-group" id="div-password" name="div-password">
+		  		<label>Password <label style="color:red">*</label></label>
+				<input type="password" class="form-control" id="password" name="password" placeholder="Password..." />
+			</div>
+
+			<div class="form-group" id="div-repassword" name="div-repassword">
+		  		<label>Retype Password <label style="color:red">*</label></label>
+				<input type="password" class="form-control" id="repassword" name="repassword" placeholder="Retype Password..." />
+			</div>
+			
+			<div class="form-group" id="div-email" name="div-email">
+		  		<label>Email <label style="color:red">*</label></label>
+				<input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${param['email']}"/>
+			</div>
+			
+			<div class="form-group" id="div-firstname" name="div-firstname">
+		  		<label>First Name <label style="color:red">*</label></label>
+				<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name..." value="${param['first_name']}"/>
+			</div>
+			
+			<div class="form-group" id="div-middlename" name="div-middlename">
+		  		<label>Middle Name</label>
+				<input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name..." value="${param['middle_name']}"/>
+			</div>
+			
+			<div class="form-group" id="div-lastname" name="div-lastname">
+		  		<label>Last Name <label style="color:red">*</label></label>
+				<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name..." value="${param['last_name']}"/>
+			</div>
+
+			<input type="hidden" name="action" value="signUp"/> 
+          	<button type="submit" class="btn btn-default">Sign Up</button> 
+
+	      </form>
+	    </div>
+	  </div>
+
 	<%@ include file="footer.jsp" %>
-    </div><!-- /.container -->
+    </div>
+
+    <script type="text/javascript">
+		function validateEmail(email) {
+		    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		    return re.test(email);
+		}
+
+		function validator_signup(form){									
+			var username = form.username.value.trim();
+			var password = form.password.value.trim();
+			var repassword = form.repassword.value.trim();
+			var email = form.email.value.trim();
+			var firstname = form.first_name.value.trim();
+			var lastname = form.last_name.value.trim();
+			
+			username = username.replace(" ", "");
+			email = email.replace(" ", "");
+
+			if(username.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter your Username!";
+				document.getElementById("div-username").className = "form-group has-error";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+
+				form.username.focus();
+				return false;
+			}
+			else if (password.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter your Password!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group has-error";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+				
+				form.password.focus();
+				return false;
+			}
+			else if (repassword.length == 0){
+				document.getElementById("error_message").innerHTML = "Please retype your Password!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group has-error";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+				
+				form.repassword.focus();
+				return false;
+			}
+			else if (email.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter your Email!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group has-error";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+				
+				form.email.focus();
+				return false;
+			}
+			else if (firstname.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter your First Name!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group has-error";
+				document.getElementById("div-lastname").className = "form-group";
+				
+				form.first_name.focus();
+				return false;
+			}
+			else if (lastname.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter your Last Name!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group has-error";
+				
+				form.last_name.focus();
+				return false;
+			}
+			else if (username.length > 32 || username.length < 6){
+				document.getElementById("error_message").innerHTML = "Username must be 6 to 32 characters!";
+				document.getElementById("div-username").className = "form-group has-error";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+
+				form.username.focus();
+				return false;
+			}
+			else if (password.length < 6){
+				document.getElementById("error_message").innerHTML = "Password must be at least 6 characters!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group has-error";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+
+				form.password.focus();
+				return false;
+			}
+			else if (repassword.length < 6){
+				document.getElementById("error_message").innerHTML = "Retyped Password must be at least 6 characters!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group has-error";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+
+				form.repassword.focus();
+				return false;
+			}
+			else if (password != repassword){
+				document.getElementById("error_message").innerHTML = "Passsword does not match with Retyped Password";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group has-error";
+				document.getElementById("div-repassword").className = "form-group has-error";
+				document.getElementById("div-email").className = "form-group";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+				
+				form.password.focus();
+				return false;
+			}
+			else if (!validateEmail(email)){
+				document.getElementById("error_message").innerHTML = "Please enter a valid email address!";
+				document.getElementById("div-username").className = "form-group";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group";
+				document.getElementById("div-email").className = "form-group has-error";
+				document.getElementById("div-firstname").className = "form-group";
+				document.getElementById("div-lastname").className = "form-group";
+				
+				form.email.focus();
+				return false;
+			}
+
+			return true;
+		};	
+	</script>
 </body>
 </html>

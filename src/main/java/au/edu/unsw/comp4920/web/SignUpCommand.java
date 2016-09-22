@@ -42,23 +42,37 @@ public class SignUpCommand implements Command {
 				request.getParameter("middle_name") != null &&
 				request.getParameter("last_name") != null) {
 			
-				if (request.getParameter("username").length() < 3) {
-					System.err.println("SignUpCommand: User less than 3 characters.");
+				if (request.getParameter("username").length() < 6 || request.getParameter("username").length() > 32) {
+					System.err.println("SignUpCommand: Username must be between 6 to 32 characters.");
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Your username must be at least 3 characters long.");
-				} else if (request.getParameter("username").matches(".*[^A-Za-z0-9-_.]+.*")) {
+					request.setAttribute(Constants.ERRORMSG, "Username must be between 6 to 32 characters.");
+				} 
+				else if (request.getParameter("username").matches(".*[^A-Za-z0-9-_.]+.*")) {
 					System.err.println("SignUpCommand: Username can only contains alphanumeric characters, hyphen, underscore, and full stop.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Username can only contains alphanumeric characters, hyphen, underscore, and full stop.");
-				} else if (request.getParameter("password").length() < 6) {
+				} 
+				else if (request.getParameter("password").length() < 6) {
 					System.err.println("SignUpCommand: Password less than 6 characters.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password must be at least 6 characters long.");
-				} else if (!request.getParameter("password").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
+				} 
+				else if (!request.getParameter("password").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
 					System.err.println("SignUpCommand: Password does not contain special characters.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password must contains at least 1 non-alphanumeric character(s).");
-				} else if (!request.getParameter("password").equals(request.getParameter("repassword"))) {
+				} 
+				else if (request.getParameter("repassword").length() < 6) {
+					System.err.println("SignUpCommand: Password less than 6 characters.");
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Your re-password must be at least 6 characters long.");
+				} 
+				else if (!request.getParameter("repassword").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
+					System.err.println("SignUpCommand: Password does not contain special characters.");
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Your re-password must contains at least 1 non-alphanumeric character(s).");
+				} 
+				else if (!request.getParameter("password").equals(request.getParameter("repassword"))) {
 					System.err.println("SignUpCommand: Password and re-password did not match.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Your password did not match the re-typed password.");

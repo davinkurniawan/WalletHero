@@ -16,6 +16,7 @@
                 <li><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
                 <li><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
                 <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
+                <li><a href="${applicationScope['ROUTER_SIGNOUT']}">Sign Out</a></li>
 
                 <!--<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

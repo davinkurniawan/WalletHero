@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,6 +32,7 @@
                 <li class="active"><a href="./">Home</a></li>
                 <li><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
                 <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
+                <li><a href="${applicationScope['ROUTER_SIGNOUT']}">Sign Out</a></li>
 
                 <!--<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -110,7 +112,6 @@
 
     <div class="container marketing">
 
-      <!-- START THE FEATURETTES -->
 	  <h2>Welcome, &lt;USERNAME&gt;</h2>
 
       <hr class="featurette-divider">
@@ -150,6 +151,6 @@
       </div>
 
   	   <%@ include file="footer.jsp" %>
-    </div><!-- /.container -->
+    </div>
 </body>
 </html>

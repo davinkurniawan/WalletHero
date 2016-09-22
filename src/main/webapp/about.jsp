@@ -24,7 +24,6 @@
 
 	<div class="container marketing">
 
-      <!-- START THE FEATURETTES -->
 	  <h2>About ${applicationScope['WEB_NAME']}</h2>
 
       <hr class="featurette-divider">
@@ -81,6 +80,6 @@
       </div>
 
   	   <%@ include file="footer.jsp" %>
-    </div><!-- /.container -->
+    </div>
 </body>
 </html>

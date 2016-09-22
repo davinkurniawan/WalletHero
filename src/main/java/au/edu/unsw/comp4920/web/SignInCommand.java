@@ -49,8 +49,6 @@ public class SignInCommand implements Command {
 				} else if (user.getStatus_id() == 2) {
 					System.out.println("SignInCommand: Active user");
 		
-					// TODO implement the hash
-		
 					HttpSession session = request.getSession(true);
 					session.setAttribute(Constants.USERID, user.getUserID());
 					session.setAttribute(Constants.SID, session.getId());
