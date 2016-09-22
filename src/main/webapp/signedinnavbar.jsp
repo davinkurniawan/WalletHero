@@ -15,6 +15,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
                 <li><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
+                <li><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
                 <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
                 <li><a href="${applicationScope['ROUTER_SIGNOUT']}">Sign Out</a></li>
 

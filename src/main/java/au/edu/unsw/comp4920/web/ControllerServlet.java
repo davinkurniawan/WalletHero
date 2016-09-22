@@ -88,6 +88,7 @@ public class ControllerServlet extends HttpServlet {
 			else {
 				if (_commands.containsKey(dest)) {
 					dest = (dest.equals(Constants.PUBLIC_COMMAND) 			||
+							dest.equals(Constants.SIGNIN_COMMAND))			|| 
 							dest.equals(Constants.SIGNUP_COMMAND) 			||
 							dest.equals(Constants.VALIDATE_COMMAND) 		||
 							dest.equals(Constants.NOTFOUND_COMMAND)			||
@@ -95,7 +96,6 @@ public class ControllerServlet extends HttpServlet {
 							//TODO For testing purposes:
 							dest.equals(Constants.VIEWTRANSACTIONS_COMMAND) ||
 							dest.equals(Constants.ADDTRANSACTION_COMMAND) 	||
-							dest.equals(Constants.SIGNIN_COMMAND))			|| 
 							dest.equals(Constants.FORGOTPASSWORD_COMMAND)	||
 							dest.equals(Constants.RESETPASSWORD_COMMAND)
 							
