@@ -33,7 +33,7 @@ public class SignInCommand implements Command {
 			String password = request.getParameter("password");
 			User user = null;
 			
-			System.out.println("Logging in ... " + "username = " + username + " password= " + password);
+			System.out.println("Logging in ... " + "username= " + username + " password= " + password);
 	
 			if (username != null && password != null) {
 				user = dao.getUser(username, password);

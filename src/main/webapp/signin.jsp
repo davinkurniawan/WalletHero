@@ -11,7 +11,7 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	
 	<title>${applicationScope['WEB_NAME']} - Sign In</title>
-<%@ include file="bootstrapheader.jsp" %>
+<%@ include file="bootstrapHeader.jsp" %>
 </head>
 <body>
     <div class="navbar-wrapper">
@@ -60,7 +60,7 @@
 		<form action="${PROFILE_COMMAND}" method="POST">
 		  <table><tbody>
 			<tr>
-			  <td>Username / Email:</td>
+			  <td>Username or Email:</td>
 			  <td><input type="text" name="username" /></td>
 			</tr>
 			<tr>

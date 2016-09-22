@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Welcome to ${applicationScope['WEB_NAME']}</title>
-    <%@ include file="bootstrapheader.jsp" %>
+    <%@ include file="bootstrapHeader.jsp" %>
 </head>
 <body>
     <div class="navbar-wrapper">

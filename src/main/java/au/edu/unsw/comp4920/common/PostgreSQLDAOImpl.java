@@ -158,7 +158,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u = new User();
 				u.setUserID(rs.getInt("id"));
 				u.setUsername(rs.getString("username"));
-				u.setPassword(rs.getString("email"));
+				u.setEmail(rs.getString("email"));
+				u.setPassword(rs.getString("password"));
 				u.setSalt_hash(rs.getString("salt_hash"));
 				u.setFirst_name(rs.getString("first_name"));
 				u.setMiddle_name(rs.getString("middle_name"));
@@ -556,6 +557,46 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 	
 	@Override
+	public User getUser(String userinfo, String firstName, String lastName) {
+		User u = getUser(userinfo, null);
+		if (u == null) return null;
+		if (!u.getFirst_name().equalsIgnoreCase(firstName) ||
+				!u.getLast_name().equalsIgnoreCase(lastName)) {
+			return null;
+		}
+		return u;
+	}
+
+	@Override
+	public void setPassword(User u, String hashedPassword) {
+		System.out.println("Inside setPassword: Now resetting password.");
+		String query = "UPDATE users SET password = ? WHERE username = '"+ u.getUsername() + "';";
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(query.toString());
+			stmt.setString(1, hashedPassword);
+			stmt.execute();
+			System.out.println("Success");
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+	}
+	
+	@Override
 	public String getSalt(String userinfo) {
 		String query = "SELECT salt_hash FROM users WHERE username = '" + userinfo + "';";
 		if (userinfo.contains("@")) {
@@ -575,8 +616,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			salt = rs.getString(1);
 			System.out.println("DAO: getSalt(): " + salt);
 			statement.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
 		} 
 		finally {
@@ -589,7 +629,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
 		if(salt != null) {
 			System.out.println("in DAO getSalt(): found user, salt is " + salt);
 		}
