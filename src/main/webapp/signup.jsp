@@ -61,61 +61,69 @@
 
 	  <hr class="featurette-divider">
 
-	  <c:if test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
-		<h5 style="color:Green">Successful Registering your Account!</h5>
-	  </c:if>
-	  <h5 style="color:Red" name="error_message" id="error_message">
-        <c:if test="${errorMessage != null}">
-          ${errorMessage}
-        </c:if>
-      </h5>
+	  <c:choose>
+		  <c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
+			<h5 style="color:Green;text-align:center">
+				Your Account is registered with us!
+				<br/><br/>
+				Please Activate Your Account. Before you can login, you must active your account with the code sent to your email address. If you did not receive this email, please check your junk/spam folder. If you entered an incorrect email address, you will need to re-register with the correct email address.
+			</h5>
+		  </c:when>
+		  <c:otherwise>
+			  <h5 style="color:Red" name="error_message" id="error_message">
+		        <c:if test="${errorMessage != null}">
+		          ${errorMessage}
+		        </c:if>
+		      </h5>
 
-      <div class="row featurette">
-      	<div class="col-md-6"> 
+		      <div class="row featurette">
+		      	<div class="col-md-6"> 
 
-	      <form action="${applicationScope['ROUTER_SIGNUP']}" method="POST" onSubmit="return validator_signup(this)">
+			      <form action="${applicationScope['ROUTER_SIGNUP']}" method="POST" onSubmit="return validator_signup(this)">
 
-		  	<div class="form-group" id="div-username" name="div-username">
-		  		<label>Username <label style="color:red">*</label></label>
-				<input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="${param['username']}"/>
-			</div>
+				  	<div class="form-group" id="div-username" name="div-username">
+				  		<label>Username <label style="color:red">*</label></label>
+						<input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="${param['username']}"/>
+					</div>
 
-			<div class="form-group" id="div-password" name="div-password">
-		  		<label>Password <label style="color:red">*</label></label>
-				<input type="password" class="form-control" id="password" name="password" placeholder="Password..." />
-			</div>
+					<div class="form-group" id="div-password" name="div-password">
+				  		<label>Password <label style="color:red">*</label></label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Password..." />
+					</div>
 
-			<div class="form-group" id="div-repassword" name="div-repassword">
-		  		<label>Retype Password <label style="color:red">*</label></label>
-				<input type="password" class="form-control" id="repassword" name="repassword" placeholder="Retype Password..." />
-			</div>
-			
-			<div class="form-group" id="div-email" name="div-email">
-		  		<label>Email <label style="color:red">*</label></label>
-				<input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${param['email']}"/>
-			</div>
-			
-			<div class="form-group" id="div-firstname" name="div-firstname">
-		  		<label>First Name <label style="color:red">*</label></label>
-				<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name..." value="${param['first_name']}"/>
-			</div>
-			
-			<div class="form-group" id="div-middlename" name="div-middlename">
-		  		<label>Middle Name</label>
-				<input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name..." value="${param['middle_name']}"/>
-			</div>
-			
-			<div class="form-group" id="div-lastname" name="div-lastname">
-		  		<label>Last Name <label style="color:red">*</label></label>
-				<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name..." value="${param['last_name']}"/>
-			</div>
+					<div class="form-group" id="div-repassword" name="div-repassword">
+				  		<label>Retype Password <label style="color:red">*</label></label>
+						<input type="password" class="form-control" id="repassword" name="repassword" placeholder="Retype Password..." />
+					</div>
+					
+					<div class="form-group" id="div-email" name="div-email">
+				  		<label>Email <label style="color:red">*</label></label>
+						<input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${param['email']}"/>
+					</div>
+					
+					<div class="form-group" id="div-firstname" name="div-firstname">
+				  		<label>First Name <label style="color:red">*</label></label>
+						<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name..." value="${param['first_name']}"/>
+					</div>
+					
+					<div class="form-group" id="div-middlename" name="div-middlename">
+				  		<label>Middle Name</label>
+						<input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name..." value="${param['middle_name']}"/>
+					</div>
+					
+					<div class="form-group" id="div-lastname" name="div-lastname">
+				  		<label>Last Name <label style="color:red">*</label></label>
+						<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name..." value="${param['last_name']}"/>
+					</div>
 
-			<input type="hidden" name="action" value="signUp"/> 
-          	<button type="submit" class="btn btn-default">Sign Up</button> 
+					<input type="hidden" name="action" value="signUp"/> 
+		          	<button type="submit" class="btn btn-default">Sign Up</button> 
 
-	      </form>
-	    </div>
-	  </div>
+			      </form>
+			    </div>
+			  </div>
+		  </c:otherwise>
+	  </c:choose>
 
 	<%@ include file="footer.jsp" %>
     </div>
