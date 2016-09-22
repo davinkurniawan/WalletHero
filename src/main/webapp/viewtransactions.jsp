@@ -18,7 +18,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 	
-<%@ include file="bootstrapheader.jsp" %>
+<%@ include file="bootstrapHeader.jsp" %>
 
 <title>${applicationScope['WEB_NAME']}-TransactionsOverview</title>
 </head>

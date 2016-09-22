@@ -45,6 +45,8 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.ABOUT_COMMAND, 			new AboutCommand());
 		_commands.put(Constants.ADDTRANSACTION_COMMAND, new AddTransactionCommand());
 		_commands.put(Constants.VIEWTRANSACTIONS_COMMAND, new ViewTransactionsCommand());
+		_commands.put(Constants.FORGOTPASSWORD_COMMAND,  new ForgotPasswordCommand());
+		_commands.put(Constants.RESETPASSWORD_COMMAND, new ResetPasswordCommand());
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
@@ -61,6 +63,8 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_ABOUT, 				Constants.ROUTER + Constants.ABOUT_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ADDTRANSACTION,    	Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VIEWTRANSACTIONS,    	Constants.ROUTER + Constants.VIEWTRANSACTIONS_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_FORGOTPASSWORD,		Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_RESETPASSWORD,         Constants.ROUTER + Constants.RESETPASSWORD_COMMAND);
 	}
 
 	/*
@@ -91,8 +95,10 @@ public class ControllerServlet extends HttpServlet {
 							//TODO For testing purposes:
 							dest.equals(Constants.VIEWTRANSACTIONS_COMMAND) ||
 							dest.equals(Constants.ADDTRANSACTION_COMMAND) 	||
-							dest.equals(Constants.SIGNIN_COMMAND)) 
-
+							dest.equals(Constants.SIGNIN_COMMAND))			|| 
+							dest.equals(Constants.FORGOTPASSWORD_COMMAND)	||
+							dest.equals(Constants.RESETPASSWORD_COMMAND)
+							
 							? dest : Constants.SIGNIN_COMMAND;
 				}
 				else {

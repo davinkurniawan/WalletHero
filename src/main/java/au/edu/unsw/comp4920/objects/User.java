@@ -40,7 +40,8 @@ public class User {
 		try {
 			this.userID 	= rs.getInt("id");
 			this.username 	= rs.getString("username");
-			this.password 	= rs.getString("email");
+			this.email		= rs.getString("email");
+			this.password 	= rs.getString("password");
 			this.salt_hash 	= rs.getString("salt_hash");
 			this.first_name 	= rs.getString("first_name");
 			this.middle_name = rs.getString("middle_name");

@@ -7,10 +7,10 @@ import au.edu.unsw.comp4920.objects.*;
 
 public interface CommonDAO {	
 	public User getUserDetails(String username);
-	
 	public boolean createUser(User u);
 	public User getUser(String userinfo, String password);
 	public User getUser(String sid);
+	public User getUser(String userinfo, String firstName, String lastName);
 	
 	public boolean addTransaction(Transaction t);
 	public List<Transaction> getAllTransactions(int personID);
@@ -26,4 +26,7 @@ public interface CommonDAO {
 	public String getToken(User u);
 	public void setToken(User u, String token);
 	public void setStatus(User u, int Status);
+	
+	public void setPassword(User u, String hashedPassword);
+	public String getSalt(String userinfo);
 }

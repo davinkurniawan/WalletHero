@@ -49,13 +49,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(1, u.getUsername());
 				stmt.setString(2, u.getEmail());
 				stmt.setString(3, u.getPassword());
-				stmt.setString(4, "lol"); // TODO change this later - salt_hash
+				stmt.setString(4, u.getSalt_hash());
 				stmt.setString(5, u.getFirst_name());
 				stmt.setString(6, (u.getMiddle_name() != null) ? u.getMiddle_name() : "");
 				stmt.setString(7, u.getLast_name());
 				stmt.setString(8, u.getToken());
-				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for
-									// Disabled
+				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for Disabled
 				stmt.setDouble(10, 0.0); // Default to $0.0
 
 				int n = stmt.executeUpdate();
@@ -94,9 +93,16 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		} else {
 			idQuery = "username = '" + userinfo + "'";
 		}
-
+		
 		if (password != null) {
-			passwordQuery = " and password = '" + password + "';";
+			String salt = getSalt(userinfo);
+			if (salt != null) {
+				String pwd = null;
+				pwd = Common.hashPassword(password, salt);
+				passwordQuery = " and password = '" + pwd + "';";
+			} else {
+				passwordQuery = ";";
+			}
 		} else {
 			passwordQuery = ";";
 		}
@@ -152,7 +158,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u = new User();
 				u.setUserID(rs.getInt("id"));
 				u.setUsername(rs.getString("username"));
-				u.setPassword(rs.getString("email"));
+				u.setEmail(rs.getString("email"));
+				u.setPassword(rs.getString("password"));
 				u.setSalt_hash(rs.getString("salt_hash"));
 				u.setFirst_name(rs.getString("first_name"));
 				u.setMiddle_name(rs.getString("middle_name"));
@@ -160,6 +167,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u.setToken(rs.getString("token"));
 				u.setStatus_id(rs.getInt("status_id"));
 				u.setBudget(rs.getDouble("budget"));
+				// System.out.println("UserDTO successfully created.");
 			}
 
 			statement.close();
@@ -546,5 +554,84 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		}
 
 		return s;
+	}
+	
+	@Override
+	public User getUser(String userinfo, String firstName, String lastName) {
+		User u = getUser(userinfo, null);
+		if (u == null) return null;
+		if (!u.getFirst_name().equalsIgnoreCase(firstName) ||
+				!u.getLast_name().equalsIgnoreCase(lastName)) {
+			return null;
+		}
+		return u;
+	}
+
+	@Override
+	public void setPassword(User u, String hashedPassword) {
+		System.out.println("Inside setPassword: Now resetting password.");
+		String query = "UPDATE users SET password = ? WHERE username = '"+ u.getUsername() + "';";
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(query.toString());
+			stmt.setString(1, hashedPassword);
+			stmt.execute();
+			System.out.println("Success");
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+	}
+	
+	@Override
+	public String getSalt(String userinfo) {
+		String query = "SELECT salt_hash FROM users WHERE username = '" + userinfo + "';";
+		if (userinfo.contains("@")) {
+			query = "SELECT salt_hash FROM users WHERE email = '" + userinfo + "';";
+		}
+		Connection conn = null;
+		Statement statement;
+		String salt = null;
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+			statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+			salt = rs.getString(1);
+			System.out.println("DAO: getSalt(): " + salt);
+			statement.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		if(salt != null) {
+			System.out.println("in DAO getSalt(): found user, salt is " + salt);
+		}
+		return salt;
 	}
 }
