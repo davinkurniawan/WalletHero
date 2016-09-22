@@ -44,7 +44,7 @@ public class SignInCommand implements Command {
 					System.out.println("SignInCommand: User not found in database");
 		
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Invalid credentials.");
+					request.setAttribute(Constants.ERRORMSG, "Invalid Credentials!");
 					
 				} else if (user.getStatus_id() == 2) {
 					System.out.println("SignInCommand: Active user");
@@ -74,13 +74,13 @@ public class SignInCommand implements Command {
 					System.out.println("SignInCommand: Not Actived user");
 		
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Login failed. Please activate your account.");
+					request.setAttribute(Constants.ERRORMSG, "Your account is not activated yet!");
 					
 				} else if (user.getStatus_id() == 3) {
 					System.out.println("SignInCommand: Disabled user");
 		
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Login failed. Your account has been disabled.");
+					request.setAttribute(Constants.ERRORMSG, "Your account is disabled!");
 				}
 			}
 		}
