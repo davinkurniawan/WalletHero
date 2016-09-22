@@ -39,10 +39,13 @@ public class ForgotPasswordCommand implements Command {
 				user = dao.getUser(userinfo, firstname, lastname);
 				
 				if (user != null) {
+					if (user.getStatus_id() != 2) {
+						System.err.println("ForgotPasswordCommand: User account is not activated.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "User account is not yet activated.");
+					}
 					String token = UUID.randomUUID().toString();
-					HttpSession session = request.getSession(true);
-					session.setAttribute("token", token);
-					
+					dao.setToken(user, token);
 					System.out.println("Token: " + token);
 					
 					System.out.println("sending email to " + user.getEmail());
@@ -55,7 +58,6 @@ public class ForgotPasswordCommand implements Command {
 					content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
 					content += "<br/><br/>";
 					content += "If you did not request a password reset, please ignore this email. ";
-					content += "This password reset is only valid for the next 30 minutes."; // TODO: CHANGE SESSION TIMEOUT LATER
 					content += "<br/><br/>";
 					content += "Regards,<br/>";
 					content += "WalletHero Team";
@@ -63,7 +65,7 @@ public class ForgotPasswordCommand implements Command {
 					MailHelper mh = new MailHelper();
 					mh.sendEmail(user.getEmail(), "WalletHero Password Recovery", content);
 	
-					// Redirect to appropriate page: public view
+					// Redirect to appropriate page
 					response.sendRedirect(Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND + "&success=yes");
 					return;
 				} else {

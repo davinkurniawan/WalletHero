@@ -12,7 +12,7 @@
 		<c:when test="${errorMessage != null}">
 			<font color="red"><c:out value="${errorMessage}" /></font>
 		</c:when>
-		<c:when test="${success != null}">
+		<c:when test="${param.success != null}">
 			<font color="green">Password Reset Successful!</font>
 		</c:when>
 		<c:otherwise>

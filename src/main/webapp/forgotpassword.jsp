@@ -12,12 +12,11 @@
 		<c:when test="${errorMessage != null}">
 			<font color="red"><c:out value="${errorMessage}" /></font>
 		</c:when>
-		<c:when test="${success != null}">
+		<c:when test="${param.success != null}">
 			<font color="green">Password Recovery Email Sent!</font>
 		</c:when>
 		<c:otherwise>
-			<form action="${applicationScope['ROUTER_FORGOTPASSWORD']}"
-				method=POST>
+			<form action="${applicationScope['ROUTER_FORGOTPASSWORD']}" method=POST>
 				<table>
 					<tbody>
 						<tr>

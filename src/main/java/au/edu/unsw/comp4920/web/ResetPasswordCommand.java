@@ -12,6 +12,7 @@ import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.objects.User;
+import au.edu.unsw.comp4920.web.Command;
 
 public class ResetPasswordCommand implements Command {
 
@@ -22,45 +23,38 @@ public class ResetPasswordCommand implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
 			throws ServletException, IOException {
-
 		System.out.println("Inside: ResetPasswordCommand");
-		String input_token = request.getParameter("token");
-		System.out.println("ResetPasswordCommand: token is " + input_token);
-		User user = dao.getUser(request.getParameter("username"), null);
-		System.out.println("ResetPasswordCommand: user is " + request.getParameter("username"));
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			System.err.println("ResetPasswordCommand: Session expired");
-			request.setAttribute(Constants.ERROR, 1);
-			request.setAttribute(Constants.ERRORMSG, "Token expired.");
-		} else {
-			String action = request.getParameter("action");
-			if (action != null && action.equalsIgnoreCase("reset")) {
-				if (user == null) {
-					System.err.println("ResetPasswordCommand: User not found in database");
-		
-					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "User does not exist.");
+		String action = request.getParameter("action");
+		if (action != null && action.equalsIgnoreCase("reset")) {
+			String input_token = request.getParameter("token");
+			System.out.println("ResetPasswordCommand: token from request is " + input_token);
+			User user = dao.getUser(request.getParameter("username"), null);
+			System.out.println("ResetPasswordCommand: user is " + request.getParameter("username"));
+			if (user == null) {
+				System.err.println("ResetPasswordCommand: User not found in database");
+
+				request.setAttribute(Constants.ERROR, 1);
+				request.setAttribute(Constants.ERRORMSG, "User does not exist.");
+			} else {
+
+				String user_token = dao.getToken(user);
+				System.out.println("ResetPasswordCommand: user token = " + user_token);
+				if (user_token.equals(input_token)) {
+					String newPassword = request.getParameter("password");
+					String hashedPassword = Common.hashPassword(newPassword, user.getSalt_hash());
+					System.out.println("hashed password is " + hashedPassword);
+					dao.setPassword(user, hashedPassword);
+					dao.setToken(user, "");
+					System.out.println("ResetPasswordCommand: Password reset successful");
+					response.sendRedirect(Constants.ROUTER + Constants.RESETPASSWORD_COMMAND + "&success=yes");
+					return;
 				} else {
-				
-					String user_token = (String) session.getAttribute("token");
-					System.out.println("ResetPasswordCommand: session token = " + user_token);
-					if (user_token.equals(input_token)) {
-						String newPassword = request.getParameter("password");
-						String hashedPassword = Common.hashPassword(newPassword, user.getSalt_hash());
-						System.out.println("hashed password is " + hashedPassword);
-						dao.setPassword(user, hashedPassword);
-						session.invalidate();
-						System.out.println("ResetPasswordCommand: Password reset successful");
-						response.sendRedirect(Constants.ROUTER + Constants.RESETPASSWORD_COMMAND + "&success=yes");
-						return;
-					} else {
-						System.err.println("ResetPasswordCommand: Invalid token");
-	
-						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Invalid token.");
-					}
+					System.err.println("ResetPasswordCommand: Invalid token");
+
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Invalid token.");
 				}
+
 			}
 		}
 
