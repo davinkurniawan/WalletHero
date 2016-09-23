@@ -126,8 +126,8 @@
 			var password = form.password.value.trim();
 			var repassword = form.repassword.value.trim();
 			var email = form.email.value.trim();
-			var firstname = form.first_name.value.trim();
-			var lastname = form.last_name.value.trim();
+			var firstname = form.firstname.value.trim();
+			var lastname = form.lastname.value.trim();
 			
 			username = username.replace(" ", "");
 			email = email.replace(" ", "");
@@ -189,7 +189,7 @@
 				document.getElementById("div-firstname").className = "form-group has-error";
 				document.getElementById("div-lastname").className = "form-group";
 				
-				form.first_name.focus();
+				form.firstname.focus();
 				return false;
 			}
 			else if (lastname.length == 0){
@@ -201,7 +201,7 @@
 				document.getElementById("div-firstname").className = "form-group";
 				document.getElementById("div-lastname").className = "form-group has-error";
 				
-				form.last_name.focus();
+				form.lastname.focus();
 				return false;
 			}
 			else if (username.length > 32 || username.length < 6){
