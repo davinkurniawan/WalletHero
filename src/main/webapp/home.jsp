@@ -29,6 +29,7 @@
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
                 <li class="active"><a href="./">Home</a></li>
+                <li><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
                 <li><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
                 <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
 

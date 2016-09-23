@@ -11,6 +11,7 @@ public interface CommonDAO {
 	public User getUser(String userinfo, String password);
 	public User getUser(String sid);
 	public User getUser(String userinfo, String firstName, String lastName);
+	public boolean updateUserNames(User u);
 	
 	public boolean addTransaction(Transaction t);
 	public List<Transaction> getAllTransactions(int personID);

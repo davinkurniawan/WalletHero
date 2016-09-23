@@ -187,6 +187,49 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
+	public boolean updateUserNames(User u) {
+		boolean result = true;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			String query = "UPDATE users SET username=?, first_name=?, middle_name=?, last_name=? " +
+						" WHERE id=?;";
+			PreparedStatement stmt = conn.prepareStatement(query);
+
+			stmt.setString	(1, u.getUsername());
+			stmt.setString	(2, u.getFirst_name());
+			stmt.setString	(3, (u.getMiddle_name() != null) ? u.getMiddle_name() : "");
+			stmt.setString	(4, u.getLast_name());
+			stmt.setLong	(5, u.getUserID());
+
+			int n = stmt.executeUpdate();
+			if (n != 1) {
+				throw new DataSourceException("Did not update one row");
+			}
+
+			stmt.close();
+		} catch (SQLException | DataSourceException | ServiceLocatorException e) {
+			result = false;
+			System.err.println(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					result = false;
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+
+	@Override
 	public boolean addTransaction(Transaction t) {
 		boolean result = true;
 		Connection conn = null;
