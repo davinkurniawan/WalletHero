@@ -7,7 +7,8 @@ package au.edu.unsw.comp4920.common;
  */
 public final class Constants {
 	
-	// Router Commands
+	// Router Commands 
+	// Which navigation bar choice is active depends on router commands
 	public static final String SIGNIN_COMMAND 			= "signIn";
 	public static final String SIGNOUT_COMMAND 			= "signOut";
 	public static final String SIGNUP_COMMAND 			= "signUp";
