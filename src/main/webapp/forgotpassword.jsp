@@ -25,11 +25,11 @@
 						</tr>
 						<tr>
 							<td>First Name:</td>
-							<td><input type="text" name="first_name" /></td>
+							<td><input type="text" name="firstname" /></td>
 						</tr>
 						<tr>
 							<td>Last Name:</td>
-							<td><input type="text" name="last_name" /></td>
+							<td><input type="text" name="lastname" /></td>
 						</tr>
 					</tbody>
 				</table>

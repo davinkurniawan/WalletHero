@@ -30,8 +30,8 @@ public class ForgotPasswordCommand implements Command {
 		if (action != null && action.equalsIgnoreCase("recovery")) {
 			
 			String userinfo = request.getParameter("username");
-			String firstname = request.getParameter("firstName");
-			String lastname = request.getParameter("lastName");
+			String firstname = request.getParameter("firstname");
+			String lastname = request.getParameter("lastname");
 			User user = null;
 			
 			if (userinfo != null && firstname != null && lastname != null) {
@@ -43,6 +43,7 @@ public class ForgotPasswordCommand implements Command {
 						request.setAttribute(Constants.ERROR, 1);
 						request.setAttribute(Constants.ERRORMSG, "User account is not yet activated.");
 					}
+					
 					String token = UUID.randomUUID().toString();
 					dao.setToken(user, token);
 					System.out.println("Token: " + token);
@@ -74,6 +75,7 @@ public class ForgotPasswordCommand implements Command {
 				}
 			}
 		}
+		
 		// Display forgot password page
 		RequestDispatcher rd = request.getRequestDispatcher("/forgotpassword.jsp");
 		rd.forward(request, response);

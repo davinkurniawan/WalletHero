@@ -90,17 +90,17 @@
 					
 					<div class="form-group" id="div-firstname" name="div-firstname">
 				  		<label>First Name <label style="color:red">*</label></label>
-						<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name..." value="${param['first_name']}"/>
+						<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name..." value="${param['firstname']}"/>
 					</div>
 					
 					<div class="form-group" id="div-middlename" name="div-middlename">
 				  		<label>Middle Name</label>
-						<input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name..." value="${param['middle_name']}"/>
+						<input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middle Name..." value="${param['middlename']}"/>
 					</div>
 					
 					<div class="form-group" id="div-lastname" name="div-lastname">
 				  		<label>Last Name <label style="color:red">*</label></label>
-						<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name..." value="${param['last_name']}"/>
+						<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name..." value="${param['lastname']}"/>
 					</div>
 
 					<input type="hidden" name="action" value="signUp"/> 

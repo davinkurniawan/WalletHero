@@ -38,9 +38,9 @@ public class SignUpCommand implements Command {
 				request.getParameter("password") != null &&
 				request.getParameter("repassword") != null &&
 				request.getParameter("email") != null &&
-				request.getParameter("first_name") != null &&
-				request.getParameter("middle_name") != null &&
-				request.getParameter("last_name") != null) {
+				request.getParameter("firstname") != null &&
+				request.getParameter("middlename") != null &&
+				request.getParameter("lastname") != null) {
 			
 				if (request.getParameter("username").length() < 6 || request.getParameter("username").length() > 32) {
 					System.err.println("SignUpCommand: Username must be between 6 to 32 characters.");
@@ -84,9 +84,9 @@ public class SignUpCommand implements Command {
 						User user = new User();
 						user.setUsername(request.getParameter("username"));
 						user.setEmail(request.getParameter("email"));
-						user.setFirstName(request.getParameter("firstName"));
-						user.setMiddleName(request.getParameter("middleName"));
-						user.setLastName(request.getParameter("lastName"));
+						user.setFirstName(request.getParameter("firstname"));
+						user.setMiddleName(request.getParameter("middlename"));
+						user.setLastName(request.getParameter("lastname"));
 						user.setSaltHash(generateSalt());
 						user.setPassword(Common.hashPassword(request.getParameter("password"), user.getSaltHash()));
 						
