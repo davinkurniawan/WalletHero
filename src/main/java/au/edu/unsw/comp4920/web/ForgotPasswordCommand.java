@@ -59,7 +59,7 @@ public class ForgotPasswordCommand implements Command {
 					content += "If you did not request a password reset, please ignore this email.";
 					content += "<br/><br/>";
 					content += "Regards,<br/>";
-					content += "WalletHero Team";
+					content += "WalletHero Support Team";
 					
 					MailHelper mh = new MailHelper();
 					mh.sendEmail(user.getEmail(), "WalletHero Password Recovery", content);
