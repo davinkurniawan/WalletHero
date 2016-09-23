@@ -67,12 +67,13 @@ public class ProfileCommand implements Command {
 					
 					if (dao.updateUserNames(user)) {
 						user = updatedUser;					
-						if (email != null) {
-							sendChangeEmail(email, user, dao);
-							request.setAttribute("sent_email_confirmation", true);
-						}
 					} else 
 						request.setAttribute("update_profile_fail", true);
+					
+					if (email != null && !email.equals(user.getEmail())) {
+						sendChangeEmail(email, user, dao);
+						request.setAttribute("sent_email_confirmation", true);
+					}
 					
 					break;
 					
