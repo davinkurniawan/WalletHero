@@ -40,7 +40,7 @@ public class ForgotPasswordCommand implements Command {
 					if (user.getStatusID() != 2) {
 						System.err.println("ForgotPasswordCommand: User account is not activated.");
 						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "User account is not yet activated.");
+						request.setAttribute(Constants.ERRORMSG, "User account is not yet activated!");
 					}
 					
 					String token = UUID.randomUUID().toString();
@@ -70,7 +70,7 @@ public class ForgotPasswordCommand implements Command {
 				} else {
 					System.err.println("ForgotPasswordCommand: Invalid credentials.");
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Sorry, no matching user with supplied credentials.");
+					request.setAttribute(Constants.ERRORMSG, "Sorry, no matching user with supplied credentials!");
 				}
 			}
 		}

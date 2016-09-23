@@ -80,7 +80,7 @@ public class ResetPasswordCommand implements Command {
 							else {
 								System.err.println("ResetPasswordCommand: Invalid token");
 								request.setAttribute(Constants.ERROR, 1);
-								request.setAttribute(Constants.ERRORMSG, "Invalid token.");
+								request.setAttribute(Constants.ERRORMSG, "Token is invalid!");
 							}
 						}
 						else{
