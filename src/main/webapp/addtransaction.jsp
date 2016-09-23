@@ -52,23 +52,24 @@
 						Recurring</td>
 				</tr>
 
-				<!---
+
 				<tr>
-					<td><select name="recurrenceType">
-							<option value="week">Weekly</option>
-							<option value="fortnight">Fortnightly</option>
-							<option value="month">Monthly</option>
-							<option value="quarter">Quarterly</option>
-							<option value="half">Half yearly</option>
+					<td><select name="recurrenceFreq">
+							<option value="weekly">Weekly</option>
+							<option value="fortnightly">Fortnightly</option>
+							<option value="monthly">Monthly</option>
+							<option value="quarterly">Quarterly</option>
+							<option value="half_yearly">Half yearly</option>
 							<option value="yearly">Yearly</option>
 					</select></td>
-
 				<tr>
 
-					<td><input type="radio" name="recurrenceNumber" value="indefinite" checked>Indefinite&nbsp&nbsp</td>
-					<td><input type="radio" name="recurrenceNumber" value="amount">Number of payments: <input type="number" name="payments" /></td>
-				</tr> 
-				-->
+					<td><input type="radio" name="paymentPeriod"
+						value="indefinite" checked>Indefinite&nbsp&nbsp</td>
+					<td><input type="radio" name="paymentPeriod" value="amount">Number
+						of payments: <input type="number" name="numberPayments" /></td>
+				</tr>
+
 
 			</tbody>
 		</table>

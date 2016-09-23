@@ -10,6 +10,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/navbar.css">
+<link rel="stylesheet" href="css/sticky-footer.css">
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet"
@@ -17,35 +20,32 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-	
-<%@ include file="bootstrapHeader.jsp" %>
 
 <title>${applicationScope['WEB_NAME']}-TransactionsOverview</title>
 </head>
 <body>
-	<%@ include file="signedinnavbar.jsp" %>
+	<%@ include file="signedinnavbar.jsp"%>
 
 
-    <div class="container marketing">
+	<div class="container marketing">
 		<h3>${requestScope.transactionRange}</h3>
-	
+
 		<label class="checkbox-inline"><input type="checkbox"
-			id="incomesButton" value="" checked="checked"> Show incomes? </label>
-	
-		<label class="checkbox-inline"><input type="checkbox"
-			id="expensesButton" value="" checked="checked"> Show expenses?
-		</label>
-	
+			id="incomesButton" value="" checked="checked"> Show incomes?
+		</label> <label class="checkbox-inline"><input type="checkbox"
+			id="expensesButton" value="" checked="checked"> Show
+			expenses? </label>
+
 		<p></p>
-	
+
 		<form action="router?operation=viewTransactions" method="POST">
 			From date: <input type="text" class="datepicker" name="from_date" />
 			To date: <input type="text" class="datepicker" name="to_date" /> <input
 				type=submit value="Confirm" class="btn btn-primary" />
 		</form>
-	
+
 		<p></p>
-	
+
 		<table class="table table-bordered" style="table-layout: fixed">
 			<tbody>
 				<tr>
@@ -66,8 +66,8 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		
-		<%@ include file="footer.jsp" %>
+
+		<%@ include file="footer.jsp"%>
 	</div>
 
 	<script>
@@ -89,6 +89,5 @@
 			$(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
 		});
 	</script>
-
 </body>
 </html>

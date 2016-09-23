@@ -13,6 +13,8 @@ import java.sql.Date;
 public class Transaction {
 	private int transactionID;
 	private int personID;
+	private boolean recurrence = false;
+	
 	private Date date;
 	private String detail;
 	private BigDecimal amount;
@@ -23,7 +25,7 @@ public class Transaction {
 
 	}
 
-	public Transaction(int transactionID, int personID, Date date, String detail, BigDecimal amount, String category,
+	public Transaction(int transactionID, int personID, boolean recurrence, Date date, String detail, BigDecimal amount, String category,
 			boolean isIncome) {
 		super();
 		this.transactionID = transactionID;
@@ -33,6 +35,7 @@ public class Transaction {
 		this.amount = amount;
 		this.category = category;
 		this.isIncome = isIncome;
+		this.recurrence = recurrence;
 	}
 
 	public int getTransactionID() {
@@ -101,10 +104,26 @@ public class Transaction {
 			return "Expense";
 		}
 	}
+	
+	public boolean isRecurrence() {
+		return recurrence;
+	}
+
+	public void setRecurrence(boolean recurrence) {
+		this.recurrence = recurrence;
+	}
 
 	@Override
 	public String toString() {
 		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", date=" + date + ", detail="
 				+ detail + ", amount=" + amount + ", category=" + category + ", isIncome=" + isIncome + "]";
+	}
+
+	public int getRecurrence() {
+		if (recurrence) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 }

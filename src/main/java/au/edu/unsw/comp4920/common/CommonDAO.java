@@ -12,10 +12,8 @@ public interface CommonDAO {
 	public User getUser(String sid);
 	public User getUser(String userinfo, String firstName, String lastName);
 	
-	public boolean addTransaction(Transaction t);
-	public List<Transaction> getAllTransactions(int personID);
-	public List<Transaction> getAllExpenses(int personID);
-	public List<Transaction> getAllIncomes(int personID);
+	public int addTransaction(Transaction t);
+	public boolean addRecurring(Recurrence r);	
 	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to);
 	
 	public void createSession(Session session);
