@@ -30,15 +30,15 @@ public class ForgotPasswordCommand implements Command {
 		if (action != null && action.equalsIgnoreCase("recovery")) {
 			
 			String userinfo = request.getParameter("username");
-			String firstname = request.getParameter("first_name");
-			String lastname = request.getParameter("last_name");
+			String firstname = request.getParameter("firstName");
+			String lastname = request.getParameter("lastName");
 			User user = null;
 			
 			if (userinfo != null && firstname != null && lastname != null) {
 				user = dao.getUser(userinfo, firstname, lastname);
 				
 				if (user != null) {
-					if (user.getStatus_id() != 2) {
+					if (user.getStatusID() != 2) {
 						System.err.println("ForgotPasswordCommand: User account is not activated.");
 						request.setAttribute(Constants.ERROR, 1);
 						request.setAttribute(Constants.ERRORMSG, "User account is not yet activated.");
@@ -50,7 +50,7 @@ public class ForgotPasswordCommand implements Command {
 					System.out.println("sending email to " + user.getEmail());
 					// Send email here 
 					
-					String content = "<b>Hi " + user.getFirst_name() + "," + "</b><br/><br/>";
+					String content = "<b>Hi " + user.getFirstName() + "," + "</b><br/><br/>";
 					content += "You recently requested to reset your password for your WalletHero account.";
 					content += "Click the link below to reset it.<br/>";
 					content += Constants.SERVER + Constants.ROUTER + Constants.RESETPASSWORD_COMMAND;

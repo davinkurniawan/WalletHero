@@ -39,7 +39,7 @@ public class EmailValidationCommand implements Command {
 			else{
 				String user_token = dao.getToken(user);
 				
-				if (user.getStatus_id() == 2){
+				if (user.getStatusID() == 2){
 					System.err.println("EmailValidationCommand: Invalid token");
 					
 					request.setAttribute(Constants.ERROR, 0);

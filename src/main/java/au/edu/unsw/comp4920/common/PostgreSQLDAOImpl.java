@@ -49,10 +49,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(1, u.getUsername());
 				stmt.setString(2, u.getEmail());
 				stmt.setString(3, u.getPassword());
-				stmt.setString(4, u.getSalt_hash());
-				stmt.setString(5, u.getFirst_name());
-				stmt.setString(6, (u.getMiddle_name() != null) ? u.getMiddle_name() : "");
-				stmt.setString(7, u.getLast_name());
+				stmt.setString(4, u.getSaltHash());
+				stmt.setString(5, u.getFirstName());
+				stmt.setString(6, (u.getMiddleName() != null) ? u.getMiddleName() : "");
+				stmt.setString(7, u.getLastName());
 				stmt.setString(8, u.getToken());
 				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for Disabled
 				stmt.setDouble(10, 0.0); // Default to $0.0
@@ -160,12 +160,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				u.setUsername(rs.getString("username"));
 				u.setEmail(rs.getString("email"));
 				u.setPassword(rs.getString("password"));
-				u.setSalt_hash(rs.getString("salt_hash"));
-				u.setFirst_name(rs.getString("first_name"));
-				u.setMiddle_name(rs.getString("middle_name"));
-				u.setLast_name(rs.getString("last_name"));
+				u.setSaltHash(rs.getString("salt_hash"));
+				u.setFirstName(rs.getString("first_name"));
+				u.setMiddleName(rs.getString("middle_name"));
+				u.setLastName(rs.getString("last_name"));
 				u.setToken(rs.getString("token"));
-				u.setStatus_id(rs.getInt("status_id"));
+				u.setStatusID(rs.getInt("status_id"));
 				u.setBudget(rs.getDouble("budget"));
 				// System.out.println("UserDTO successfully created.");
 			}
@@ -195,15 +195,14 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			String query = "UPDATE users SET username=?, first_name=?, middle_name=?, last_name=? " +
+			String query = "UPDATE users SET first_name=?, middle_name=?, last_name=? " +
 						" WHERE id=?;";
 			PreparedStatement stmt = conn.prepareStatement(query);
 
-			stmt.setString	(1, u.getUsername());
-			stmt.setString	(2, u.getFirst_name());
-			stmt.setString	(3, (u.getMiddle_name() != null) ? u.getMiddle_name() : "");
-			stmt.setString	(4, u.getLast_name());
-			stmt.setLong	(5, u.getUserID());
+			stmt.setString	(1, u.getFirstName());
+			stmt.setString	(2, (u.getMiddleName() != null) ? u.getMiddleName() : "");
+			stmt.setString	(3, u.getLastName());
+			stmt.setLong	(4, u.getUserID());
 
 			int n = stmt.executeUpdate();
 			if (n != 1) {
@@ -603,8 +602,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	public User getUser(String userinfo, String firstName, String lastName) {
 		User u = getUser(userinfo, null);
 		if (u == null) return null;
-		if (!u.getFirst_name().equalsIgnoreCase(firstName) ||
-				!u.getLast_name().equalsIgnoreCase(lastName)) {
+		if (!u.getFirstName().equalsIgnoreCase(firstName) ||
+				!u.getLastName().equalsIgnoreCase(lastName)) {
 			return null;
 		}
 		return u;

@@ -40,7 +40,7 @@ public class ResetPasswordCommand implements Command {
 				System.out.println("ResetPasswordCommand: user token = " + user_token);
 				if (user_token.equals(input_token)) {
 					String newPassword = request.getParameter("password");
-					String hashedPassword = Common.hashPassword(newPassword, user.getSalt_hash());
+					String hashedPassword = Common.hashPassword(newPassword, user.getSaltHash());
 					System.out.println("hashed password is " + hashedPassword);
 					dao.setPassword(user, hashedPassword);
 					dao.setToken(user, "");

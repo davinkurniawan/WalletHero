@@ -39,8 +39,8 @@ public class ProfileCommand implements Command {
 		
 		HttpSession session = request.getSession();
         String sid = session.getAttribute(Constants.SID).toString();
-        String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
-        System.out.println("SignInCommand: Action is " + action);
+        String actionString = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+        System.out.println("SignInCommand: Action is " + actionString);
 		
 		User user = dao.getUser(sid);
 		
@@ -48,26 +48,22 @@ public class ProfileCommand implements Command {
 		if (action != null) {
 			switch (action) {
 				case PROFILE:
-					String username 	= request.getParameter("username");
 					String email 		= request.getParameter("email");
 					String firstname 	= request.getParameter("firstname");
 					String middlename 	= request.getParameter("middlename");
 					String lastname 	= request.getParameter("lastname");
 					
-					if ( username == null || email == null ||
-							firstname == null || lastname == null) {
+					if ( email == null || firstname == null || lastname == null) {
 						request.setAttribute("null_values_exist", true);
 					}
 					
 					User updatedUser = new User(user);
-					if (username != null) 
-						updatedUser.setUsername(username);
 					if (firstname != null) 
-						updatedUser.setFirst_name(firstname);
+						updatedUser.setFirstName(firstname);
 					if (middlename != null) 
-						user.setMiddle_name(middlename);
+						user.setMiddleName(middlename);
 					if (updatedUser != null) 
-						user.setLast_name(lastname);
+						user.setLastName(lastname);
 					
 					if (dao.updateUserNames(user)) {
 						user = updatedUser;					
@@ -100,7 +96,7 @@ public class ProfileCommand implements Command {
 		System.out.println("sending email to " + email);
 		
 		// Send email here 
-		String content = "Hi " + user.getFirst_name() + "," + "<br/><br/>";
+		String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
 		content += "Please confirm the new email for your WalletHero account";
 		content += "by clicking on the link below.<br/>";
         // Change command to update email not validate

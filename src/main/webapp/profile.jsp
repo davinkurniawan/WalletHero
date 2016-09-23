@@ -38,17 +38,17 @@
 			
 			<div class="form-group" id="div-firstname" name="div-firstname">
 		  		<label>First Name <label style="color:red">*</label></label>
-  				<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name..." value="${user.getFirst_name()}"/>
+  				<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name..." value="${user.getFirstName()}"/>
 			</div>
 			
 			<div class="form-group" id="div-middlename" name="div-middlename">
 		  		<label>Middle Name</label>
-  				<input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middle Name..." value="${user.getMiddle_name()}"/>
+  				<input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middle Name..." value="${user.getMiddleName()}"/>
 			</div>
 			
 			<div class="form-group" id="div-lastname" name="div-lastname">
 		  		<label>Last Name <label style="color:red">*</label></label>
-  				<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name..." value="${user.getLast_name()}"/>
+  				<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name..." value="${user.getLastName()}"/>
 			</div>
 			 			  
 			<input type="hidden" name="action" value="update_profile"/>	

@@ -84,11 +84,11 @@ public class SignUpCommand implements Command {
 						User user = new User();
 						user.setUsername(request.getParameter("username"));
 						user.setEmail(request.getParameter("email"));
-						user.setFirst_name(request.getParameter("first_name"));
-						user.setMiddle_name(request.getParameter("middle_name"));
-						user.setLast_name(request.getParameter("last_name"));
-						user.setSalt_hash(generateSalt());
-						user.setPassword(Common.hashPassword(request.getParameter("password"), user.getSalt_hash()));
+						user.setFirstName(request.getParameter("firstName"));
+						user.setMiddleName(request.getParameter("middleName"));
+						user.setLastName(request.getParameter("lastName"));
+						user.setSaltHash(generateSalt());
+						user.setPassword(Common.hashPassword(request.getParameter("password"), user.getSaltHash()));
 						
 						String token = UUID.randomUUID().toString();
 						user.setToken(token);
@@ -98,7 +98,7 @@ public class SignUpCommand implements Command {
 							System.out.println("sending email");
 							// Send email here 
 							
-							String content = "Hi " + user.getFirst_name() + "," + "<br/><br/>";
+							String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
 							content += "Please confirm your email using the following link below" + "<br/>";
 							content += Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
 							content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;

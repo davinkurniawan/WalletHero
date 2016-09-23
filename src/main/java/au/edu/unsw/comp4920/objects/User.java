@@ -61,12 +61,12 @@ public class User {
 		this.username 	 = u.getUsername();
 		this.email 		 = u.getEmail();
 		this.password 	 = u.getPassword();
-		this.salt_hash 	 = u.getSalt_hash();
-		this.first_name  = u.getFirst_name();
-		this.middle_name = u.getMiddle_name();
-		this.last_name 	 = u.getLast_name();
+		this.salt_hash 	 = u.getSaltHash();
+		this.first_name  = u.getFirstName();
+		this.middle_name = u.getMiddleName();
+		this.last_name 	 = u.getLastName();
 		this.token 		 = u.getToken();
-		this.status_id 	 = u.getStatus_id();
+		this.status_id 	 = u.getStatusID();
 		this.budget 	 = u.getBudget();
 	}
 
@@ -102,35 +102,35 @@ public class User {
 		this.password = password;
 	}
 
-	public String getSalt_hash() {
+	public String getSaltHash() {
 		return salt_hash;
 	}
 
-	public void setSalt_hash(String salt_hash) {
+	public void setSaltHash(String salt_hash) {
 		this.salt_hash = salt_hash;
 	}
 
-	public String getFirst_name() {
+	public String getFirstName() {
 		return first_name;
 	}
 
-	public void setFirst_name(String first_name) {
+	public void setFirstName(String first_name) {
 		this.first_name = first_name;
 	}
 
-	public String getMiddle_name() {
+	public String getMiddleName() {
 		return middle_name;
 	}
 
-	public void setMiddle_name(String middle_name) {
+	public void setMiddleName(String middle_name) {
 		this.middle_name = middle_name;
 	}
 
-	public String getLast_name() {
+	public String getLastName() {
 		return last_name;
 	}
 
-	public void setLast_name(String last_name) {
+	public void setLastName(String last_name) {
 		this.last_name = last_name;
 	}
 
@@ -142,11 +142,11 @@ public class User {
 		this.token = token;
 	}
 
-	public int getStatus_id() {
+	public int getStatusID() {
 		return status_id;
 	}
 
-	public void setStatus_id(int status_id) {
+	public void setStatusID(int status_id) {
 		this.status_id = status_id;
 	}
 
