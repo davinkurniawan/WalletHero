@@ -8,6 +8,7 @@
 <title>${applicationScope['WEB_NAME']}- Password Recovery</title>
 </head>
 <body>
+	<%@ include file="navbar.jsp" %>
 	<c:choose>
 		<c:when test="${errorMessage != null}">
 			<font color="red"><c:out value="${errorMessage}" /></font>
