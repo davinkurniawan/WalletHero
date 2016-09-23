@@ -24,8 +24,8 @@ public class EmailValidationCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException{
 		System.out.println("Inside: EmailValidationCommand");
 		
-		String input_token = request.getParameter("token");
-		String username = request.getParameter("username");
+		String input_token = request.getParameter(Constants.TOKEN);
+		String username = request.getParameter(Constants.USERNAME);
 				
 		if (input_token != null && username != null){
 			User user = dao.getUser(username, null);
@@ -40,7 +40,7 @@ public class EmailValidationCommand implements Command {
 				String user_token = dao.getToken(user);
 				
 				if (user.getStatusID() == 2){
-					System.err.println("EmailValidationCommand: Invalid token");
+					System.err.println("EmailValidationCommand: Invalid Status ID");
 					
 					request.setAttribute(Constants.ERROR, 0);
 					request.setAttribute(Constants.ERRORMSG, "Your Account has already been Activated!");
@@ -64,7 +64,7 @@ public class EmailValidationCommand implements Command {
 			System.err.println("EmailValidationCommand: Invalid input");
 
 			request.setAttribute(Constants.ERROR, 1);
-			request.setAttribute(Constants.ERRORMSG, "Missing Information!");
+			request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/emailvalidation.jsp");

@@ -35,6 +35,8 @@ public final class Constants {
 	public static final String ERRORMSG					= "errorMessage";
 	public static final String RESULT					= "result";
 	public static final String SEARCH					= "search";
+	public static final String TOKEN					= "token";
+	public static final String USERNAME					= "username";
 	
 	// Session Parameters
 	public static final String USERID	 				= "userID";

@@ -21,7 +21,6 @@ public class ForgotPasswordCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
-		
 		System.out.println("Inside: ForgotPasswordCommand");
 
 		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();

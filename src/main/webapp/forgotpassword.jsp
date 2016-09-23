@@ -66,7 +66,7 @@
 		      <div class="row featurette">
 		      	<div class="col-md-6"> 
 
-			      <form action="${applicationScope['ROUTER_FORGOTPASSWORD']}" method="POST" onSubmit="return validator_signup(this)">
+			      <form action="${applicationScope['ROUTER_FORGOTPASSWORD']}" method="POST" onSubmit="return validator_forgotpassword(this)">
 
 				  	<div class="form-group" id="div-username" name="div-username">
 				  		<label>Username or Email <label style="color:red">*</label></label>
@@ -96,19 +96,16 @@
     </div>
 
     <script type="text/javascript">
-    	function validator_signup(form){									
+    	function validator_forgotpassword(form){									
 			var username = form.username.value.trim();
-			var firstname = form.first_name.value.trim();
-			var lastname = form.last_name.value.trim();
+			var firstname = form.firstname.value.trim();
+			var lastname = form.lastname.value.trim();
 			
 			username = username.replace(" ", "");
 
 			if(username.length == 0){
 				document.getElementById("error_message").innerHTML = "Please enter your Username!";
 				document.getElementById("div-username").className = "form-group has-error";
-				document.getElementById("div-password").className = "form-group";
-				document.getElementById("div-repassword").className = "form-group";
-				document.getElementById("div-email").className = "form-group";
 				document.getElementById("div-firstname").className = "form-group";
 				document.getElementById("div-lastname").className = "form-group";
 
@@ -118,9 +115,6 @@
 			else if (firstname.length == 0){
 				document.getElementById("error_message").innerHTML = "Please enter your First Name!";
 				document.getElementById("div-username").className = "form-group";
-				document.getElementById("div-password").className = "form-group";
-				document.getElementById("div-repassword").className = "form-group";
-				document.getElementById("div-email").className = "form-group";
 				document.getElementById("div-firstname").className = "form-group has-error";
 				document.getElementById("div-lastname").className = "form-group";
 				
@@ -130,9 +124,6 @@
 			else if (lastname.length == 0){
 				document.getElementById("error_message").innerHTML = "Please enter your Last Name!";
 				document.getElementById("div-username").className = "form-group";
-				document.getElementById("div-password").className = "form-group";
-				document.getElementById("div-repassword").className = "form-group";
-				document.getElementById("div-email").className = "form-group";
 				document.getElementById("div-firstname").className = "form-group";
 				document.getElementById("div-lastname").className = "form-group has-error";
 				
@@ -142,9 +133,6 @@
 			else if (username.length > 32 || username.length < 6){
 				document.getElementById("error_message").innerHTML = "Username must be 6 to 32 characters!";
 				document.getElementById("div-username").className = "form-group has-error";
-				document.getElementById("div-password").className = "form-group";
-				document.getElementById("div-repassword").className = "form-group";
-				document.getElementById("div-email").className = "form-group";
 				document.getElementById("div-firstname").className = "form-group";
 				document.getElementById("div-lastname").className = "form-group";
 
