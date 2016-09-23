@@ -16,12 +16,11 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
-                <li><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
-                <li><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
-                <li><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
-                <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
-                <li><a href="${applicationScope['ROUTER_SIGNOUT']}">Sign Out</a></li>
+                <li class="${home }"><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
+                <li class="${viewTransactions } ${addTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
+                <li class="${profile }"><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
+                <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
+                <li class="${signOut }"><a href="${applicationScope['ROUTER_SIGNOUT']}">Sign Out</a></li>
 
                 <!--<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

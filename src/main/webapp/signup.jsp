@@ -15,32 +15,7 @@
 	<%@ include file="bootstrapHeader.jsp" %>
 </head>
 <body>
-    <div class="navbar-wrapper">
-      <div class="container">
-        <nav class="navbar navbar-custom navbar-static-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="${applicationScope['ROUTER_PUBLIC']}">WalletHero</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="./">Home</a></li>
-                <li><a href="${applicationScope['ROUTER_SIGNIN']}">Sign In</a></li>
-                <li class="active"><a href="${applicationScope['ROUTER_SIGNUP']}">Sign Up</a></li>
-                <li><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
-
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
+    <jsp:include page="navbar.jsp"></jsp:include>
 	
 	<div class="container marketing">
 
