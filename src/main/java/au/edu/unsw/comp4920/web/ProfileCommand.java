@@ -38,7 +38,9 @@ public class ProfileCommand implements Command {
 		System.out.println("Inside: ProfileCommand");
 		
 		HttpSession session = request.getSession();
-		String sid = session.getAttribute(Constants.SID).toString();
+        String sid = session.getAttribute(Constants.SID).toString();
+        String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+        System.out.println("SignInCommand: Action is " + action);
 		
 		User user = dao.getUser(sid);
 		
@@ -54,7 +56,7 @@ public class ProfileCommand implements Command {
 					
 					if ( username == null || email == null ||
 							firstname == null || lastname == null) {
-						session.setAttribute("null_values_exist", true);
+						request.setAttribute("null_values_exist", true);
 					}
 					
 					User updatedUser = new User(user);
@@ -71,10 +73,10 @@ public class ProfileCommand implements Command {
 						user = updatedUser;					
 						if (email != null) {
 							sendChangeEmail(email, user, dao);
-							session.setAttribute("sent_email_confirmation", true);
+							request.setAttribute("sent_email_confirmation", true);
 						}
 					} else 
-						session.setAttribute("update_profile_fail", true);
+						request.setAttribute("update_profile_fail", true);
 					
 					break;
 					
@@ -84,10 +86,8 @@ public class ProfileCommand implements Command {
 					
 			}
 		}
-
-		session.setAttribute("user", user);
+        request.setAttribute(Constants.USER, user);
 		
-
 		RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
 		rd.forward(request, response);
 	}	
@@ -103,6 +103,7 @@ public class ProfileCommand implements Command {
 		String content = "Hi " + user.getFirst_name() + "," + "<br/><br/>";
 		content += "Please confirm the new email for your WalletHero account";
 		content += "by clicking on the link below.<br/>";
+        // Change command to update email not validate
 		content += Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
 		content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
 		content += "&email" + "=" + email;

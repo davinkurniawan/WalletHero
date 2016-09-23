@@ -23,32 +23,51 @@ public class EmailValidationCommand implements Command {
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException{
 		System.out.println("Inside: EmailValidationCommand");
+		
 		String input_token = request.getParameter("token");
-		User user = dao.getUser(request.getParameter("username"), null);
-		String nextPage = "/index.jsp";
-		
-		//TODO should redirect to emailvalidation.jsp with message
-		
-		if (user == null) {
-			System.err.println("EmailValidationCommand: User not found in database");
+		String username = request.getParameter("username");
+				
+		if (input_token != null && username != null){
+			User user = dao.getUser(username, null);
 			
-			request.setAttribute(Constants.ERROR, 1);
-			request.setAttribute(Constants.ERRORMSG, "User does not exist.");
-		} else {
-			String user_token = dao.getToken(user);
-			if (user_token.equals(input_token)) {
-				dao.setStatus(user, 2);
-				dao.setToken(user, "");
-				nextPage = "/signin.jsp";
-			} else {
-				System.err.println("EmailValidationCommand: Invalid token");
+			if (user == null) {
+				System.err.println("EmailValidationCommand: User not found in database");
 				
 				request.setAttribute(Constants.ERROR, 1);
-				request.setAttribute(Constants.ERRORMSG, "Invalid token.");
+				request.setAttribute(Constants.ERRORMSG, "Invalid User Account!");
+			}
+			else{
+				String user_token = dao.getToken(user);
+				
+				if (user.getStatus_id() == 2){
+					System.err.println("EmailValidationCommand: Invalid token");
+					
+					request.setAttribute(Constants.ERROR, 0);
+					request.setAttribute(Constants.ERRORMSG, "Your Account has already been Activated!");
+				}
+				else if (user_token.equals(input_token)) {
+					dao.setStatus(user, 2);
+					dao.setToken(user, "");
+					
+					request.setAttribute(Constants.ERROR, 0);
+					request.setAttribute(Constants.ERRORMSG, "Your Email has been validated!");
+				} 
+				else {
+					System.err.println("EmailValidationCommand: Invalid token");
+					
+					request.setAttribute(Constants.ERROR, 1);
+					request.setAttribute(Constants.ERRORMSG, "Invalid Token!");
+				}
 			}
 		}
+		else{
+			System.err.println("EmailValidationCommand: Invalid input");
+
+			request.setAttribute(Constants.ERROR, 1);
+			request.setAttribute(Constants.ERRORMSG, "Missing Information!");
+		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
+		RequestDispatcher rd = request.getRequestDispatcher("/emailvalidation.jsp");
 		rd.forward(request, response);
 	}	
 }

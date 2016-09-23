@@ -29,7 +29,14 @@ public class ViewTransactionsCommand implements Command {
 
 		String fromDate = request.getParameter("from_date");
 		String toDate = request.getParameter("to_date");
-
+		String category = "";
+		
+		// TODO: insert this as part of the filter; might be better if we
+		// can make one query for all the filters.
+		if (request.getParameter("category") != null) {
+			category =  request.getParameter("category");
+		}
+		
 		// TODO: Clean this logic up.
 		if (fromDate == null || toDate == null) {
 			fromDate = "";

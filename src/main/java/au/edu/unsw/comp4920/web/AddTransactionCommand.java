@@ -42,6 +42,10 @@ public class AddTransactionCommand implements Command {
 			t.setAmount(value);
 			t.setIsIncome(isIncome);
 			t.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			if (request.getParameter("category") != null) {
+				t.setCategory(request.getParameter("category"));
+			}
+			
 			dao.addTransaction(t);
 			
 			request.setAttribute("success", true);
