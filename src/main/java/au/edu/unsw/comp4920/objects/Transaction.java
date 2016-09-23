@@ -14,7 +14,7 @@ public class Transaction {
 	private int transactionID;
 	private int personID;
 	private boolean recurrence = false;
-	
+
 	private Date date;
 	private String detail;
 	private BigDecimal amount;
@@ -25,8 +25,8 @@ public class Transaction {
 
 	}
 
-	public Transaction(int transactionID, int personID, boolean recurrence, Date date, String detail, BigDecimal amount, String category,
-			boolean isIncome) {
+	public Transaction(int transactionID, int personID, boolean recurrence, Date date, String detail, BigDecimal amount,
+			String category, boolean isIncome) {
 		super();
 		this.transactionID = transactionID;
 		this.personID = personID;
@@ -104,7 +104,7 @@ public class Transaction {
 			return "Expense";
 		}
 	}
-	
+
 	public boolean isRecurrence() {
 		return recurrence;
 	}
@@ -125,5 +125,9 @@ public class Transaction {
 		} else {
 			return -1;
 		}
+	}
+
+	public int compareTo(Transaction t) {
+		return this.getDate().compareTo(t.getDate());
 	}
 }

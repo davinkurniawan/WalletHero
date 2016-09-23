@@ -13,6 +13,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -308,7 +310,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		hashMap.put("quarterly", QUARTERLY);
 		hashMap.put("half_yearly", HALF_YEARLY);
 		hashMap.put("yearly", YEARLY);
-		
+
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
@@ -381,7 +383,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		masterTransactionList.addAll(oneOffTransactionList);
 		masterTransactionList.addAll(recurringTransactionList);
-		
+
+		masterTransactionList.sort(new Comparator<Transaction>() {
+			public int compare(Transaction t1, Transaction t2) {
+				return t1.compareTo(t2);
+			}
+		});
 		return masterTransactionList;
 	}
 
