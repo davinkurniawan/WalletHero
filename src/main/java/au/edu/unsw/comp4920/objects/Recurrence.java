@@ -1,8 +1,5 @@
 package au.edu.unsw.comp4920.objects;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-
 /**
  * Basic transaction implementation, no support for recurring incomes and
  * expenses nor categories.
@@ -48,5 +45,4 @@ public class Recurrence {
 		return "Recurrence [transactionID=" + transactionID + ", recurrenceFreq=" + recurrenceFreq
 				+ ", recurrenceNumber=" + recurrenceNumber + "]";
 	}
-
 }
