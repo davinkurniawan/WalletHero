@@ -75,6 +75,8 @@
 
         <h5 style="color:Black">
             New to ${applicationScope['WEB_NAME']}? <a style="color:#0099FF" href="${applicationScope['ROUTER_SIGNUP']}">Sign up now »</a>
+       		<br/><br/>
+       		 <a style="color:#0099FF" href="${applicationScope['ROUTER_FORGOTPASSWORD']}">Forgot Your Password?</a>
         </h5>
       </div>
     </div>
@@ -90,7 +92,7 @@
       username = username.replace(" ", "");
 
       if(username.length == 0){
-        document.getElementById("error_message").innerHTML = "Please enter your Username!";
+        document.getElementById("error_message").innerHTML = "Please enter your Username or Email!";
         document.getElementById("div-username").className = "form-group has-error";
         document.getElementById("div-password").className = "form-group";
 
