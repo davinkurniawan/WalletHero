@@ -83,6 +83,7 @@ public class ProfileCommand implements Command {
 					
 			}
 		}
+		
         request.setAttribute(Constants.USER, user);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");

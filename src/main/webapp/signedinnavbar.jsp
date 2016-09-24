@@ -20,7 +20,7 @@
                 <li class="${viewTransactions } ${addTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
                 <li class="${profile }"><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
                 <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
-                <li class="${signOut }"><a href="${applicationScope['ROUTER_SIGNOUT']}">Sign Out</a></li>
+                <li class="${signOut }"><a href="${applicationScope['ROUTER_SIGNOUT']}" onclick="return confirm('Are you sure to Sign Out?');">Sign Out</a></li>
 
                 <!--<li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

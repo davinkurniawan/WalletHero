@@ -74,7 +74,7 @@
 
     <div class="container marketing">
 
-	  <h2>Welcome, &lt;USERNAME&gt;</h2>
+	  <h2>Welcome back, ${username}</h2>
 
       <hr class="featurette-divider">
 
