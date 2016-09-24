@@ -32,7 +32,7 @@ public class ResetPasswordCommand implements Command {
 		String password = request.getParameter("password");	
 		
 		if (input_token != null && username != null){
-			User user = dao.getUser(username, null);
+			User user = dao.getUserDetails(username);
 			
 			if (user == null) {
 				System.err.println("ResetPasswordCommand: User not found in database");

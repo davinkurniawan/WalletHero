@@ -28,7 +28,7 @@ public class EmailValidationCommand implements Command {
 		String username = request.getParameter(Constants.USERNAME);
 				
 		if (input_token != null && username != null){
-			User user = dao.getUser(username, null);
+			User user = dao.getUserDetails(username);
 			
 			if (user == null) {
 				System.err.println("EmailValidationCommand: User not found in database");
