@@ -122,7 +122,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+						
 			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE " + idQuery + passwordQuery);
 			
 			stmt.setString(1, userinfo);
@@ -612,16 +612,13 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 			
 			PreparedStatement stmt = conn.prepareStatement("SELECT token FROM users WHERE username = ?;");
-			
 			stmt.setString(1, u.getUsername());
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
+				token = rs.getString(1);
 			}
-			
-			token = rs.getString(1);
-			
+						
 			System.out.println("DAO: getToken(): " + token);
 			stmt.close();
 		} 
@@ -640,7 +637,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		}
 
 		if (token != null) {
-			System.out.println("found user");
+			System.out.println("found token");
 		}
 		
 		return token;
@@ -731,7 +728,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			
 			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Session WHERE id = ? AND user_id = ?;");
 			stmt.setString(1, sessionId);
-			stmt.setString(2, userId);
+			stmt.setInt(2, Integer.parseInt(userId));
 			
 			ResultSet rs = stmt.executeQuery();
 			
@@ -846,11 +843,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
+				salt = rs.getString(1);
 			}
-			
-			salt = rs.getString(1);
-			
+						
 			System.out.println("DAO: getSalt(): " + salt);
 			stmt.close();
 		} 

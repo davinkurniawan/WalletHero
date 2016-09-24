@@ -50,6 +50,7 @@ public class SignInCommand implements Command {
 					System.out.println("SignInCommand: Active user");
 		
 					HttpSession session = request.getSession(true);
+					
 					session.setAttribute(Constants.USERID, user.getUserID());
 					session.setAttribute(Constants.SID, session.getId());
 		
