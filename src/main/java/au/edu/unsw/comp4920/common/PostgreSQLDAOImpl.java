@@ -295,7 +295,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		}
 		
 		return result;
-		
 	}
 
 	@Override
