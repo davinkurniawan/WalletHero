@@ -43,8 +43,9 @@ public class AddTransactionCommand implements Command {
 			t.setAmount(value);
 			t.setIsIncome(isIncome);
 			t.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-			if (request.getParameter("category") != null) {
-				t.setCategory(request.getParameter("category"));
+			if (request.getParameter("categoryOption") != null) {
+				System.out.println("In AddTransactionCommand: Category is " + request.getParameter("categoryOption"));
+				t.setCategory(request.getParameter("categoryOption"));
 			}
 			
 			// One off expense.
