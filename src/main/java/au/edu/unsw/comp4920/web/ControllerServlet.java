@@ -42,6 +42,7 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.SEARCH_COMMAND,			new SearchCommand());
 		_commands.put(Constants.NOTFOUND_COMMAND, 		new ErrorCommand());
 		_commands.put(Constants.VALIDATE_COMMAND, 		new EmailValidationCommand());
+		_commands.put(Constants.EMAILUPDATE_COMMAND, 	new EmailUpdateCommand());
 		_commands.put(Constants.ABOUT_COMMAND, 			new AboutCommand());
 		_commands.put(Constants.ADDTRANSACTION_COMMAND, new AddTransactionCommand());
 		_commands.put(Constants.VIEWTRANSACTIONS_COMMAND, new ViewTransactionsCommand());
@@ -60,6 +61,7 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_SEARCH, 				Constants.ROUTER + Constants.SEARCH_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_NOTFOUND, 				Constants.ROUTER + Constants.NOTFOUND_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VALIDATE, 				Constants.ROUTER + Constants.VALIDATE_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_EMAILUPDATE, 			Constants.ROUTER + Constants.EMAILUPDATE_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ABOUT, 				Constants.ROUTER + Constants.ABOUT_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ADDTRANSACTION,    	Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VIEWTRANSACTIONS,    	Constants.ROUTER + Constants.VIEWTRANSACTIONS_COMMAND);
@@ -91,6 +93,7 @@ public class ControllerServlet extends HttpServlet {
 							dest.equals(Constants.SIGNIN_COMMAND)			|| 
 							dest.equals(Constants.SIGNUP_COMMAND) 			||
 							dest.equals(Constants.VALIDATE_COMMAND) 		||
+							dest.equals(Constants.EMAILUPDATE_COMMAND) 		||
 							dest.equals(Constants.NOTFOUND_COMMAND)			||
 							dest.equals(Constants.ABOUT_COMMAND) 			||
 							dest.equals(Constants.FORGOTPASSWORD_COMMAND)	||
@@ -115,6 +118,7 @@ public class ControllerServlet extends HttpServlet {
 							!dest.equals(Constants.SIGNIN_COMMAND)			&& 
 							!dest.equals(Constants.SIGNUP_COMMAND) 			&&
 							!dest.equals(Constants.VALIDATE_COMMAND) 		&&
+							!dest.equals(Constants.EMAILUPDATE_COMMAND) 	&&
 							!dest.equals(Constants.FORGOTPASSWORD_COMMAND)	&&
 							!dest.equals(Constants.RESETPASSWORD_COMMAND))
 

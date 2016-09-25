@@ -37,7 +37,7 @@ public class EmailValidationCommand implements Command {
 				request.setAttribute(Constants.ERRORMSG, "Invalid User Account!");
 			}
 			else{
-				String user_token = dao.getToken(user);
+				String user_token = user.getToken();
 				
 				if (user.getStatusID() == 2){
 					System.err.println("EmailValidationCommand: Invalid Status ID");

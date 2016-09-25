@@ -239,6 +239,48 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return result;
 	}
+	@Override
+	public boolean updateUserEmail(User u) {
+		boolean result = true;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			String query = "UPDATE users SET email = ?, token = ? WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(query);
+
+			stmt.setString	(1, u.getEmail());
+			stmt.setString	(2, u.getToken());
+			stmt.setLong	(3, u.getUserID());
+
+			int n = stmt.executeUpdate();
+			
+			if (n != 1) {
+				throw new DataSourceException("Did not update one row");
+			}
+
+			stmt.close();
+		} 
+		catch (SQLException | DataSourceException | ServiceLocatorException e) {
+			result = false;
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					result = false;
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		
+		return result;
+	}
 
 	@Override
 	public int addTransaction(Transaction t) {

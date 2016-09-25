@@ -23,6 +23,7 @@ public final class Constants {
 	public static final String VIEWTRANSACTIONS_COMMAND = "viewTransactions";
 	
 	public static final String VALIDATE_COMMAND 		= "emailvalidation";
+	public static final String EMAILUPDATE_COMMAND 		= "emailupdate";
 	public static final String ROUTER					= "router?operation=";
 	public static final String SERVER					= "http://localhost:8080/COMP4920-Project/";
 	
@@ -65,11 +66,15 @@ public final class Constants {
 	public static final String ROUTER_SEARCH			= "ROUTER_SEARCH";
 	public static final String ROUTER_NOTFOUND			= "ROUTER_NOTFOUND";
 	public static final String ROUTER_VALIDATE			= "ROUTER_VALIDATE";
+	public static final String ROUTER_EMAILUPDATE		= "ROUTER_EMAILUPDATE";
 	public static final String ROUTER_ABOUT				= "ROUTER_ABOUT";
 	public static final String ROUTER_ADDTRANSACTION	= "ROUTER_ADDTRANSACTION";
 	public static final String ROUTER_VIEWTRANSACTIONS	= "ROUTER_VIEWTRANSACTIONS";
 	public static final String ROUTER_FORGOTPASSWORD	= "ROUTER_FORGOTPASSWORD";
 	public static final String ROUTER_RESETPASSWORD		= "ROUTER_RESETPASSWORD";
+	
+	// Status
+	public static enum Status {INACTIVE, ACTIVE, DISABLED};
 	
 	// Prevent instantiation
 	private Constants() {};
