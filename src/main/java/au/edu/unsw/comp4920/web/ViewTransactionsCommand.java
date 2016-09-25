@@ -30,15 +30,25 @@ public class ViewTransactionsCommand implements Command {
 
 		String fromDate = request.getParameter("from_date");
 		String toDate = request.getParameter("to_date");
-		String category = "";
-
-		// TODO: insert this as part of the filter; might be better if we
-		// can make one query for all the filters.
-		if (request.getParameter("category") != null) {
-			category = request.getParameter("category");
+		
+		int categoryID;
+		boolean viewIncomes = false;
+		boolean viewExpenses = false;
+		
+		try {
+			categoryID = Integer.parseInt(request.getParameter("category"));
+		} catch (NumberFormatException e) {
+			categoryID = -1;
+		}
+	
+		if (request.getParameter("incomesChk") != null) {
+			viewIncomes = true;
+		}
+		
+		if (request.getParameter("expensesChk") != null) {
+			viewExpenses = true;
 		}
 
-		// TODO: Clean this logic up.
 		if (fromDate == null || toDate == null) {
 			fromDate = "";
 			toDate = "";
@@ -48,36 +58,44 @@ public class ViewTransactionsCommand implements Command {
 		String transactionRange;
 
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		Date from;
+		Date to;
 
-		// If a date range is specified, look in that range.
 		if (!fromDate.equals("") && !fromDate.equals("")) {
-			Date from = Date.valueOf(fromDate);
-			Date to = Date.valueOf(toDate);
+			// If a date range is specified, look in that range.
+			from = Date.valueOf(fromDate);
+			to = Date.valueOf(toDate);
 			transactionRange = "Viewing transactions from " + from.toString() + " to " + to.toString() + ".";
 
 			// TODO: Find proper workaround.
-			// Need to increment to by one day as PostgreSQL stores dates weird.
-			// http://stackoverflow.com/a/15840057
 			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
-			transactions = dao.getTransactionsByDate(personID, from, to);
-
+			
+		} else {
 			// If no range is specified, look for transactions done in past
 			// week.
-		} else {
-			//stackoverflow.com/a/35613796
-			Date from =	new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			// stackoverflow.com/a/35613796
+			from = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			from = new Date(from.getTime() - 24 * 60 * 60 * 1000 * 6);
-			
-			Date to =	new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+
+			to = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			transactionRange = "Viewing transactions from " + from.toString() + " to " + to.toString() + ".";
 
 			// TODO: Find proper workaround.
 			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
-			transactions = dao.getTransactionsByDate(personID, from, to);
+			
 		}
+		
+		transactions = dao.getTransactionsByDate(personID, from, to, viewIncomes, viewExpenses, categoryID);
 
 		request.setAttribute("transactionList", transactions);
 		request.setAttribute("transactionRange", transactionRange);
+		request.setAttribute("categories", dao.getCategories());
+		
+		request.setAttribute("fromDate", from.toString());
+		
+		// TODO: Find proper workaround.
+		to = new Date(to.getTime() - 24 * 60 * 60 * 1000);
+		request.setAttribute("toDate", to.toString());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/viewtransactions.jsp");
 		rd.forward(request, response);

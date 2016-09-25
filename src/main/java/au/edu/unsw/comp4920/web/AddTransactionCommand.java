@@ -21,14 +21,20 @@ public class AddTransactionCommand implements Command {
 
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
 			throws ServletException, IOException {
+
 		System.out.println("Inside: AddTransactionCommand");
- 
-		if (!request.getParameter("amount").equals("") && !request.getParameter("details").equals("")) {
+
+		// User has just navigated to the page and has not yet attempted to
+		// enter in a transaction.
+		if (request.getParameterMap().size() == 1) {
+			// NOP
+		} else if (!request.getParameter("amount").equals("") && !request.getParameter("details").equals("")) {
 			String details = request.getParameter("details");
 			String transactionType = request.getParameter("transactionType");
 			BigDecimal value = new BigDecimal(request.getParameter("amount"));
 			int personID = (int) request.getSession().getAttribute(Constants.USERID);
 			String type = request.getParameter("oneOff");
+			int category = Integer.parseInt(request.getParameter("category"));
 
 			Boolean isIncome = null;
 			if (transactionType.equals("income")) {
@@ -43,42 +49,42 @@ public class AddTransactionCommand implements Command {
 			t.setAmount(value);
 			t.setIsIncome(isIncome);
 			t.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-			if (request.getParameter("category") != null) {
-				t.setCategory(request.getParameter("category"));
-			}
-			
+			t.setCategoryID(category);
+
 			// One off expense.
 			if (type.equals("true")) {
 				dao.addTransaction(t);
-				
-			// Recurring expense.
+
+				// Recurring expense.
 			} else {
 				t.setRecurrence(true);
 				int transactionID = dao.addTransaction(t);
-				
+
 				String recurrenceFreq = request.getParameter("recurrenceFreq");
 				String paymentPeriod = request.getParameter("paymentPeriod");
 				int recurrenceNumber;
-				
+
 				if (paymentPeriod.equals("indefinite")) {
 					recurrenceNumber = -1;
 				} else {
 					recurrenceNumber = new Integer(request.getParameter("numberPayments"));
 				}
-				
+
 				Recurrence r = new Recurrence();
 				r.setTransactionID(transactionID);
 				r.setRecurrenceFreq(recurrenceFreq);
 				r.setRecurrenceNumber(recurrenceNumber);
-				
+
 				dao.addRecurring(r);
 			}
-			
+
 			request.setAttribute("success", true);
 		} else {
 			System.out.println("AddTransactionCommand: Failed as something was null.");
 			request.setAttribute("error", true);
 		}
+
+		request.setAttribute("categories", dao.getCategories());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/addtransaction.jsp");
 		rd.forward(request, response);

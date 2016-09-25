@@ -50,6 +50,14 @@
 							min="0.00" /></td>
 					</tr>
 					<tr>
+						<td>Category:</td>
+						<td>&nbsp&nbsp<select name="category">
+								<c:forEach items="${requestScope.categories}" var="c">
+									<option value="${c.getID()}">${c.category}</option>
+								</c:forEach>
+						</select></td>
+					</tr>
+					<tr>
 						<td><input type="radio" name="transactionType" value="income"
 							checked /> Income&nbsp&nbsp</td>
 						<td><input type="radio" name="transactionType"
@@ -62,7 +70,7 @@
 						<td><input id="recurringPayment" type="radio" name="oneOff"
 							value="false"> Recurring</td>
 					</tr>
-					
+
 					<tr class="reccurenceOption">
 						<td>Recurrence frequency:&nbsp&nbsp</td>
 						<td><select name="recurrenceFreq">
@@ -99,5 +107,5 @@
 			$(".reccurenceOption").toggle();
 		});
 	</script>
-</body>
+	</ body>
 </html>

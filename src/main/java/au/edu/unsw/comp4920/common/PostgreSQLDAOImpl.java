@@ -40,15 +40,14 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		if (getUserDetails(u.getUsername()) != null || getUserDetails(u.getEmail()) != null) {
 			System.out.println("Not creating user because username and/or email already exists!");
 			result = false;
-		} 
-		else {
+		} else {
 			try {
 				_factory.open();
 				conn = _factory.getConnection();
 
 				PreparedStatement stmt = conn.prepareStatement(
 						"INSERT INTO users (username, email, password, salt_hash, first_name, middle_name, "
-						+ " last_name, token, status_id, budget) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+								+ " last_name, token, status_id, budget) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
 				stmt.setString(1, u.getUsername());
 				stmt.setString(2, u.getEmail());
@@ -58,27 +57,25 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(6, (u.getMiddleName() != null) ? u.getMiddleName() : "");
 				stmt.setString(7, u.getLastName());
 				stmt.setString(8, u.getToken());
-				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for Disabled
+				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for
+									// Disabled
 				stmt.setDouble(10, 0.0); // Default to $0.0
 
 				int n = stmt.executeUpdate();
-				
+
 				if (n != 1) {
 					throw new DataSourceException("Did not insert one row into database");
 				}
 
 				stmt.close();
-			} 
-			catch (SQLException | DataSourceException | ServiceLocatorException e) {
+			} catch (SQLException | DataSourceException | ServiceLocatorException e) {
 				result = false;
 				System.err.println(e.getMessage());
-			} 
-			finally {
+			} finally {
 				if (conn != null) {
 					try {
 						_factory.close();
-					} 
-					catch (SQLException e) {
+					} catch (SQLException e) {
 						result = false;
 						System.err.println(e.getMessage());
 					}
@@ -99,37 +96,34 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		if (userinfo.contains("@")) {
 			idQuery = "email = ?";
-		} 
-		else {
+		} else {
 			idQuery = "username = ?";
 		}
 
 		if (password != null) {
 			String salt = getSalt(userinfo);
-			
+
 			if (salt != null) {
 				pwd = Common.hashPassword(password, salt);
 				passwordQuery = " and password = ?;";
-			} 
-			else {
+			} else {
 				passwordQuery = ";";
 			}
-		} 
-		else {
+		} else {
 			passwordQuery = ";";
 		}
 
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-						
+
 			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE " + idQuery + passwordQuery);
-			
+
 			stmt.setString(1, userinfo);
-			if (pwd != null){
+			if (pwd != null) {
 				stmt.setString(2, pwd);
 			}
-			
+
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				// pull all information out of results and put it into userDTO
@@ -137,16 +131,13 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -155,7 +146,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		if (u != null) {
 			System.out.println("found user");
 		}
-		
+
 		return u;
 	}
 
@@ -167,13 +158,14 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
-			PreparedStatement stmt = conn.prepareStatement("SELECT U.* FROM users U INNER JOIN session S ON U.id = S.user_id WHERE S.id = ?");
-			
+
+			PreparedStatement stmt = conn.prepareStatement(
+					"SELECT U.* FROM users U INNER JOIN session S ON U.id = S.user_id WHERE S.id = ?");
+
 			stmt.setString(1, sid);
 
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				// pull all information out of results and put it into userDTO
 				u = new User();
@@ -192,16 +184,13 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -222,38 +211,34 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ? WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(query);
 
-			stmt.setString	(1, u.getFirstName());
-			stmt.setString	(2, (u.getMiddleName() != null) ? u.getMiddleName() : "");
-			stmt.setString	(3, u.getLastName());
-			stmt.setLong	(4, u.getUserID());
+			stmt.setString(1, u.getFirstName());
+			stmt.setString(2, (u.getMiddleName() != null) ? u.getMiddleName() : "");
+			stmt.setString(3, u.getLastName());
+			stmt.setLong(4, u.getUserID());
 
 			int n = stmt.executeUpdate();
-			
+
 			if (n != 1) {
 				throw new DataSourceException("Did not update one row");
 			}
 
 			stmt.close();
-		} 
-		catch (SQLException | DataSourceException | ServiceLocatorException e) {
+		} catch (SQLException | DataSourceException | ServiceLocatorException e) {
 			result = false;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
 
 	@Override
 	public int addTransaction(Transaction t) {
@@ -264,7 +249,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO transaction (user_id, date, detail, amount, is_income, recur_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id;");
+			PreparedStatement stmt = conn.prepareStatement(
+					"INSERT INTO transaction (user_id, date, detail, amount, is_income, recur_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id;");
 
 			stmt.setInt(1, t.getPersonID());
 			stmt.setDate(2, t.getDate());
@@ -272,33 +258,31 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			stmt.setBigDecimal(4, t.getAmount());
 			stmt.setBoolean(5, t.isIncome());
 			stmt.setInt(6, t.getRecurrence());
+			stmt.setInt(7, t.getCategoryID());
 
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			transactionID = rs.getInt("id");
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			transactionID = -1;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					transactionID = -1;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
-		
+
 		return transactionID;
 	}
 
-	private ArrayList<Transaction> getOneOffTransactions(int personID, Date from, Date to, Boolean isIncome) {
+	private ArrayList<Transaction> getOneOffTransactions(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		Connection conn = null;
 
@@ -307,7 +291,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 
 			StringBuilder query = new StringBuilder();
-			query.append("SELECT id, user_id, date, detail, amount, is_income, recur_id FROM transaction WHERE user_id = ?");
+			query.append(
+					"SELECT t.id, user_id, date, detail, amount, is_income, recur_id, c.name FROM transaction t "
+					+ "LEFT JOIN category c ON c.id = t.category_id "
+					+ "WHERE user_id = ?");
 
 			if (from != null) {
 				query.append(" AND date >= \'" + from + "\'");
@@ -315,13 +302,20 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			if (to != null) {
 				query.append(" AND date <= \'" + to + "\'");
 			}
-			if (isIncome != null) {
-				query.append(" AND is_income = " + isIncome);
+			
+			if (categoryID != -1) {
+				query.append(" AND category_id = " + categoryID);
+			}
+			
+			if (showIncomes && !showExpenses) {
+				query.append(" AND is_income = 't'");
+			}
+			
+			if (!showIncomes && showExpenses) {
+				query.append(" AND is_income = 'f'");
 			}
 
 			query.append(";");
-
-			System.out.println(query);
 
 			PreparedStatement stmt = conn.prepareStatement(query.toString());
 			stmt.setInt(1, personID);
@@ -336,26 +330,24 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				t.setDetail(rs.getString("detail"));
 				t.setAmount(rs.getBigDecimal("amount"));
 				t.setIsIncome(rs.getBoolean("is_income"));
+				t.setCategoryName(rs.getString("name"));
 
-				int isReccurence = rs.getInt("recur_id");
+				int isReccurence = rs.getInt("recur_id"); 
 
 				if (isReccurence == -1) {
 					transactions.add(t);
 				}
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
-			System.err.println(e.getMessage());
-		} 
-		finally {
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println("getOneOffTransactions: "+ e.getMessage());
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
-					System.err.println(e.getMessage());
+				} catch (SQLException e) {
+					System.err.println("getOneOffTransactions: "+ e.getMessage());
 				}
 			}
 		}
@@ -363,7 +355,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return transactions;
 	}
 
-	private ArrayList<Transaction> getRecurringTransactions(int personID, Date from, Date to, Boolean isIncome) {
+	private ArrayList<Transaction> getRecurringTransactions(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		Connection conn = null;
 
@@ -388,13 +380,28 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 
 			StringBuilder query = new StringBuilder();
-			query.append("SELECT transaction_id, type, reccur_num, t.date, t.detail, t.amount, t.is_income "
+			query.append("SELECT transaction_id, type, reccur_num, t.date, t.detail, t.amount, t.is_income, c.name "
 					+ "FROM recurrence r " + "LEFT JOIN transaction t ON t.id = r.transaction_id "
-					+ "WHERE t.user_id = " + personID + ";");
-
+					+ "LEFT JOIN category c ON c.id = t.category_id "
+					+ "WHERE t.user_id = " + personID);
+			
+			if (categoryID != -1) {
+				query.append(" AND category_id = " + categoryID);
+			}
+			
+			if (showIncomes && !showExpenses) {
+				query.append(" AND is_income = 't'");
+			}
+			
+			if (!showIncomes && showExpenses) {
+				query.append(" AND is_income = 'f'");
+			}
+			
+			query.append(";");
+			
 			PreparedStatement stmt = conn.prepareStatement(query.toString());
 			ResultSet rs = stmt.executeQuery();
-
+			
 			while (rs.next()) {
 				int transactionID = rs.getInt("transaction_id");
 				Date initialDate = rs.getDate("date");
@@ -404,6 +411,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 				String reccurenceFreq = rs.getString("type");
 				int numberPayments = rs.getInt("reccur_num");
+				String categoryName = rs.getString("name");
 
 				boolean infinitePayments = false;
 
@@ -424,6 +432,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 						t.setDetail(detail);
 						t.setAmount(amount);
 						t.setIsIncome(income);
+						t.setCategoryName(categoryName);
 
 						transactions.add(t);
 					}
@@ -432,19 +441,16 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 					iteratorDate = new Date(iteratorDate.getTime() + addedTime);
 				}
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
-			System.err.println(e.getMessage());
-		} 
-		finally {
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println("getRecurringTransactions: "+ e.getMessage());
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
-					System.err.println(e.getMessage());
+				} catch (SQLException e) {
+					System.err.println("getRecurringTransactions: "+ e.getMessage());
 				}
 			}
 		}
@@ -452,27 +458,27 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return transactions;
 	}
 
-	public List<Transaction> getTransactions(int personID, Date from, Date to, Boolean isIncome) {
+	public List<Transaction> getTransactions(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
 		ArrayList<Transaction> masterTransactionList = new ArrayList<Transaction>();
-		ArrayList<Transaction> oneOffTransactionList = this.getOneOffTransactions(personID, from, to, isIncome);
-		ArrayList<Transaction> recurringTransactionList = this.getRecurringTransactions(personID, from, to, isIncome);
+		ArrayList<Transaction> oneOffTransactionList = this.getOneOffTransactions(personID, from, to, showIncomes, showExpenses, categoryID);
+		ArrayList<Transaction> recurringTransactionList = this.getRecurringTransactions(personID, from, to, showIncomes, showExpenses, categoryID);
 
 		masterTransactionList.addAll(oneOffTransactionList);
 		masterTransactionList.addAll(recurringTransactionList);
 
 		Collections.sort(masterTransactionList, new Comparator<Transaction>() {
-	        @Override
-	        public int compare(Transaction t1, Transaction t2) {
+			@Override
+			public int compare(Transaction t1, Transaction t2) {
 				return t1.compareTo(t2);
 			}
-	    });
-		
+		});
+
 		return masterTransactionList;
 	}
 
 	@Override
-	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to) {
-		return this.getTransactions(personID, from, to, null);
+	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
+		return this.getTransactions(personID, from, to, showIncomes, showExpenses, categoryID);
 	}
 
 	@Override
@@ -483,29 +489,27 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Session (id, user_id, last_access) VALUES (?, ?, ?);");
+			PreparedStatement stmt = conn
+					.prepareStatement("INSERT INTO Session (id, user_id, last_access) VALUES (?, ?, ?);");
 
 			stmt.setString(1, session.getSessionId());
 			stmt.setInt(2, session.getUserId());
 			stmt.setString(3, session.getLastAccess());
 
 			int n = stmt.executeUpdate();
-			
+
 			if (n != 1) {
 				throw new DataSourceException("Did not insert one row into database");
 			}
 
 			stmt.close();
-		} 
-		catch (SQLException | DataSourceException | ServiceLocatorException e) {
+		} catch (SQLException | DataSourceException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -520,12 +524,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Session WHERE id = ?;");
-			
+
 			stmt.setString(1, sessionId);
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				s = new Session();
 				s.setSessionId(rs.getString("id"));
@@ -543,18 +547,15 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 					s = null;
 				}
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | ParseException e) {
+		} catch (SQLException | ServiceLocatorException | ParseException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -575,27 +576,24 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement("DELETE FROM session WHERE id = ?;");
-			
+
 			stmt.setString(1, sessionId);
 			int n = stmt.executeUpdate();
 
 			if (n != 1) {
 				throw new DataSourceException("Did not delete one row from database");
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -606,31 +604,28 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	public String getToken(User u) {
 		Connection conn = null;
 		String token = null;
-		
+
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement("SELECT token FROM users WHERE username = ?;");
 			stmt.setString(1, u.getUsername());
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				token = rs.getString(1);
 			}
-						
+
 			System.out.println("DAO: getToken(): " + token);
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -639,7 +634,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		if (token != null) {
 			System.out.println("found token");
 		}
-		
+
 		return token;
 	}
 
@@ -651,29 +646,26 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement("UPDATE users SET status_id = ? WHERE username = ?;");
 			stmt.setInt(1, status);
 			stmt.setString(2, u.getUsername());
-			
+
 			int n = stmt.executeUpdate();
-			
+
 			if (n != 1) {
 				throw new DataSourceException("Did not update one row into database");
 			}
-			
+
 			System.out.println("Success");
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -688,29 +680,26 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement("UPDATE users SET token = ? WHERE username = ?;");
 			stmt.setString(1, token);
 			stmt.setString(2, u.getUsername());
-			
+
 			int n = stmt.executeUpdate();
-			
+
 			if (n != 1) {
 				throw new DataSourceException("Did not update one row into database");
 			}
-			
+
 			System.out.println("Success");
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -725,13 +714,13 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Session WHERE id = ? AND user_id = ?;");
 			stmt.setString(1, sessionId);
 			stmt.setInt(2, Integer.parseInt(userId));
-			
+
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				s = new Session();
 				s.setSessionId(rs.getString("id"));
@@ -745,23 +734,20 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				long diff = currentDate.getTime() - sessionDate.getTime();
 				long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 				System.out.println("Days: " + days);
-				
+
 				if (days > 7) {
 					s = null;
 				}
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | ParseException e) {
+		} catch (SQLException | ServiceLocatorException | ParseException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -773,16 +759,15 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	@Override
 	public User getUser(String userinfo, String firstName, String lastName) {
 		User u = getUser(userinfo, null);
-		
-		if (u == null){
+
+		if (u == null) {
 			return null;
 		}
-		
-		if (!u.getFirstName().equalsIgnoreCase(firstName) ||
-				!u.getLastName().equalsIgnoreCase(lastName)) {
+
+		if (!u.getFirstName().equalsIgnoreCase(firstName) || !u.getLastName().equalsIgnoreCase(lastName)) {
 			return null;
 		}
-		
+
 		return u;
 	}
 
@@ -794,29 +779,26 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement("UPDATE users SET password = ? WHERE username = ?;");
 			stmt.setString(1, hashedPassword);
 			stmt.setString(2, u.getUsername());
-			
+
 			int n = stmt.executeUpdate();
-			
+
 			if (n != 1) {
 				throw new DataSourceException("Did not update one row into database");
 			}
-			
-			System.out.println("Success");	
+
+			System.out.println("Success");
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -827,46 +809,43 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	public String getSalt(String userinfo) {
 		Connection conn = null;
 		String salt = null;
-		
+
 		String query = "SELECT salt_hash FROM users WHERE username = ?;";
 		if (userinfo.contains("@")) {
 			query = "SELECT salt_hash FROM users WHERE email = ?;";
 		}
-		
+
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setString(1, userinfo);
-						
+
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				salt = rs.getString(1);
 			}
-						
+
 			System.out.println("DAO: getSalt(): " + salt);
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
 		}
-		
+
 		if (salt != null) {
 			System.out.println("in DAO getSalt(): found user, salt is " + salt);
 		}
-		
+
 		return salt;
 	}
 
@@ -879,36 +858,70 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO recurrence (transaction_id, type, reccur_num) VALUES (?, ?, ?);");
+			PreparedStatement stmt = conn
+					.prepareStatement("INSERT INTO recurrence (transaction_id, type, reccur_num) VALUES (?, ?, ?);");
 
 			stmt.setInt(1, r.getTransactionID());
 			stmt.setString(2, r.getRecurrenceFreq());
 			stmt.setInt(3, r.getRecurrenceNumber());
 
 			int n = stmt.executeUpdate();
-			
+
 			if (n != 1) {
 				throw new DataSourceException("Did not insert one row into database");
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			result = false;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
-		
+
 		return result;
 	}
+
+	@Override
+	public List<Category> getCategories() {
+		ArrayList<Category> categories = new ArrayList<Category>();
+
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM category;");
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Category c = new Category();
+
+				c.setID(rs.getInt("id"));
+				c.setCategory(rs.getString("name"));
+				categories.add(c);
+			}
+
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println("getCategories(): " + e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println("getCategories(): " + e.getMessage());
+				}
+			}
+		}
+
+		return categories;
+	} 
 }

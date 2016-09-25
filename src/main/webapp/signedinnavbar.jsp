@@ -17,7 +17,10 @@
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
                 <li class="${home }"><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
-                <li class="${viewTransactions } ${addTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
+                
+                <li class="${viewTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">View your Transactions</a></li>
+                <li class="${addTransactions }"><a href="${applicationScope['ROUTER_ADDTRANSACTION']}">Add Transactions</a></li>
+                
                 <li class="${profile }"><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
                 <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
                 <li class="${signOut }"><a href="${applicationScope['ROUTER_SIGNOUT']}" onclick="return confirm('Are you sure you want to Sign Out?');">Sign Out</a></li>
