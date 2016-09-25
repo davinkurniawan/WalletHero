@@ -61,9 +61,9 @@
 						<select class="dropdown" name="categoryOption" id="categoryOption" 
 							style="width: 150px !important; min-width: 150px; max-width: 150px;">
 							<option value="">Please Select</option>
-							<option value="business">Business</option>
-							<option value="interest">Interest</option>
-							<option value="other">Other</option>
+							<option value="1">Business</option>
+							<option value="2">Interest</option>
+							<option value="0">Other</option>
 						</select>
 					</td>
 					</tr>
