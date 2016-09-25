@@ -50,15 +50,26 @@
 							min="0.00" /></td>
 					</tr>
 					<tr>
-						<td><input type="radio" name="transactionType" value="income"
+						<td><input type="radio" name="transactionType" value="income" id="income"
 							checked /> Income&nbsp&nbsp</td>
-						<td><input type="radio" name="transactionType"
+						<td><input type="radio" name="transactionType" id="expense"
 							value="expense" /> Expense</td>
 					</tr>
 					<tr>
-
+					<td>Category:</td>
+					<td>
+						<select class="dropdown" name="categoryOption" id="categoryOption" 
+							style="width: 150px !important; min-width: 150px; max-width: 150px;">
+							<option value="">Please Select</option>
+							<option value="business">Business</option>
+							<option value="interest">Interest</option>
+							<option value="other">Other</option>
+						</select>
+					</td>
+					</tr>
+					<tr>
 						<td><input id="oneOffPayment" type="radio" name="oneOff"
-							value="true" checked>One-off&nbsp&nbsp</td>
+							value="true" checked> One-off&nbsp&nbsp</td>
 						<td><input id="recurringPayment" type="radio" name="oneOff"
 							value="false"> Recurring</td>
 					</tr>
@@ -98,6 +109,46 @@
 		$("#oneOffPayment").change(function() {
 			$(".reccurenceOption").toggle();
 		});
+	</script>
+	<script>
+	$("input[type='radio'][name='transactionType']").change(function(){
+
+	    var selected = $("input[type='radio'][name='transactionType']:checked").val();
+
+	    if(selected == "income") var opts = [
+			{name:"Please Select", val:""},
+	        {name:"Business", val:"business"},
+	        {name:"Interest", val:"interest"},
+	        {name:"Other", val:"other"}
+	    ];
+
+	    else var opts = [
+	        {name:"Please Select", val:""},
+	        {name:"Accounting/Legal", val:"accounting"},
+	        {name:"Auto", val:"auto"},
+	        {name:"Capital Expenditure", val:"capital"},
+	        {name:"Education", val:"education"},
+	        {name:"Food/Drink", val:"food"},
+	        {name:"Health", val:"health"},
+	        {name:"Maintenance", val:"maintenance"},
+	        {name:"Office", val:"office"},
+	        {name:"Postage", val:"postage"},
+	        {name:"Properties", val:"properties"},
+	        {name:"Rent", val:"rent"},
+	        {name:"Taxes", val:"taxes"},
+	        {name:"Telephone/Mobile", val:"telephone"},
+	        {name:"Utilities", val:"utilities"},
+	        {name:"Other", val:"other"}
+	    ];
+
+	    $("#categoryOption").empty();
+
+	    $.each(opts, function(k,v){
+
+	        $("#categoryOption").append("<option value='"+v.val+"'>"+v.name+"</option>");
+
+	    });
+	});
 	</script>
 </body>
 </html>
