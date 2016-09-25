@@ -12,6 +12,7 @@ public interface CommonDAO {
 	public User getUser(String sid);
 	public User getUser(String userinfo, String firstName, String lastName);
 	public boolean updateUserNames(User u);
+	public boolean updateUserEmail(User u);
 	
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);	

@@ -67,12 +67,12 @@
 			  
 		  	<div class="form-group" id="div-password" name="div-password">
 		  		<label>Password <label style="color:red">*</label></label>
-				<input type="text" class="form-control" id="password" name="password" placeholder="Password..." value=""/>
+				<input type="password" class="form-control" id="password" name="password" placeholder="Password..." value=""/>
 			</div>
 			
 			<div class="form-group" id="div-repassword" name="div-repassword">
 		  		<label>Retype Password <label style="color:red">*</label></label>
-				<input type="text" class="form-control" id="repassword" name="repassword" placeholder="Retype Password..." value=""/>
+				<input type="password" class="form-control" id="repassword" name="repassword" placeholder="Retype Password..." value=""/>
 			</div>
 			
 			<input type="hidden" name="action" value="update_password"/>	

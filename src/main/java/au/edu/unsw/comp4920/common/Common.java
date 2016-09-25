@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import au.edu.unsw.comp4920.common.Constants.Status;
+
 public class Common {
 	public static void main(String[] args) { 
 		// Test your functions/methods here
@@ -64,5 +66,29 @@ public class Common {
         }
         
         return pwd;
+	}
+	
+	public static int statusToId(Status s) {
+		switch (s) {
+			case INACTIVE:
+				return 1;
+			case ACTIVE:
+				return 2;
+			case DISABLED:
+				return 3;
+		}
+		return 0;
+	}
+	
+	public static String statusToString(Status s) {
+		switch (s) {
+			case INACTIVE:
+				return "Inactive";
+			case ACTIVE:
+				return "Active";
+			case DISABLED:
+				return "Disabled";
+		}
+		return null;
 	}
 }
