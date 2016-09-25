@@ -117,28 +117,28 @@
 
 	    if(selected == "income") var opts = [
 			{name:"Please Select", val:""},
-	        {name:"Business", val:"business"},
-	        {name:"Interest", val:"interest"},
-	        {name:"Other", val:"other"}
+	        {name:"Business", val:"1"},
+	        {name:"Interest", val:"2"},
+	        {name:"Other", val:"0"}
 	    ];
 
 	    else var opts = [
 	        {name:"Please Select", val:""},
-	        {name:"Accounting/Legal", val:"accounting"},
-	        {name:"Auto", val:"auto"},
-	        {name:"Capital Expenditure", val:"capital"},
-	        {name:"Education", val:"education"},
-	        {name:"Food/Drink", val:"food"},
-	        {name:"Health", val:"health"},
-	        {name:"Maintenance", val:"maintenance"},
-	        {name:"Office", val:"office"},
-	        {name:"Postage", val:"postage"},
-	        {name:"Properties", val:"properties"},
-	        {name:"Rent", val:"rent"},
-	        {name:"Taxes", val:"taxes"},
-	        {name:"Telephone/Mobile", val:"telephone"},
-	        {name:"Utilities", val:"utilities"},
-	        {name:"Other", val:"other"}
+	        {name:"Accounting/Legal", val:"3"},
+	        {name:"Auto", val:"4"},
+	        {name:"Capital Expenditure", val:"5"},
+	        {name:"Education", val:"6"},
+	        {name:"Food/Drink", val:"7"},
+	        {name:"Health", val:"8"},
+	        {name:"Maintenance", val:"9"},
+	        {name:"Office", val:"10"},
+	        {name:"Postage", val:"11"},
+	        {name:"Properties", val:"12"},
+	        {name:"Rent", val:"13"},
+	        {name:"Taxes", val:"14"},
+	        {name:"Telephone/Mobile", val:"15"},
+	        {name:"Utilities", val:"16"},
+	        {name:"Other", val:"0"}
 	    ];
 
 	    $("#categoryOption").empty();

@@ -22,19 +22,21 @@ public class AddTransactionCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
 			throws ServletException, IOException {
 
-		System.out.println("Inside: AddTransactionCommand");
+		System.out.println("Inside: AddTransactionCommand"); 
 
 		// User has just navigated to the page and has not yet attempted to
 		// enter in a transaction.
 		if (request.getParameterMap().size() == 1) {
 			// NOP
-		} else if (!request.getParameter("amount").equals("") && !request.getParameter("details").equals("")) {
+		} else if (!request.getParameter("amount").equals("") && !request.getParameter("details").equals("")
+				&& !request.getParameter("categoryOption").equals("")) {
+			
 			String details = request.getParameter("details");
 			String transactionType = request.getParameter("transactionType");
 			BigDecimal value = new BigDecimal(request.getParameter("amount"));
 			int personID = (int) request.getSession().getAttribute(Constants.USERID);
 			String type = request.getParameter("oneOff");
-			int category = Integer.parseInt(request.getParameter("category"));
+			int category = Integer.parseInt(request.getParameter("categoryOption"));
 
 			Boolean isIncome = null;
 			if (transactionType.equals("income")) {
