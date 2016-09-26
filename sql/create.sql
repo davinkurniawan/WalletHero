@@ -147,3 +147,5 @@ INSERT INTO category VALUES (13, 'Rent');
 INSERT INTO category VALUES (14, 'Taxes');
 INSERT INTO category VALUES (15, 'Telephone/Mobile');
 INSERT INTO category VALUES (16, 'Utilities');
+
+INSERT INTO occupation(id, name) VALUES(1, 'Student');
