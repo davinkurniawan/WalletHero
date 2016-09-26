@@ -18,25 +18,28 @@ public class Transaction {
 	private Date date;
 	private String detail;
 	private BigDecimal amount;
-	private String category;
+	private int categoryID;
+	private String categoryName;
+
 	private boolean isIncome;
 
 	public Transaction() {
 
 	}
 
-	public Transaction(int transactionID, int personID, boolean recurrence, Date date, String detail, BigDecimal amount,
-			String category, boolean isIncome) {
-		super();
-		this.transactionID = transactionID;
-		this.personID = personID;
-		this.date = date;
-		this.detail = detail;
-		this.amount = amount;
-		this.category = category;
-		this.isIncome = isIncome;
-		this.recurrence = recurrence;
-	}
+	// public Transaction(int transactionID, int personID, boolean recurrence,
+	// Date date, String detail, BigDecimal amount,
+	// int category, boolean isIncome) {
+	// super();
+	// this.transactionID = transactionID;
+	// this.personID = personID;
+	// this.date = date;
+	// this.detail = detail;
+	// this.amount = amount;
+	// this.category = category;
+	// this.isIncome = isIncome;
+	// this.recurrence = recurrence;
+	// }
 
 	public int getTransactionID() {
 		return transactionID;
@@ -80,14 +83,6 @@ public class Transaction {
 
 	}
 
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
 	public boolean isIncome() {
 		return isIncome;
 	}
@@ -115,8 +110,9 @@ public class Transaction {
 
 	@Override
 	public String toString() {
-		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", date=" + date + ", detail="
-				+ detail + ", amount=" + amount + ", category=" + category + ", isIncome=" + isIncome + "]";
+		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", recurrence=" + recurrence
+				+ ", date=" + date + ", detail=" + detail + ", amount=" + amount + ", categoryID=" + categoryID
+				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + "]";
 	}
 
 	public int getRecurrence() {
@@ -129,5 +125,21 @@ public class Transaction {
 
 	public int compareTo(Transaction t) {
 		return this.getDate().compareTo(t.getDate());
+	}
+
+	public int getCategoryID() {
+		return categoryID;
+	}
+
+	public void setCategoryID(int categoryID) {
+		this.categoryID = categoryID;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 }

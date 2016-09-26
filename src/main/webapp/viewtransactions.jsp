@@ -30,18 +30,36 @@
 	<div class="container marketing">
 		<h3>${requestScope.transactionRange}</h3>
 
-		<label class="checkbox-inline"><input type="checkbox"
-			id="incomesButton" value="" checked="checked"> Show incomes?
-		</label> <label class="checkbox-inline"><input type="checkbox"
-			id="expensesButton" value="" checked="checked"> Show
-			expenses? </label>
-
 		<p></p>
 
 		<form action="router?operation=viewTransactions" method="POST">
-			From date: <input type="text" class="datepicker" name="from_date" />
-			To date: <input type="text" class="datepicker" name="to_date" /> <input
-				type=submit value="Confirm" class="btn btn-primary" />
+			From date: <input type="text" class="datepicker" id="from_date" name="from_date">
+			To date: <input type="text" class="datepicker" id="to_date" name="to_date">
+
+
+			<p></p>
+
+			<input type="checkbox" name="incomesChk" id="incomesButton" value="true" checked="checked" />
+			Show incomes?
+
+			<p></p>
+
+			<input type="checkbox" name="expensesChk" id="expensesButton" value="true" checked="checked" />
+			Show expenses?
+
+			<p></p>
+
+			Category: <select name="category">
+				<option value="-1">All</option>
+				<c:forEach items="${requestScope.categories}" var="c">
+					<option value="${c.getID()}">${c.category}</option>
+
+				</c:forEach>
+			</select>
+
+			<p></p>
+
+			<input type=submit value="Confirm" class="btn btn-primary" />
 		</form>
 
 		<p></p>
@@ -53,6 +71,7 @@
 					<th>Details</th>
 					<th>Amount</th>
 					<th>Date</th>
+					<th>Category</th>
 					<th>Type</th>
 				</tr>
 				<c:forEach items="${requestScope.transactionList}" var="t">
@@ -61,6 +80,7 @@
 						<td><c:out value="${t.detail}"></c:out></td>
 						<td>$<c:out value="${t.amount}"></c:out></td>
 						<td><c:out value="${t.date}"></c:out></td>
+						<td><c:out value="${t.getCategoryName()}"></c:out></td>
 						<td><c:out value="${t.getTransactionType()}"></c:out></td>
 					</tr>
 				</c:forEach>
@@ -71,16 +91,6 @@
 	</div>
 
 	<script>
-		$("#incomesButton").change(function() {
-			$(".Income").toggle();
-		});
-
-		$("#expensesButton").change(function() {
-			$(".Expense").toggle();
-		});
-	</script>
-
-	<script>
 		$(function() {
 			$(".datepicker").datepicker();
 		});
@@ -88,6 +98,13 @@
 		$(function() {
 			$(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
 		});
+		
+		
+		$("#from_date").datepicker();
+		$("#to_date").datepicker();
+		
+		$("#from_date").datepicker("setDate", new Date('${requestScope.fromDate}'));
+		$("#to_date").datepicker("setDate", new Date('${requestScope.toDate}'));
 	</script>
 </body>
 </html>

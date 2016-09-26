@@ -1,3 +1,14 @@
+--------------------------------
+-- 			SETUP
+--------------------------------
+
+--------------------------------
+-- Will create an account with:
+--
+-- USERNAME: "Testing123"
+-- PASSWORD: "Testing123"
+--------------------------------
+
 CREATE TABLE users (
 	id serial NOT NULL,
 	username varchar NOT NULL UNIQUE,
@@ -147,3 +158,5 @@ INSERT INTO category VALUES (13, 'Rent');
 INSERT INTO category VALUES (14, 'Taxes');
 INSERT INTO category VALUES (15, 'Telephone/Mobile');
 INSERT INTO category VALUES (16, 'Utilities');
+
+INSERT INTO users VALUES (2, 'Testing123', 'fake@fake.com', '46126431f1c7a89ee92655a46b8b53a44c75ca72140251e9a94b581b58dc1807', 'teafcseflo7h4pqh7ac2jdf0m2', 'x', 'y', 'z', 'c3245497-ea3a-4e1c-86cb-6721265647cb', 2, 0);
