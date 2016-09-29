@@ -71,11 +71,17 @@
 
       <hr class="featurette-divider">
       
+      <h5 style="color:Red" name="error_message_password" id="error_message_password">
+        <c:if test="${errorMessage != null && errorFlg == 2}">
+          ${errorMessage}
+        </c:if>
+      </h5>
+      
        <div class="row featurette">
         <div class="col-md-6">
           <h2 class="featurette-heading">Update Your Password</h2>
           
-          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
+          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return validator_update_password(this)">
 			  
 		  	<div class="form-group" id="div-password" name="div-password">
 		  		<label>Password <label style="color:red">*</label></label>
@@ -157,6 +163,54 @@
 				document.getElementById("div-lastname").className = "form-group";
 				
 				form.email.focus();
+				return false;
+			}
+
+			return true;
+		};	
+		
+		function validator_update_password(form){									
+			var password = form.password.value.trim();
+			var repassword = form.repassword.value.trim();
+
+			if (password.length == 0){
+				document.getElementById("error_message_password").innerHTML = "Please enter your Password!";
+				document.getElementById("div-password").className = "form-group has-error";
+				document.getElementById("div-repassword").className = "form-group";
+				
+				form.password.focus();
+				return false;
+			}
+			else if (repassword.length == 0){
+				document.getElementById("error_message_password").innerHTML = "Please retype your Password!";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group has-error";
+				
+				form.repassword.focus();
+				return false;
+			}
+			else if (password.length < 6){
+				document.getElementById("error_message_password").innerHTML = "Password must be at least 6 characters!";
+				document.getElementById("div-password").className = "form-group has-error";
+				document.getElementById("div-repassword").className = "form-group";
+
+				form.password.focus();
+				return false;
+			}
+			else if (repassword.length < 6){
+				document.getElementById("error_message_password").innerHTML = "Retyped Password must be at least 6 characters!";
+				document.getElementById("div-password").className = "form-group";
+				document.getElementById("div-repassword").className = "form-group has-error";
+
+				form.repassword.focus();
+				return false;
+			}
+			else if (password != repassword){
+				document.getElementById("error_message_password").innerHTML = "Passsword does not match with Retyped Password";
+				document.getElementById("div-password").className = "form-group has-error";
+				document.getElementById("div-repassword").className = "form-group has-error";
+				
+				form.password.focus();
 				return false;
 			}
 

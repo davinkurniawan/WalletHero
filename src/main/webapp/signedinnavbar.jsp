@@ -19,7 +19,7 @@
                 <li class="${home }"><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
                 
                 <li class="${viewTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">View your Transactions</a></li>
-                <li class="${addTransactions }"><a href="${applicationScope['ROUTER_ADDTRANSACTION']}">Add Transactions</a></li>
+                <li class="${addTransaction }"><a href="${applicationScope['ROUTER_ADDTRANSACTION']}">Add Transactions</a></li>
                 
                 <li class="${profile }"><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
                 <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>

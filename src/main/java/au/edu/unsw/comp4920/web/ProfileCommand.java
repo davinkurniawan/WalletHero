@@ -109,39 +109,50 @@ public class ProfileCommand implements Command {
 					break;
 					
 				case PASSWORD:
-										
-					if (!request.getParameter("password").equals(request.getParameter("repassword"))) {
-						System.err.println("ProfileCommand: Password and re-password did not match.");
-						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Your password did not match the retyped password!");
+							
+					if ( request.getParameter("password") != null && request.getParameter("repassword") != null) {
+
+						if (!request.getParameter("password").equals(request.getParameter("repassword"))) {
+							System.err.println("ProfileCommand: Password and re-password did not match.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Your password did not match the retyped password!");
+						}
+						else if (request.getParameter("password").length() < 6) {
+							System.err.println("ProfileCommand: Password less than 6 characters.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Your password must be at least 6 characters long!");
+						} 
+						else if (!request.getParameter("password").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
+							System.err.println("ProfileCommand: Password does not contain special characters.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Your password must contains at least 1 non-alphanumeric character(s)!");
+						} 
+						else if (request.getParameter("repassword").length() < 6) {
+							System.err.println("ProfileCommand: Password less than 6 characters.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Your retyped password must be at least 6 characters long!");
+						} 
+						else if (!request.getParameter("repassword").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
+							System.err.println("ProfileCommand: Password does not contain special characters.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Your retyped password must contains at least 1 non-alphanumeric character(s)!");
+						}
+						else {
+							String hashed = Common.hashPassword(request.getParameter("password"), user.getSaltHash());
+							
+							if (!hashed.equals(user.getPassword())){
+								dao.setPassword(user, hashed);
+								request.setAttribute(Constants.ERROR, 0);
+								request.setAttribute(Constants.ERRORMSG, "Your password has been updated!");
+							}
+							else{
+								System.err.println("ProfileCommand: Password same as previous.");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "Your password is the same as your last password!");
+							}
+						}
 					}
-					else if (request.getParameter("password").length() < 6) {
-						System.err.println("ProfileCommand: Password less than 6 characters.");
-						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Your password must be at least 6 characters long!");
-					} 
-					else if (!request.getParameter("password").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
-						System.err.println("ProfileCommand: Password does not contain special characters.");
-						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Your password must contains at least 1 non-alphanumeric character(s)!");
-					} 
-					else if (request.getParameter("repassword").length() < 6) {
-						System.err.println("ProfileCommand: Password less than 6 characters.");
-						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Your retyped password must be at least 6 characters long!");
-					} 
-					else if (!request.getParameter("repassword").matches(".*[!@#$%^&*()<>?,./-_+=]+.*")) {
-						System.err.println("ProfileCommand: Password does not contain special characters.");
-						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Your retyped password must contains at least 1 non-alphanumeric character(s)!");
-					}
-					else {
-						String hashed = Common.hashPassword(request.getParameter("password"), user.getSaltHash());
-						dao.setPassword(user, hashed);
-						request.setAttribute(Constants.ERROR, 0);
-						request.setAttribute(Constants.ERRORMSG, "Your password has been updated!");
-					}
-					
+						
 					break;
 					
 				case PREFERENCE:
