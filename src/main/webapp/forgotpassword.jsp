@@ -59,7 +59,7 @@
 					</div>
 
 					<input type="hidden" name="action" value="recovery"/> 
-		          	<button type="submit" class="btn btn-default">Recover</button> 
+		          	<button type="submit" class="btn btn-primary">Recover</button> 
 
 			      </form>
 			    </div>

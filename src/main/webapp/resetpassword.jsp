@@ -53,7 +53,7 @@
 						<input type="hidden" name="action" value="reset" />
 						<input type="hidden" name="token" value="${param['token']}" />
 						<input type="hidden" name="username" value="${param['username']}" />
-						<button type="submit" class="btn btn-default">Reset Password</button>
+						<button type="submit" class="btn btn-primary">Reset Password</button>
 					</form>
 
 		      	</div>

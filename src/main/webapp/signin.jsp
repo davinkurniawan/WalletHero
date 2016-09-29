@@ -43,7 +43,7 @@
         </div>
 
           <input type="hidden" name="action" value="login"/> 
-          <button type="submit" class="btn btn-default">Sign In</button> 
+          <button type="submit" class="btn btn-primary">Sign In</button> 
         </form>
 
         <hr class="featurette-divider">

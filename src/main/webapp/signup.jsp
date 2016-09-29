@@ -79,7 +79,7 @@
 					</div>
 
 					<input type="hidden" name="action" value="signUp"/> 
-		          	<button type="submit" class="btn btn-default">Sign Up</button> 
+		          	<button type="submit" class="btn btn-primary">Sign Up</button> 
 
 			      </form>
 			    </div>

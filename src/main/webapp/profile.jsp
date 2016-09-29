@@ -64,7 +64,7 @@
 			</div>
 			 			  
 			<input type="hidden" name="action" value="update_profile"/>	
-			<button type="submit" class="btn btn-default">Update</button>	
+			<button type="submit" class="btn btn-primary">Update</button>	
 		  </form>
         </div>
       </div>
@@ -94,7 +94,7 @@
 			</div>
 			
 			<input type="hidden" name="action" value="update_password"/>	
-			<button type="submit" class="btn btn-default">Update</button>	
+			<button type="submit" class="btn btn-primary">Update</button>	
 		  </form>
         </div>
       </div>
@@ -128,7 +128,7 @@
 			</div>
           
           	<input type="hidden" name="action" value="update_preferences"/>	
-			<button type="submit" class="btn btn-default">Update</button>	
+			<button type="submit" class="btn btn-primary">Update</button>	
 		  </form>
         </div>
       </div>

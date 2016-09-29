@@ -337,13 +337,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 					"SELECT t.id, user_id, date, detail, amount, is_income, recur_id, c.name FROM transaction t "
 					+ "LEFT JOIN category c ON c.id = t.category_id "
 					+ "WHERE user_id = ?");
-
-			if (from != null) {
-				query.append(" AND date >= \'" + from + "\'");
-			}
-			if (to != null) {
-				query.append(" AND date <= \'" + to + "\'");
-			}
 			
 			if (categoryID != -1) {
 				query.append(" AND category_id = " + categoryID);
@@ -377,7 +370,17 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				int isReccurence = rs.getInt("recur_id"); 
 
 				if (isReccurence == -1) {
-					transactions.add(t);
+					SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+					try {
+						Date found_date = df.parse(t.getDate());
+						
+						if (found_date.after(from) && found_date.before(to)){
+							transactions.add(t);
+						}
+					} 
+					catch (ParseException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 

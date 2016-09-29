@@ -47,7 +47,8 @@
 					<div class="form-group" id="div-category" name="div-category">
 				  		<label>Category <label style="color:red">*</label></label>
 				  		<br/>
-						<select id="category" name="category" class="form-control">				
+						<select id="category" name="category" class="form-control">	
+							<option value="" selected>All</option>			
 							<c:forEach items="${category}" var="c">
 								<c:choose>
 									<c:when test="${param['category'] == c.getCategoryID()}">
@@ -63,35 +64,42 @@
 
 					<input type=submit value="Confirm" class="btn btn-primary" />
 				</form>
-
-				<p></p>
-				
-				<c:if test="${requestScope.transactionList.size() > 0}">
-					<table class="table table-bordered" style="table-layout: fixed">
-						<tbody>
-							<tr>
-								<th>Transaction ID</th>
-								<th>Details</th>
-								<th>Amount</th>
-								<th>Date</th>
-								<th>Category</th>
-								<th>Type</th>
-							</tr>
-							<c:forEach items="${requestScope.transactionList}" var="t">
-								<tr class="${t.getTransactionType()}">
-									<td><c:out value="${t.transactionID}"></c:out></td>
-									<td><c:out value="${t.detail}"></c:out></td>
-									<td>$<c:out value="${t.amount}"></c:out></td>
-									<td><c:out value="${t.date}"></c:out></td>
-									<td><c:out value="${t.getCategoryName()}"></c:out></td>
-									<td><c:out value="${t.getTransactionType()}"></c:out></td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</c:if>
 			</div>
 		</div>
+		
+		<c:if test="${requestScope.transactionList.size() > 0}">
+			<div class="row featurette">
+				<hr class="featurette-divider">
+				
+				<div class="col-md-12">
+					<h2 class="featurette-heading">Your Transactions</h2>
+					
+						<table class="table table-bordered" style="table-layout: fixed">
+							<tbody>
+								<tr>
+									<th>Transaction #</th>
+									<th>Details</th>
+									<th>Amount</th>
+									<th>Date</th>
+									<th>Category</th>
+									<th>Type</th>
+								</tr>
+								<c:forEach items="${requestScope.transactionList}" var="t">
+									<tr class="${t.getTransactionType()}">
+										<td><c:out value="${t.transactionID}"></c:out></td>
+										<td><c:out value="${t.detail}"></c:out></td>
+										<td>$<c:out value="${t.amount}"></c:out></td>
+										<td><c:out value="${t.date}"></c:out></td>
+										<td><c:out value="${t.getCategoryName()}"></c:out></td>
+										<td><c:out value="${t.getTransactionType()}"></c:out></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					
+				</div>
+			</div>
+		</c:if>
 
 		<%@ include file="footer.jsp"%>
 	</div>
