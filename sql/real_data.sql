@@ -21,6 +21,7 @@ INSERT INTO category VALUES (15, 'Telephone/Mobile');
 INSERT INTO category VALUES (16, 'Utilities');
 
 INSERT INTO occupation(id, name) VALUES(1, 'Student');
+INSERT INTO occupation(id, name) VALUES(2, 'Others');
 
 INSERT INTO currency(id, short_name, long_name) VALUES(1, 'DZD', 'Algeria Dinars');
 INSERT INTO currency(id, short_name, long_name) VALUES(2, 'ARS', 'Argentina Pesos');

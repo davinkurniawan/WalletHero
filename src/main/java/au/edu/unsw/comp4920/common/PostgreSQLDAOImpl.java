@@ -57,8 +57,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(6, (u.getMiddleName() != null) ? u.getMiddleName() : "");
 				stmt.setString(7, u.getLastName());
 				stmt.setString(8, u.getToken());
-				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for
-									// Disabled
+				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for Disabled
 				stmt.setDouble(10, 0.0); // Default to $0.0
 
 				int n = stmt.executeUpdate();
@@ -1052,5 +1051,84 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		}
 
 		return occupation;
+	}
+
+	@Override
+	public boolean createDefaultUserDetails(int userID) {
+		boolean result = true;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement(
+					"INSERT INTO user_detail (user_id, currency_id, age, gender, occupation_id) "
+							+ " VALUES (?, 3, 0, 'U', 2);");
+			// currency_id = 3 (AUD)
+			// age = 0
+			// gender = U = Unknown
+			// occupation_id = 2 (Others)
+			
+			stmt.setInt(1, userID);
+
+			int n = stmt.executeUpdate();
+
+			if (n != 1) {
+				throw new DataSourceException("Did not insert one row into database");
+			}
+
+			stmt.close();
+		} 
+		catch (SQLException | DataSourceException | ServiceLocatorException e) {
+			result = false;
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					result = false;
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return result;
+	}
+
+	@Override
+	public void deleteUser(int userID) {
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("DELETE FROM users WHERE id = ?;");
+
+			stmt.setInt(1, userID);
+			int n = stmt.executeUpdate();
+
+			if (n != 1) {
+				throw new DataSourceException("Did not delete one row from database");
+			}
+			
+			stmt.close();
+		} 
+		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
 	} 
 }

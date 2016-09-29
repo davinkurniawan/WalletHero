@@ -95,23 +95,36 @@ public class SignUpCommand implements Command {
 						System.out.println("Token: " + token);
 						
 						if(dao.createUser(user)) {
-							System.out.println("sending email");
-							// Send email here 
+							user = dao.getUserDetails(user.getUsername());
+							System.out.println("set default user details");
+							if (dao.createDefaultUserDetails(user.getUserID())){
 							
-							String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
-							content += "Please confirm your email using the following link below" + "<br/>";
-							content += Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
-							content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
-							content += "<br/><br/>";
-							content += "Regards,<br/>";
-							content += "WalletHero Support Team";
-							
-							MailHelper mh = new MailHelper();
-							mh.sendEmail(user.getEmail(), "Welcome to WalletHero. Please validate Your Email Account.", content);
-	
-							// Redirect to appropriate page: public view
-							response.sendRedirect(Constants.ROUTER + Constants.SIGNUP_COMMAND + "&success=yes");
-							return;
+								System.out.println("sending email");
+								// Send email here 
+								
+								String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
+								content += "Please confirm your email using the following link below" + "<br/>";
+								content += Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
+								content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
+								content += "<br/><br/>";
+								content += "Regards,<br/>";
+								content += "WalletHero Support Team";
+								
+								MailHelper mh = new MailHelper();
+								mh.sendEmail(user.getEmail(), "Welcome to WalletHero. Please validate Your Email Account.", content);
+		
+								// Redirect to appropriate page: public view
+								response.sendRedirect(Constants.ROUTER + Constants.SIGNUP_COMMAND + "&success=yes");
+								return;
+							}
+							else{
+								//Do a rollback!!!
+								dao.deleteUser(user.getUserID());
+								
+								System.err.println("SignUpCommand: Failed to create user details account!");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "Failed to create an account for you!");
+							}
 						}
 						else{
 							System.err.println("SignUpCommand: Failed to create user account!");
