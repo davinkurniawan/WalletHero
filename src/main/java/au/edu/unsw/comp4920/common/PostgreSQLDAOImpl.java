@@ -293,9 +293,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			PreparedStatement stmt = conn.prepareStatement(
 					"INSERT INTO transaction (user_id, date, detail, amount, is_income, recur_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id;");
-
+						
 			stmt.setInt(1, t.getPersonID());
-			stmt.setDate(2, t.getDate());
+			stmt.setString(2, t.getDate());
 			stmt.setString(3, t.getDetail());
 			stmt.setBigDecimal(4, t.getAmount());
 			stmt.setBoolean(5, t.isIncome());
@@ -368,7 +368,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 				t.setTransactionID(rs.getInt("id"));
 				t.setPersonID(rs.getInt("user_id"));
-				t.setDate(rs.getDate("date"));
+				t.setDate(rs.getString("date"));
 				t.setDetail(rs.getString("detail"));
 				t.setAmount(rs.getBigDecimal("amount"));
 				t.setIsIncome(rs.getBoolean("is_income"));
@@ -467,10 +467,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 					numberPayments--;
 
 					if (iteratorDate.after(from) || iteratorDate.equals(from)) {
-
+						
+						SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+						
 						Transaction t = new Transaction();
 						t.setTransactionID(transactionID);
-						t.setDate(new java.sql.Date(iteratorDate.getTime()));
+						t.setDate(df.format(iteratorDate.getTime()));
 						t.setDetail(detail);
 						t.setAmount(amount);
 						t.setIsIncome(income);
@@ -534,8 +536,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			PreparedStatement stmt = conn
 					.prepareStatement("INSERT INTO Session (id, user_id, last_access) VALUES (?, ?, ?);");
 
-			stmt.setString(1, session.getSessionId());
-			stmt.setInt(2, session.getUserId());
+			stmt.setString(1, session.getSessionID());
+			stmt.setInt(2, session.getUserID());
 			stmt.setString(3, session.getLastAccess());
 
 			int n = stmt.executeUpdate();
@@ -574,8 +576,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			while (rs.next()) {
 				s = new Session();
-				s.setSessionId(rs.getString("id"));
-				s.setUserId(rs.getInt("user_id"));
+				s.setSessionID(rs.getString("id"));
+				s.setUserID(rs.getInt("user_id"));
 				s.setLastAccess(rs.getString("last_access"));
 
 				DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
@@ -765,8 +767,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			while (rs.next()) {
 				s = new Session();
-				s.setSessionId(rs.getString("id"));
-				s.setUserId(rs.getInt("user_id"));
+				s.setSessionID(rs.getString("id"));
+				s.setUserID(rs.getInt("user_id"));
 				s.setLastAccess(rs.getString("last_access"));
 
 				DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
@@ -932,7 +934,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public List<Category> getCategories() {
+	public List<Category> getAllCategories() {
 		ArrayList<Category> categories = new ArrayList<Category>();
 
 		Connection conn = null;
@@ -946,24 +948,106 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			while (rs.next()) {
 				Category c = new Category();
-
-				c.setID(rs.getInt("id"));
+				c.setCategoryID(rs.getInt("id"));
 				c.setCategory(rs.getString("name"));
+				
 				categories.add(c);
 			}
 
-		} catch (SQLException | ServiceLocatorException e) {
+		} 
+		catch (SQLException | ServiceLocatorException e) {
 			System.err.println("getCategories(): " + e.getMessage());
-		} finally {
+		} 
+		finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} catch (SQLException e) {
+				} 
+				catch (SQLException e) {
 					System.err.println("getCategories(): " + e.getMessage());
 				}
 			}
 		}
 
 		return categories;
+	}
+
+	@Override
+	public List<Currency> getAllCurrencies() {
+		ArrayList<Currency> currency = new ArrayList<Currency>();
+
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("SELECT id, short_name, long_name FROM currency;");
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Currency c = new Currency();
+				c.setCurrencyID(rs.getInt("id"));
+				c.setShortName(rs.getString("short_name"));
+				c.setLongName(rs.getString("long_name"));
+				
+				currency.add(c);
+			}
+
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println("getAllCurrencies(): " + e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println("getAllCurrencies(): " + e.getMessage());
+				}
+			}
+		}
+
+		return currency;
+	}
+
+	@Override
+	public List<Occupation> getAllOccupations() {
+		ArrayList<Occupation> occupation = new ArrayList<Occupation>();
+
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM occupation;");
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Occupation o = new Occupation();
+				o.setOccupationID(rs.getInt("id"));
+				o.setName(rs.getString("name"));
+				
+				occupation.add(o);
+			}
+
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println("getAllOccupation(): " + e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println("getAllOccupation(): " + e.getMessage());
+				}
+			}
+		}
+
+		return occupation;
 	} 
 }

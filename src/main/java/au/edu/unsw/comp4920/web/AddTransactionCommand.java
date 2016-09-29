@@ -2,7 +2,8 @@ package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,11 +18,10 @@ import au.edu.unsw.comp4920.objects.Transaction;
 public class AddTransactionCommand implements Command {
 
 	public AddTransactionCommand() {
+		
 	}
 
-	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
-			throws ServletException, IOException {
-
+	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: AddTransactionCommand"); 
 
 		// User has just navigated to the page and has not yet attempted to
@@ -45,12 +45,14 @@ public class AddTransactionCommand implements Command {
 				isIncome = false;
 			}
 
+			SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+
 			Transaction t = new Transaction();
 			t.setPersonID(personID);
 			t.setDetail(details);
 			t.setAmount(value);
 			t.setIsIncome(isIncome);
-			t.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			t.setDate(df.format(new Date()));
 			t.setCategoryID(category);
 
 			// One off expense.
@@ -85,8 +87,6 @@ public class AddTransactionCommand implements Command {
 			System.out.println("AddTransactionCommand: Failed as something was null.");
 			request.setAttribute("error", true);
 		}
-
-		request.setAttribute("categories", dao.getCategories());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/addtransaction.jsp");
 		request.setAttribute(Constants.ADDTRANSACTION_COMMAND, "active");

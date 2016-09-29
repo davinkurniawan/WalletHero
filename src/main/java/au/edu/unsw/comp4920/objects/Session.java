@@ -1,35 +1,35 @@
 package au.edu.unsw.comp4920.objects;
 
 public class Session {
-	private String sessionId;
-	private int userId;
+	private String sessionID;
+	private int userID;
 	private String lastAccess;
 	
 	public Session() {
 		
 	}
 
-	public Session(String sessionId, int userId, String lastAccess) {
+	public Session(String sessionID, int userID, String lastAccess) {
 		super();
-		this.sessionId = sessionId;
-		this.userId = userId;
+		this.sessionID = sessionID;
+		this.userID = userID;
 		this.lastAccess = lastAccess;
 	}
 
-	public String getSessionId() {
-		return sessionId;
+	public String getSessionID() {
+		return sessionID;
 	}
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public void setSessionID(String sessionID) {
+		this.sessionID = sessionID;
 	}
 
-	public int getUserId() {
-		return userId;
+	public int getUserID() {
+		return userID;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	public String getLastAccess() {
@@ -42,6 +42,6 @@ public class Session {
 
 	@Override
 	public String toString() {
-		return "Session [sessionId=" + sessionId + ", userId=" + userId + ", lastAccess=" + lastAccess + "]";
+		return "Session [sessionId=" + sessionID + ", userId=" + userID + ", lastAccess=" + lastAccess + "]";
 	}
 }

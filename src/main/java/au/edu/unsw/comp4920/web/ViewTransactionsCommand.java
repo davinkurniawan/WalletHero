@@ -1,7 +1,8 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -19,10 +20,10 @@ import au.edu.unsw.comp4920.objects.Transaction;
 public class ViewTransactionsCommand implements Command {
 
 	public ViewTransactionsCommand() {
+	
 	}
 
-	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
-			throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: ViewTransactionsCommand");
 
 		HttpSession session = request.getSession();
@@ -37,65 +38,66 @@ public class ViewTransactionsCommand implements Command {
 		
 		try {
 			categoryID = Integer.parseInt(request.getParameter("category"));
-		} catch (NumberFormatException e) {
+		} 
+		catch (NumberFormatException e) {
 			categoryID = -1;
 		}
 	
 		if (request.getParameter("incomesChk") != null) {
 			viewIncomes = true;
 		}
-		
 		if (request.getParameter("expensesChk") != null) {
 			viewExpenses = true;
 		}
-
 		if (fromDate == null || toDate == null) {
 			fromDate = "";
 			toDate = "";
 		}
 
-		List<Transaction> transactions;
-		String transactionRange;
+		List<Transaction> transactions = null;
+		String transactionRange = "";
 
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-		Date from;
-		Date to;
+		Date from = null;
+		Date to = null;
+		SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
 
-		if (!fromDate.equals("") && !fromDate.equals("")) {
+		if (!fromDate.equals("") && !toDate.equals("")) {			
 			// If a date range is specified, look in that range.
-			from = Date.valueOf(fromDate);
-			to = Date.valueOf(toDate);
-			transactionRange = "Viewing transactions from " + from.toString() + " to " + to.toString() + ".";
-
-			// TODO: Find proper workaround.
-			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
-			
-		} else {
-			// If no range is specified, look for transactions done in past
-			// week.
-			// stackoverflow.com/a/35613796
-			from = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			try {
+				from = df.parse(fromDate);
+				to = df.parse(toDate);
+				transactionRange = "Viewing transactions from " + df.format(from) + " to " + df.format(to);
+				
+				// TODO: Find proper workaround.
+				to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
+			} 
+			catch (ParseException e) {
+				e.printStackTrace();
+			}			
+		} 
+		else {
+			// If no range is specified, look for transactions done in past week.
+			// https://stackoverflow.com/a/35613796
+			from = new Date();
 			from = new Date(from.getTime() - 24 * 60 * 60 * 1000 * 6);
 
-			to = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			transactionRange = "Viewing transactions from " + from.toString() + " to " + to.toString() + ".";
+			to = new Date();
+
+			transactionRange = "Viewing transactions from " + df.format(from) + " to " + df.format(to);
 
 			// TODO: Find proper workaround.
 			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
-			
 		}
 		
 		transactions = dao.getTransactionsByDate(personID, from, to, viewIncomes, viewExpenses, categoryID);
 
 		request.setAttribute("transactionList", transactions);
 		request.setAttribute("transactionRange", transactionRange);
-		request.setAttribute("categories", dao.getCategories());
-		
-		request.setAttribute("fromDate", from.toString());
+		request.setAttribute("fromDate", df.format(from));
 		
 		// TODO: Find proper workaround.
 		to = new Date(to.getTime() - 24 * 60 * 60 * 1000);
-		request.setAttribute("toDate", to.toString());
+		request.setAttribute("toDate", df.format(to));
 
 		RequestDispatcher rd = request.getRequestDispatcher("/viewtransactions.jsp");
 		request.setAttribute(Constants.VIEWTRANSACTIONS_COMMAND, "active");

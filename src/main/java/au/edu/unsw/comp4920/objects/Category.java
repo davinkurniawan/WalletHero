@@ -7,8 +7,26 @@ package au.edu.unsw.comp4920.objects;
  */
 
 public class Category {
+	private int categoryID;
 	private String category;
-	private int id;
+	
+	public Category() {
+		
+	}
+	
+	public Category(String category, int categoryID) {
+		super();
+		this.categoryID = categoryID;
+		this.category = category;
+	}
+	
+	public int getCategoryID() {
+		return categoryID;
+	}
+
+	public void setCategoryID(int categoryID) {
+		this.categoryID = categoryID;
+	}
 
 	public String getCategory() {
 		return category;
@@ -18,11 +36,8 @@ public class Category {
 		this.category = category;
 	}
 
-	public int getID() {
-		return id;
-	}
-
-	public void setID(int id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return "Category [categoryID=" + categoryID + ", category=" + category + "]";
 	}
 }

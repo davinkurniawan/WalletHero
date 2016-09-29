@@ -17,7 +17,6 @@ public interface CommonDAO {
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);	
 	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
-	public List<Category> getCategories();
 	
 	public void createSession(Session session);
 	public Session getSession(String sessionId);
@@ -30,4 +29,8 @@ public interface CommonDAO {
 	
 	public void setPassword(User u, String hashedPassword);
 	public String getSalt(String userinfo);
+	
+	public List<Category> getAllCategories();
+	public List<Currency> getAllCurrencies();
+	public List<Occupation> getAllOccupations();
 }

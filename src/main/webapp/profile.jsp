@@ -105,7 +105,27 @@
         <div class="col-md-6">
           <h2 class="featurette-heading">Update Your Preferences</h2>
           
-          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
+          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return false">
+          
+          	<div class="form-group" id="div-currency" name="div-currency">
+		  		<label>Your Currency <label style="color:red">*</label></label>
+		  		<br/>
+				<select id="currency" name="currency" class="form-control">				
+					<c:forEach var="cur" items="${currency}">
+						<option value="${cur.getCurrencyID()}">${cur.getLongName()} - ${cur.getShortName()}</option>
+					</c:forEach>
+				</select> 
+			</div>
+			
+			<div class="form-group" id="div-occupation" name="div-occupation">
+		  		<label>Your Occupation <label style="color:red">*</label></label>
+		  		<br/>
+				<select id="occupation" name="occupation" class="form-control">				
+					<c:forEach var="occ" items="${occupation}">
+						<option value="${occ.getOccupationID()}">${occ.getName()}</option>
+					</c:forEach>
+				</select> 
+			</div>
           
           	<input type="hidden" name="action" value="update_preferences"/>	
 			<button type="submit" class="btn btn-default">Update</button>	

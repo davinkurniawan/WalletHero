@@ -49,10 +49,10 @@ public class User {
 			this.token 		 = rs.getString("token");
 			this.status_id 	 = rs.getInt("status_id");
 			this.budget 	 = rs.getDouble("budget");
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			throw e;
-		}
-		
+		}	
 	}
 	
 	public User(User u) {		

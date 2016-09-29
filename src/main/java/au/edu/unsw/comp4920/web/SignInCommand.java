@@ -53,18 +53,22 @@ public class SignInCommand implements Command {
 					
 					session.setAttribute(Constants.USERID, user.getUserID());
 					session.setAttribute(Constants.SID, session.getId());
-		
+					session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+					session.setAttribute(Constants.OCCUPATION, dao.getAllOccupations());
+					session.setAttribute(Constants.CATEGORY, dao.getAllCategories());
+
 					Session s = new Session();
-					s.setSessionId(session.getId());
-					s.setUserId((Integer) session.getAttribute(Constants.USERID));
+					s.setSessionID(session.getId());
+					s.setUserID((Integer) session.getAttribute(Constants.USERID));
 					DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
 					Date date = new Date();
 					s.setLastAccess(df.format(date));
 					
 					System.out.println("Created Session ID: " + session.getAttribute(Constants.SID));
 					System.out.println("Stored User ID in Session: " + session.getAttribute(Constants.USERID));
-					System.out.println("Created Session (s) ID: " + s.getSessionId());
-		
+					System.out.println("Created Session (s) ID: " + s.getSessionID());
+					System.out.println("All Currencies: " + dao.getAllCurrencies().toString());
+
 					dao.createSession(s);
 		
 					System.out.println("Login successful.");

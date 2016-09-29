@@ -45,7 +45,10 @@ public final class Constants {
 	public static final String SID 						= "sessionID";
 	public static final String SEARCHRESULT				= "searchResult";
 	public static final String USER 					= "user";
-	
+	public static final String CURRENCY 				= "currency";
+	public static final String CATEGORY 				= "category";
+	public static final String OCCUPATION 				= "occupation";
+
 	// Naming
 	public static final String WEB						= "WalletHero";
 	

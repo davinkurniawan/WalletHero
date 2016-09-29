@@ -15,6 +15,12 @@ public class Recurrence {
 	public Recurrence() {
 
 	}
+	
+	public Recurrence(int transactionID, String recurrenceFreq, int recurrenceNumber) {
+		this.transactionID = transactionID;
+		this.recurrenceFreq = recurrenceFreq;
+		this.recurrenceNumber = recurrenceNumber;
+	}
 
 	public int getTransactionID() {
 		return transactionID;

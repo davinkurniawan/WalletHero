@@ -1,7 +1,6 @@
 package au.edu.unsw.comp4920.objects;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
 /**
  * Basic transaction implementation, no support for recurring incomes and
@@ -15,7 +14,7 @@ public class Transaction {
 	private int personID;
 	private boolean recurrence = false;
 
-	private Date date;
+	private String date;
 	private String detail;
 	private BigDecimal amount;
 	private int categoryID;
@@ -27,19 +26,19 @@ public class Transaction {
 
 	}
 
-	// public Transaction(int transactionID, int personID, boolean recurrence,
-	// Date date, String detail, BigDecimal amount,
-	// int category, boolean isIncome) {
-	// super();
-	// this.transactionID = transactionID;
-	// this.personID = personID;
-	// this.date = date;
-	// this.detail = detail;
-	// this.amount = amount;
-	// this.category = category;
-	// this.isIncome = isIncome;
-	// this.recurrence = recurrence;
-	// }
+	public Transaction(int transactionID, int personID, boolean recurrence, String date, String detail, BigDecimal amount,
+			int categoryID, String categoryName, boolean isIncome) {
+		super();
+		this.transactionID = transactionID;
+		this.personID = personID;
+		this.recurrence = recurrence;
+		this.date = date;
+		this.detail = detail;
+		this.amount = amount;
+		this.categoryID = categoryID;
+		this.categoryName = categoryName;
+		this.isIncome = isIncome;
+	}
 
 	public int getTransactionID() {
 		return transactionID;
@@ -57,11 +56,11 @@ public class Transaction {
 		this.personID = personID;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

@@ -18,7 +18,7 @@
               <ul class="nav navbar-nav">
                 <li class="${home }"><a href="${applicationScope['ROUTER_HOME']}">Home</a></li>
                 
-                <li class="${viewTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">View your Transactions</a></li>
+                <li class="${viewTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions Overview</a></li>
                 <li class="${addTransaction }"><a href="${applicationScope['ROUTER_ADDTRANSACTION']}">Add Transactions</a></li>
                 
                 <li class="${profile }"><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>

@@ -37,7 +37,7 @@
 			</div>
 		</c:if>
 
-		<form action="router?operation=addTransaction" method="POST">
+		<form action="${applicationScope['ROUTER_ADDTRANSACTION']}" method="POST">
 			<table>
 				<tbody>
 					<tr>
@@ -58,12 +58,10 @@
 					<tr>
 					<td>Category:</td>
 					<td>
-						<select class="dropdown" name="categoryOption" id="categoryOption" 
-							style="width: 150px !important; min-width: 150px; max-width: 150px;">
-							<option value="">Please Select</option>
-							<option value="1">Business</option>
-							<option value="2">Interest</option>
-							<option value="0">Other</option>
+						<select class="dropdown" name="categoryOption" id="categoryOption">
+							<c:forEach items="${category}" var="c">
+								<option value="${c.getCategoryID()}">${c.getCategory()}</option>
+							</c:forEach>
 						</select>
 					</td>
 					</tr>
