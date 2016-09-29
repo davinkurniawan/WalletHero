@@ -62,8 +62,8 @@ public class EmailUpdateCommand implements Command {
 			request.setAttribute(Constants.ERRORMSG, "Missing Information!");
 		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/signIn.jsp");
-		request.setAttribute(Constants.SIGNIN_COMMAND, "active");
+		RequestDispatcher rd = request.getRequestDispatcher("/emailupdate.jsp");
+		request.setAttribute(Constants.EMAILUPDATE_COMMAND, "active");
 		rd.forward(request, response);
 	}	
 }

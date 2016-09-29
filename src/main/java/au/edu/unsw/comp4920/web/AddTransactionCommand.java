@@ -89,6 +89,7 @@ public class AddTransactionCommand implements Command {
 		request.setAttribute("categories", dao.getCategories());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/addtransaction.jsp");
+		request.setAttribute(Constants.ADDTRANSACTION_COMMAND, "active");
 		rd.forward(request, response);
 	}
 }

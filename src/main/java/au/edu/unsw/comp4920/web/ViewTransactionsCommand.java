@@ -98,6 +98,7 @@ public class ViewTransactionsCommand implements Command {
 		request.setAttribute("toDate", to.toString());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/viewtransactions.jsp");
+		request.setAttribute(Constants.VIEWTRANSACTIONS_COMMAND, "active");
 		rd.forward(request, response);
 	}
 }

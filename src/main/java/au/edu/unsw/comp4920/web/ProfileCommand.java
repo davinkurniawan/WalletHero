@@ -49,57 +49,61 @@ public class ProfileCommand implements Command {
 		Commands action = commands(request.getParameter("action"));
 		if (action != null) {
 			switch (action) {
-				case PROFILE:
-					String email 		= request.getParameter("email");
-					String firstname 	= request.getParameter("firstname");
-					String middlename 	= request.getParameter("middlename");
-					String lastname 	= request.getParameter("lastname");
-					
-					if ( email == null || firstname == null || lastname == null) {
-						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Values must not be empty!");
-					}
-					
-					boolean same = true;
-					
-					updatedUser = new User(user);
-					if (firstname != null && !firstname.equals(user.getFirstName())) {
-						updatedUser.setFirstName(firstname);
-						same = false;
-					}
-					if (middlename != null && !middlename.equals(user.getMiddleName())) {
-						user.setMiddleName(middlename);
-						same = false;
-					}
-					if (updatedUser != null && !lastname.equals(user.getLastName())) {
-						user.setLastName(lastname);
-						same = false;
-					}
-					
-					if (!same) {
-						if (dao.updateUserNames(user)) {
-							user = updatedUser;			
-							request.setAttribute(Constants.ERROR, 0);
-							request.setAttribute(Constants.ERRORMSG, "Your name has been updated!");		
-						} else {
-							System.err.println("ProfileCommand: User names update failed.");
-							request.setAttribute(Constants.ERROR, 1);
-							request.setAttribute(Constants.ERRORMSG, "Failed to update names!");
+				case PROFILE:					
+					if ( request.getParameter("email") != null && request.getParameter("firstname") != null && request.getParameter("lastname") != null) {
+						String email 		= request.getParameter("email");
+						String firstname 	= request.getParameter("firstname");
+						String middlename 	= request.getParameter("middlename");
+						String lastname 	= request.getParameter("lastname");
+												
+						boolean same = true;
+						
+						updatedUser = new User(user);
+						if (firstname != null && !firstname.equals(user.getFirstName())) {
+							updatedUser.setFirstName(firstname);
+							same = false;
 						}
-					} else {
-						System.out.println("ProfileCommand: All names are the same, user not updated");
-					}
-					
-					if (!email.equals(user.getEmail())) {
-						if (email != null) {
-							sendChangeEmail(email, user, dao);
-							System.out.println("ProfileCommand: email update confirmation sent to " + email);
-							request.setAttribute(Constants.ERROR, 0);
-							request.setAttribute(Constants.ERRORMSG, "Confirm the email to change emails!");
+						if (middlename != null && !middlename.equals(user.getMiddleName())) {
+							updatedUser.setMiddleName(middlename);
+							same = false;
 						}
-					} 
-					else {
-						System.out.println("ProfileCommand: Email is the same, email not sent");
+						if (lastname != null && !lastname.equals(user.getLastName())) {
+							updatedUser.setLastName(lastname);
+							same = false;
+						}
+						
+						if (!same) {
+							if (dao.updateUserNames(updatedUser)) {
+								user = updatedUser;			
+								request.setAttribute(Constants.ERROR, 0);
+								request.setAttribute(Constants.ERRORMSG, "Your name(s) has been updated!");		
+							} 
+							else {
+								System.err.println("ProfileCommand: User names update failed.");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "Failed to update name(s)!");
+							}
+						} 
+						else {
+							System.out.println("ProfileCommand: All names are the same, user not updated");
+						}
+						
+						if (email != null && !email.equals(user.getEmail())) {
+							if (dao.getUser(email, null) == null){
+								sendChangeEmail(email, user, dao);
+								System.out.println("ProfileCommand: email update confirmation sent to " + email);
+								request.setAttribute(Constants.ERROR, 0);
+								request.setAttribute(Constants.ERRORMSG, "We have sent an email to your account. Plase confirm the email to to update your email!");
+							}
+							else{
+								System.err.println("ProfileCommand: Email has been before.");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "The email you entered has been used by other user!");
+							}
+						} 
+						else {
+							System.out.println("ProfileCommand: Email is the same, email not sent");
+						}
 					}
 					
 					break;
@@ -161,8 +165,7 @@ public class ProfileCommand implements Command {
 		
 		// Send email here 
 		String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
-		content += "Please confirm the new email for your WalletHero account ";
-		content += "by clicking on the link below.<br/>";
+		content += "Please confirm your new email using the following link below" + "<br/>";
 		content += Constants.SERVER + Constants.ROUTER + Constants.EMAILUPDATE_COMMAND;
 		content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
 		content += "&email" + "=" + email;
@@ -170,8 +173,7 @@ public class ProfileCommand implements Command {
 		content += "Regards,<br/>";
 		content += "WalletHero Support Team";
 		
-		
 		MailHelper mh = new MailHelper();
-		mh.sendEmail(email, "WalletHero Change Email", content);
+		mh.sendEmail(email, "WalletHero - Update Email Confirmation.", content);
 	}
 }

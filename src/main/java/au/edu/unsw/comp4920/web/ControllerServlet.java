@@ -33,21 +33,21 @@ public class ControllerServlet extends HttpServlet {
 
 		// Initialize hashmap of commands
 		_commands = new HashMap<String, Command>();
-		_commands.put(Constants.SIGNIN_COMMAND,	 		new SignInCommand());
-		_commands.put(Constants.SIGNOUT_COMMAND, 		new SignOutCommand());
-		_commands.put(Constants.SIGNUP_COMMAND, 		new SignUpCommand());
-		_commands.put(Constants.PROFILE_COMMAND, 		new ProfileCommand());
-		_commands.put(Constants.PUBLIC_COMMAND, 		new PublicCommand());
-		_commands.put(Constants.HOME_COMMAND, 			new HomeCommand());
-		_commands.put(Constants.SEARCH_COMMAND,			new SearchCommand());
-		_commands.put(Constants.NOTFOUND_COMMAND, 		new ErrorCommand());
-		_commands.put(Constants.VALIDATE_COMMAND, 		new EmailValidationCommand());
-		_commands.put(Constants.EMAILUPDATE_COMMAND, 	new EmailUpdateCommand());
-		_commands.put(Constants.ABOUT_COMMAND, 			new AboutCommand());
-		_commands.put(Constants.ADDTRANSACTION_COMMAND, new AddTransactionCommand());
-		_commands.put(Constants.VIEWTRANSACTIONS_COMMAND, new ViewTransactionsCommand());
-		_commands.put(Constants.FORGOTPASSWORD_COMMAND,  new ForgotPasswordCommand());
-		_commands.put(Constants.RESETPASSWORD_COMMAND, new ResetPasswordCommand());
+		_commands.put(Constants.SIGNIN_COMMAND,	 			new SignInCommand());
+		_commands.put(Constants.SIGNOUT_COMMAND, 			new SignOutCommand());
+		_commands.put(Constants.SIGNUP_COMMAND, 			new SignUpCommand());
+		_commands.put(Constants.PROFILE_COMMAND, 			new ProfileCommand());
+		_commands.put(Constants.PUBLIC_COMMAND, 			new PublicCommand());
+		_commands.put(Constants.HOME_COMMAND, 				new HomeCommand());
+		_commands.put(Constants.SEARCH_COMMAND,				new SearchCommand());
+		_commands.put(Constants.NOTFOUND_COMMAND, 			new ErrorCommand());
+		_commands.put(Constants.VALIDATE_COMMAND, 			new EmailValidationCommand());
+		_commands.put(Constants.EMAILUPDATE_COMMAND, 		new EmailUpdateCommand());
+		_commands.put(Constants.ABOUT_COMMAND, 				new AboutCommand());
+		_commands.put(Constants.ADDTRANSACTION_COMMAND, 	new AddTransactionCommand());
+		_commands.put(Constants.VIEWTRANSACTIONS_COMMAND, 	new ViewTransactionsCommand());
+		_commands.put(Constants.FORGOTPASSWORD_COMMAND,  	new ForgotPasswordCommand());
+		_commands.put(Constants.RESETPASSWORD_COMMAND, 		new ResetPasswordCommand());
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
@@ -118,7 +118,6 @@ public class ControllerServlet extends HttpServlet {
 							!dest.equals(Constants.SIGNIN_COMMAND)			&& 
 							!dest.equals(Constants.SIGNUP_COMMAND) 			&&
 							!dest.equals(Constants.VALIDATE_COMMAND) 		&&
-							!dest.equals(Constants.EMAILUPDATE_COMMAND) 	&&
 							!dest.equals(Constants.FORGOTPASSWORD_COMMAND)	&&
 							!dest.equals(Constants.RESETPASSWORD_COMMAND))
 
