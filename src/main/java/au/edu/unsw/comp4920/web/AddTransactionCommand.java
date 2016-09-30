@@ -45,7 +45,7 @@ public class AddTransactionCommand implements Command {
 				isIncome = false;
 			}
 
-			SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+			SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy"); 
 
 			Transaction t = new Transaction();
 			t.setPersonID(personID);

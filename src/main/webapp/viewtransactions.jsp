@@ -1,16 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-		
-	<title>${applicationScope['WEB_NAME']} - Transactions Overview</title>
-	<%@ include file="bootstrapHeader.jsp" %>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>${applicationScope['WEB_NAME']}-TransactionsOverview</title>
+<%@ include file="bootstrapHeader.jsp"%>
+<script src="js/highcharts.js"></script>
+<script src="js/exporting.js"></script>
 </head>
 <body>
 	<%@ include file="signedinnavbar.jsp"%>
@@ -22,33 +24,52 @@
 		<hr class="featurette-divider">
 
 		<div class="row featurette">
-        	<div class="col-md-6">
+			<div class="col-md-6">
 
-				<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="">
+				<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}"
+					method="POST" onSubmit="">
 
 					<div class="form-group" id="div-from-date" name="div-from-date">
-				  		<label>From Date <label style="color:red">*</label></label>
-		  				<input type="text" class="form-control datepicker" id="from_date" name="from_date" placeholder="From Date..." value="${param['from_date']}"/>
+						<label>From Date <label style="color: red">*</label></label> <input
+							type="text" class="form-control datepicker" id="from_date"
+							name="from_date" placeholder="From Date..."
+							value="${param['from_date']}" />
 					</div>
 
 					<div class="form-group" id="div-to-date" name="div-to-date">
-				  		<label>To Date <label style="color:red">*</label></label>
-		  				<input type="text" class="form-control datepicker" id="to_date" name="to_date" placeholder="To Date..." value="${param['to_date']}"/>
+						<label>To Date <label style="color: red">*</label></label> <input
+							type="text" class="form-control datepicker" id="to_date"
+							name="to_date" placeholder="To Date..."
+							value="${param['to_date']}" />
 					</div>
-					
+
 					<div class="form-group checkbox" id="div-income" name="div-income">
-					  <label><input type="checkbox" name="incomesChk" id="incomesButton" value="true" checked="checked"/>Show Incomes</label>
+						<label><input type="checkbox" name="incomesChk"
+							id="incomesButton" value="true" 
+						
+							<c:if test="${viewIncomes == true}">
+								checked="checked" 
+							</c:if>
+							
+							/>Show Incomes</label>
 					</div>
-					
-					<div class="form-group checkbox" id="div-expenses" name="div-expenses">
-					  <label><input type="checkbox" name="expensesChk" id="expensesButton" value="true" checked="checked"/>Show Expenses</label>
+
+					<div class="form-group checkbox" id="div-expenses"
+						name="div-expenses">
+						<label><input type="checkbox" name="expensesChk"
+							id="expensesButton" value="true" 
+							
+							<c:if test="${viewExpenses == true}">
+								checked="checked" 
+							</c:if>
+							
+							/>Show Expenses</label>
 					</div>
-					
+
 					<div class="form-group" id="div-category" name="div-category">
-				  		<label>Category <label style="color:red">*</label></label>
-				  		<br/>
-						<select id="category" name="category" class="form-control">	
-							<option value="" selected>All</option>			
+						<label>Category <label style="color: red">*</label></label> <br />
+						<select id="category" name="category" class="form-control">
+							<option value="-1" selected>All</option>
 							<c:forEach items="${category}" var="c">
 								<c:choose>
 									<c:when test="${param['category'] == c.getCategoryID()}">
@@ -57,46 +78,48 @@
 									<c:otherwise>
 										<option value="${c.getCategoryID()}">${c.getCategory()}</option>
 									</c:otherwise>
-								</c:choose>							
+								</c:choose>
 							</c:forEach>
-						</select> 
+						</select>
 					</div>
 
 					<input type=submit value="Confirm" class="btn btn-primary" />
 				</form>
 			</div>
 		</div>
-		
+
+		<div id="graph"></div>
+
 		<c:if test="${requestScope.transactionList.size() > 0}">
 			<div class="row featurette">
 				<hr class="featurette-divider">
-				
+
 				<div class="col-md-12">
 					<h2 class="featurette-heading">Your Transactions</h2>
-					
-						<table class="table table-bordered" style="table-layout: fixed">
-							<tbody>
-								<tr>
-									<th>Transaction #</th>
-									<th>Details</th>
-									<th>Amount</th>
-									<th>Date</th>
-									<th>Category</th>
-									<th>Type</th>
+
+					<table class="table table-bordered" style="table-layout: fixed">
+						<tbody>
+							<tr>
+								<th>Transaction #</th>
+								<th>Details</th>
+								<th>Amount</th>
+								<th>Date</th>
+								<th>Category</th>
+								<th>Type</th>
+							</tr>
+							<c:forEach items="${requestScope.transactionList}" var="t">
+								<tr class="${t.getTransactionType()}">
+									<td><c:out value="${t.transactionID}"></c:out></td>
+									<td><c:out value="${t.detail}"></c:out></td>
+									<td>$<c:out value="${t.amount}"></c:out></td>
+									<td><c:out value="${t.date}"></c:out></td>
+									<td><c:out value="${t.getCategoryName()}"></c:out></td>
+									<td><c:out value="${t.getTransactionType()}"></c:out></td>
 								</tr>
-								<c:forEach items="${requestScope.transactionList}" var="t">
-									<tr class="${t.getTransactionType()}">
-										<td><c:out value="${t.transactionID}"></c:out></td>
-										<td><c:out value="${t.detail}"></c:out></td>
-										<td>$<c:out value="${t.amount}"></c:out></td>
-										<td><c:out value="${t.date}"></c:out></td>
-										<td><c:out value="${t.getCategoryName()}"></c:out></td>
-										<td><c:out value="${t.getTransactionType()}"></c:out></td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					
+							</c:forEach>
+						</tbody>
+					</table>
+
 				</div>
 			</div>
 		</c:if>
@@ -104,7 +127,7 @@
 		<%@ include file="footer.jsp"%>
 	</div>
 
-    <script type="text/javascript">
+	<script type="text/javascript">
 	    function populateDefaultValues() {
 		    var today = new Date();
 		    var month = today.getMonth();
@@ -185,5 +208,108 @@
 			}
 		});
 	</script>
+
+	<script>
+    var EXPENSES_ONLY = 1;
+    var INCOMES_ONLY = 2;
+    var BOTH = 3;   
+    
+    <c:if test="${graphType == 3}">
+	    $(function () {
+	             $('#graph').highcharts({
+	               title: {
+	                   text: 'Daily incomes and expenses from ${fromDate} to ${toDate}.'
+	               },
+	               xAxis: {
+	                   categories: [
+	                   <c:forEach var="parentHash" items="${graphData}">
+	                                '${parentHash.key}',
+	                   </c:forEach>
+	                   ]
+	               },
+	               
+	                   tooltip: {
+	               pointFormat: "<b>Value</b>: $ {point.y:.2f}"
+	           },
+	               
+	               series: [{
+	                   type: 'column',
+	                   color: '#e75757',
+	                   name: 'Expenses',
+	                   data: [
+	                           <c:forEach var="parentHash" items="${graphData}">
+	                                   ${parentHash.value.expense},
+	                           </c:forEach>
+	                          ],
+	               }, {
+	                   type: 'column',
+	                   color: '#79ea86',
+	                   name: 'Incomes',
+	                   data: [
+	                       <c:forEach var="parentHash" items="${graphData}">
+	                               ${parentHash.value.income},
+	                           </c:forEach>
+	                      ],
+	               }, {
+	                   type: 'spline',
+	                   name: 'Profit',
+	                   color: '#649ff0',
+	                   data: [
+	                       <c:forEach var="parentHash" items="${graphData}">
+	                               ${parentHash.value.profit},
+	                           </c:forEach>
+	                      ],
+	               }]
+	              });
+	          });
+	    </c:if>
+	    
+	    <c:if test="${graphType == 1 || graphType == 2}">
+	    $(function () {
+	        $('#graph').highcharts({
+	            chart: {
+	                plotBackgroundColor: null,
+	                plotBorderWidth: null,
+	                plotShadow: true,
+	                type: 'pie'
+	            },
+	            title: {
+	                text: '${transactionType} percentage per category from ${fromDate} to ${toDate}:'
+	            },
+	            tooltip: {
+	                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	            },
+	            plotOptions: {
+	                pie: {
+	                    allowPointSelect: true,
+	                    cursor: 'pointer',
+	                    dataLabels: {
+	                        enabled: true,
+	                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                        style: {
+	                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+	                        }
+	                    }
+	                }
+	            },
+	            series: [{
+	                name: 'Percentage',
+	                colorByPoint: true,
+	                data: [
+	                       
+	                <c:forEach var="hash" items="${graphData}">
+	                {
+	                    name: '${hash.key}',
+	                    y: ${hash.value}
+	                },
+	                </c:forEach>
+	                ]
+	            }]
+	        })
+	    });
+	    </c:if>
+	    
+    </script>
+
 </body>
 </html>

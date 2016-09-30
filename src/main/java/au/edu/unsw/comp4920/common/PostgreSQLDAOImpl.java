@@ -333,7 +333,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			StringBuilder query = new StringBuilder();
 			query.append(
-					"SELECT t.id, user_id, date, detail, amount, is_income, recur_id, c.name FROM transaction t "
+					"SELECT t.id, user_id, date::DATE, detail, amount, is_income, recur_id, c.name FROM transaction t "
 					+ "LEFT JOIN category c ON c.id = t.category_id "
 					+ "WHERE user_id = ?");
 			
@@ -369,7 +369,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				int isReccurence = rs.getInt("recur_id"); 
 
 				if (isReccurence == -1) {
-					SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+					
+					// This is the format PostgreSQL stores their dates.
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 					try {
 						Date found_date = df.parse(t.getDate());
 						
@@ -424,7 +426,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 
 			StringBuilder query = new StringBuilder();
-			query.append("SELECT transaction_id, type, reccur_num, t.date, t.detail, t.amount, t.is_income, c.name "
+			query.append("SELECT transaction_id, type, reccur_num, t.date::DATE, t.detail, t.amount, t.is_income, c.name "
 					+ "FROM recurrence r " + "LEFT JOIN transaction t ON t.id = r.transaction_id "
 					+ "LEFT JOIN category c ON c.id = t.category_id "
 					+ "WHERE t.user_id = " + personID);
@@ -470,7 +472,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 					if (iteratorDate.after(from) || iteratorDate.equals(from)) {
 						
-						SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+						// This is the format PostgreSQL stores their dates.
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						
 						Transaction t = new Transaction();
 						t.setTransactionID(transactionID);
