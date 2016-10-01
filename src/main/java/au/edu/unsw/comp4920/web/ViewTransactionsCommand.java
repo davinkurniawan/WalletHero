@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -202,5 +201,4 @@ public class ViewTransactionsCommand implements Command {
 
 		return parentHashmap;
 	}
-
 }
