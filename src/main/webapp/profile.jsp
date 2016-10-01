@@ -105,7 +105,7 @@
         <div class="col-md-6">
           <h2 class="featurette-heading">Update Your Preferences</h2>
           
-          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return false">
+          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST">
           
           	<div class="form-group" id="div-currency" name="div-currency">
 		  		<label>Your Currency <label style="color:red">*</label></label>
@@ -125,6 +125,22 @@
 						<option value="${occ.getOccupationID()}">${occ.getName()}</option>
 					</c:forEach>
 				</select> 
+			</div>
+			
+			<div class="form-group" id="div-gender" name="div-gender">
+		  		<label>Your Gender</label>
+		  		<br/>
+				<select id="gender" name="gender" class="form-control">
+					<option value="U">Please select</option>
+					<option value="F" ${genderF }>Female</option>
+					<option value="M" ${genderM }>Male</option>
+				</select> 
+			</div>
+			
+			<div class="form-group" id="div-age" name="div-age">
+		  		<label>Your Age</label>
+		  		<br/>
+  				<input type="text" class="form-control" id="age" name="age" placeholder="Age..." value="${userAge}"/>
 			</div>
           
           	<input type="hidden" name="action" value="update_preferences"/>	

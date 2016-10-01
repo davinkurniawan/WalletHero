@@ -167,18 +167,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			while (rs.next()) {
 				// pull all information out of results and put it into userDTO
-				u = new User();
-				u.setUserID(rs.getInt("id"));
-				u.setUsername(rs.getString("username"));
-				u.setEmail(rs.getString("email"));
-				u.setPassword(rs.getString("password"));
-				u.setSaltHash(rs.getString("salt_hash"));
-				u.setFirstName(rs.getString("first_name"));
-				u.setMiddleName(rs.getString("middle_name"));
-				u.setLastName(rs.getString("last_name"));
-				u.setToken(rs.getString("token"));
-				u.setStatusID(rs.getInt("status_id"));
-				u.setBudget(rs.getDouble("budget"));
+				u = new User(rs);
 				// System.out.println("UserDTO successfully created.");
 			}
 
@@ -238,6 +227,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return result;
 	}
+	
 	@Override
 	public boolean updateUserEmail(User u) {
 		boolean result = true;
@@ -280,7 +270,140 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		
 		return result;
 	}
+	
+	@Override
+	public Preference getUserPreference(int uid) {
+		Connection conn = null;
+		Preference p = null;
 
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement(
+					"SELECT D.*, O.name, C.short_name, C.long_name " + 
+					"FROM user_detail D " + 
+					"INNER JOIN occupation O " + 
+					"	ON D.occupation_id = O.id " + 
+					"INNER JOIN currency C " + 
+					"	ON D.currency_id = C.id " + 
+					"WHERE D.user_id = ?");
+
+			stmt.setInt(1, uid);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				p = new Preference(rs);
+			}
+
+			stmt.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return p;
+	}
+
+	@Override
+	public Preference getUserPreference(String sid) {
+		Connection conn = null;
+		Preference p = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement(
+					"SELECT D.*, O.name, C.short_name, C.long_name " + 
+					"FROM  session S " + 
+					"INNER JOIN user_detail D " + 
+					"	ON D.user_id = S.user_id " + 
+					"INNER JOIN occupation O " + 
+					"	ON D.occupation_id = O.id " + 
+					"INNER JOIN currency C " + 
+					"	ON D.currency_id = C.id " + 
+					"WHERE S.id = ?");
+
+			stmt.setString(1, sid);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				p = new Preference(rs);
+			}
+
+			stmt.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return p;
+		
+	}
+	
+	public boolean updatePreference(Preference p) {
+		boolean result = true;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			String query = "UPDATE user_detail " + 
+							"SET currency_id = ?, age = ?, gender = ?, occupation_id = ? " + 
+							"WHERE id = ? AND user_id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(query);
+
+			int index = 1;
+			stmt.setInt(index++, p.getCurrencyId());
+			stmt.setInt(index++, p.getAge());
+			stmt.setString(index++, p.getGender());
+			stmt.setInt(index++, p.getOccupationId());
+			stmt.setInt(index++, p.getId());
+			stmt.setInt(index++, p.getUserId());
+
+			int n = stmt.executeUpdate();
+
+			if (n != 1) {
+				throw new DataSourceException("Did not update one row");
+			}
+
+			stmt.close();
+		} catch (SQLException | DataSourceException | ServiceLocatorException e) {
+			result = false;
+			System.err.println(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					result = false;
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return result;
+		
+	}
+	
 	@Override
 	public int addTransaction(Transaction t) {
 		Connection conn = null;

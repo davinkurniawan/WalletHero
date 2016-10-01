@@ -17,6 +17,11 @@ public interface CommonDAO {
 	
 	public boolean updateUserNames(User u);
 	public boolean updateUserEmail(User u);
+
+	public Preference getUserPreference(int uid);
+	public Preference getUserPreference(String sid);
+	
+	public boolean updatePreference(Preference p);
 	
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);	

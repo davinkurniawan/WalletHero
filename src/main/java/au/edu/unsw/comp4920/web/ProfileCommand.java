@@ -13,6 +13,7 @@ import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.MailHelper;
+import au.edu.unsw.comp4920.objects.Preference;
 import au.edu.unsw.comp4920.objects.User;
 
 /**
@@ -45,6 +46,8 @@ public class ProfileCommand implements Command {
 		
 		User user = dao.getUser(sid);
 		User updatedUser;
+		
+		Preference p = dao.getUserPreference(sid);
 		
 		Commands action = commands(request.getParameter("action"));
 		if (action != null) {
@@ -156,13 +159,106 @@ public class ProfileCommand implements Command {
 					break;
 					
 				case PREFERENCE:
+					String age = request.getParameter("age");
+					String gender = request.getParameter("gender");
+					String currency = request.getParameter("currency");
+					String occupation = request.getParameter("occupation");
+					boolean update = false;
+					Preference newP = p.clone();
+					
+					if (age != null || !age.isEmpty()) {
+						if (age.matches("^[0-9]+$")) {
+							int ageNum = Integer.parseInt(age);
+							if (ageNum != newP.getAge()) {
+								newP.setAge(ageNum);
+								update = true;
+							} else {
+								System.out.println("ProfileCommand: Age same as previous.");
+							}
+						} else {
+							System.err.println("ProfileCommand: Age must be a number.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Your age must be a number!");
+							
+						}
+					}
+					
+					if (gender != null) {
+						if (!gender.equalsIgnoreCase(newP.getGender())) {
+							newP.setGender(gender);
+							update = true;
+						} else {
+							System.out.println("ProfileCommand: Gender same as previous.");
+						}
+					}
+					
+					if (currency != null) {
+						if (currency.matches("^[0-9]+$")) {
+							int currencyId = Integer.parseInt(currency);
+							if (currencyId != newP.getCurrencyId()) {
+								newP.setCurrencyId(currencyId);
+								update = true;
+							} else {
+								System.out.println("ProfileCommand: Currency same as previous.");
+							}
+							
+						} else {
+							System.err.println("ProfileCommand: Currency id must be a number.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Incorrect currency format!");
+						}
+					} else {
+						System.err.println("ProfileCommand: Missing information.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "A currency must be selected!");
+					}
+					
+					if (occupation != null) {
+						if (occupation.matches("^[0-9]+$")) {
+							int occupationId = Integer.parseInt(occupation);
+							if (occupationId != newP.getOccupationId()) {
+								newP.setOccupationId(occupationId);
+								update = true;
+							} else {
+								System.out.println("ProfileCommand: Occupation same as previous.");
+							}
+							
+						} else {
+							System.err.println("ProfileCommand: Occupation id must be a number.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Incorrect occupation format!");
+						}
+					} else {
+						System.err.println("ProfileCommand: Missing information.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "An occupation must be selected!");
+					}
+					
+					System.out.println("Currency: " + currency);
+					System.out.println("Occupation: " + occupation);
+					System.out.println("Gender: " + gender);
+					System.out.println("Age: " + age);
+					
+					if (update) {
+						if (dao.updatePreference(newP)) {
+							p = newP;
+						}
+					}
+					
 					break;
 					
 			}
 		}
 		
         request.setAttribute(Constants.USER, user);
-		
+        
+		if (p.getGender().equalsIgnoreCase("f")) {
+			request.setAttribute("genderF", "selected");
+		} else if (p.getGender().equalsIgnoreCase("f")) {
+			request.setAttribute("genderF", "selected");
+		}
+		request.setAttribute("userAge", p.getAge());
+        
 		RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
 		rd.forward(request, response);
 	}	
