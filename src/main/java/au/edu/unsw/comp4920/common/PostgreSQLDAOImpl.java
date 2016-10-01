@@ -1067,10 +1067,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			PreparedStatement stmt = conn.prepareStatement(
 					"INSERT INTO user_detail (user_id, currency_id, age, gender, occupation_id) "
-							+ " VALUES (?, 3, 0, 'U', 2);");
+							+ " VALUES (?, 3, 0, 'O', 2);");
 			// currency_id = 3 (AUD)
 			// age = 0
-			// gender = U = Unknown
+			// gender = O = Others
 			// occupation_id = 2 (Others)
 			
 			stmt.setInt(1, userID);

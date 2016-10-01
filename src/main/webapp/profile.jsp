@@ -126,6 +126,16 @@
 					</c:forEach>
 				</select> 
 			</div>
+			
+			<div class="form-group" id="div-gender" name="div-gender">
+		  		<label>Gender <label style="color:red">*</label></label>
+		  		<br/>
+				<select id="gender" name="gender" class="form-control">				
+					<option value="M">Male</option>
+					<option value="F">Female</option>
+					<option value="O">Others</option>
+				</select> 
+			</div>
           
           	<input type="hidden" name="action" value="update_preferences"/>	
 			<button type="submit" class="btn btn-primary">Update</button>	

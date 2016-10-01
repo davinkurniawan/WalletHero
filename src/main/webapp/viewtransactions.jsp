@@ -4,15 +4,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<title>${applicationScope['WEB_NAME']}-TransactionsOverview</title>
-<%@ include file="bootstrapHeader.jsp"%>
-<script src="js/highcharts.js"></script>
-<script src="js/exporting.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<title>${applicationScope['WEB_NAME']} - Transactions Overview</title>
+	
+	<%@ include file="bootstrapHeader.jsp"%>
+	
+	<script src="js/highcharts.js"></script>
+	<script src="js/exporting.js"></script>
 </head>
 <body>
 	<%@ include file="signedinnavbar.jsp"%>
@@ -87,43 +89,56 @@
 				</form>
 			</div>
 		</div>
-
-		<div id="graph"></div>
-
-		<c:if test="${requestScope.transactionList.size() > 0}">
-			<div class="row featurette">
-				<hr class="featurette-divider">
-
-				<div class="col-md-12">
-					<h2 class="featurette-heading">Your Transactions</h2>
-
-					<table class="table table-bordered" style="table-layout: fixed">
-						<tbody>
-							<tr>
-								<th>Transaction #</th>
-								<th>Details</th>
-								<th>Amount</th>
-								<th>Date</th>
-								<th>Category</th>
-								<th>Type</th>
-							</tr>
-							<c:forEach items="${requestScope.transactionList}" var="t">
-								<tr class="${t.getTransactionType()}">
-									<td><c:out value="${t.transactionID}"></c:out></td>
-									<td><c:out value="${t.detail}"></c:out></td>
-									<td>$<c:out value="${t.amount}"></c:out></td>
-									<td><c:out value="${t.date}"></c:out></td>
-									<td><c:out value="${t.getCategoryName()}"></c:out></td>
-									<td><c:out value="${t.getTransactionType()}"></c:out></td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-
+		
+		<c:choose>
+			<c:when test="${requestScope.transactionList.size() > 0}">
+				<div class="row featurette">
+					<hr class="featurette-divider">
+					<div id="graph"></div>
 				</div>
-			</div>
-		</c:if>
-
+				
+				<div class="row featurette">
+					<hr class="featurette-divider">
+	
+					<div class="col-md-12">
+						<h2 class="featurette-heading">Your Transactions</h2>
+	
+						<table class="table table-bordered" style="table-layout: fixed">
+							<tbody>
+								<tr>
+									<th>Transaction #</th>
+									<th>Details</th>
+									<th>Amount</th>
+									<th>Date</th>
+									<th>Category</th>
+									<th>Type</th>
+								</tr>
+								<c:forEach items="${requestScope.transactionList}" var="t">
+									<tr class="${t.getTransactionType()}">
+										<td><c:out value="${t.transactionID}"></c:out></td>
+										<td><c:out value="${t.detail}"></c:out></td>
+										<td>$<c:out value="${t.amount}"></c:out></td>
+										<td><c:out value="${t.date}"></c:out></td>
+										<td><c:out value="${t.getCategoryName()}"></c:out></td>
+										<td><c:out value="${t.getTransactionType()}"></c:out></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="row featurette">
+					<hr class="featurette-divider">
+	
+					<div class="col-md-12">
+						<h2 class="featurette-heading">No Transaction Found.</h2>
+					</div>
+				</div>
+			</c:otherwise>
+		</c:choose>
+		
 		<%@ include file="footer.jsp"%>
 	</div>
 
@@ -142,7 +157,7 @@
 		    var oneWeekBefore = new Date(year, month, date);
 	
 		    $('#from_date').val($.datepicker.formatDate('dd MM yy', oneWeekBefore)).datepicker(
-	    		{minDate: '-6d', dateFormat: 'dd MM yy',
+	    		{dateFormat: 'dd MM yy',
 	    			onSelect: function(selected) {
 	    				$("#to_date").datepicker("option", "minDate", selected)
 					 },
@@ -155,7 +170,7 @@
 	    		});
 		    
 		    $('#to_date').val($.datepicker.formatDate('dd MM yy', today)).datepicker(
-	    		{minDate: '0d', dateFormat: 'dd MM yy',
+	    		{dateFormat: 'dd MM yy',
 	    			onSelect: function(selected) {
 	    				$("#from_date").datepicker("option","maxDate", selected)
 					 },
@@ -173,7 +188,7 @@
 			var fromDate = $.datepicker.parseDate('dd MM yy', $('#from_date').val());
 			
 			$('#from_date').val($.datepicker.formatDate('dd MM yy', fromDate)).datepicker(
-	    		{minDate: '-6d', dateFormat: 'dd MM yy',
+	    		{dateFormat: 'dd MM yy',
 	    			onSelect: function(selected) {
 	    				$("#to_date").datepicker("option", "minDate", selected)
 					 },
@@ -186,7 +201,7 @@
 	    		});
 			
 			$('#to_date').val($.datepicker.formatDate('dd MM yy', toDate)).datepicker(
-	    		{minDate: '0d', dateFormat: 'dd MM yy',
+	    		{dateFormat: 'dd MM yy',
 	    			onSelect: function(selected) {
 	    				$("#from_date").datepicker("option","maxDate", selected)
 					 },
@@ -209,7 +224,7 @@
 		});
 	</script>
 
-	<script>
+	<script type="text/javascript">
     var EXPENSES_ONLY = 1;
     var INCOMES_ONLY = 2;
     var BOTH = 3;   
