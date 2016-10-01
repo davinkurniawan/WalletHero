@@ -136,6 +136,11 @@
 					<option value="O">Others</option>
 				</select> 
 			</div>
+			
+			<div class="form-group" id="div-age" name="div-age">
+		  		<label>Age <label style="color:red">*</label></label>
+				<input type="number" class="form-control" id="age" name="age" placeholder="Age..." value=""/>
+			</div>
           
           	<input type="hidden" name="action" value="update_preferences"/>	
 			<button type="submit" class="btn btn-primary">Update</button>	
