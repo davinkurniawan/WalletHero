@@ -13,6 +13,7 @@ import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.MailHelper;
+import au.edu.unsw.comp4920.objects.Preference;
 import au.edu.unsw.comp4920.objects.User;
 
 /**
@@ -44,7 +45,10 @@ public class ProfileCommand implements Command {
         System.out.println("SignInCommand: Action is " + actionString);
 		
 		User user = dao.getUser(sid);
-		User updatedUser;
+		User updatedUser = null;
+		
+		Preference preference = dao.getUserPreference(sid);
+		Preference updatedPreference = null;
 		
 		Commands action = commands(request.getParameter("action"));
 		if (action != null) {
@@ -105,6 +109,11 @@ public class ProfileCommand implements Command {
 							System.out.println("ProfileCommand: Email is the same, email not sent");
 						}
 					}
+					else{
+						System.err.println("ProfileCommand: Missing information.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Missing required information!");
+					}
 					
 					break;
 					
@@ -152,17 +161,158 @@ public class ProfileCommand implements Command {
 							}
 						}
 					}
+					else{
+						System.err.println("ProfileCommand: Missing information.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Missing required information!");
+					}
 						
 					break;
 					
 				case PREFERENCE:
-					break;
 					
+					if ( request.getParameter("age") != null && request.getParameter("gender") != null 
+							&& request.getParameter("currency") != null && request.getParameter("occupation") != null) {
+
+						String age = request.getParameter("age");
+						String gender = request.getParameter("gender");
+						String currency = request.getParameter("currency");
+						String occupation = request.getParameter("occupation");
+						boolean update = false;
+						boolean shouldProceed = false;
+						updatedPreference = preference.clone();
+						
+						System.out.println("Currency: " + currency);
+						System.out.println("Occupation: " + occupation);
+						System.out.println("Gender: " + gender);
+						System.out.println("Age: " + age);
+						
+						if (age.matches("^[0-9]+$")) {
+							int ageNum = Integer.parseInt(age);
+							
+							if (ageNum > 0){						
+								if (ageNum != updatedPreference.getAge()) {
+									updatedPreference.setAge(ageNum);
+									update = true;
+									shouldProceed = true;
+								} 
+								else {
+									System.out.println("ProfileCommand: Age same as previous.");
+								}
+							}
+							else{
+								System.err.println("ProfileCommand: Invalid age.");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "Invalid age entered!");
+								update = false;
+								shouldProceed = false;
+							}
+						} 
+						else {
+							System.err.println("ProfileCommand: Age must be a number.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Your age must be a number!");
+							update = false;
+							shouldProceed = false;
+						}
+						
+						if (shouldProceed){
+							if (!gender.equalsIgnoreCase(updatedPreference.getGender())){
+								if (gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("O")) {
+									updatedPreference.setGender(gender);
+									update = true;
+									shouldProceed = true;
+								}
+								else{
+									System.err.println("ProfileCommand: Invalid Gender Type.");
+									request.setAttribute(Constants.ERROR, 1);
+									request.setAttribute(Constants.ERRORMSG, "Invalid gender chosen!");
+									update = false;
+									shouldProceed = false;
+								}
+							} 
+							else {
+								System.out.println("ProfileCommand: Gender same as previous.");
+							}
+						}
+						
+						if (shouldProceed){
+							if (currency.matches("^[0-9]+$")) {
+								int currencyId = Integer.parseInt(currency);
+								
+								if (currencyId != updatedPreference.getCurrencyID()){			
+									if (currencyId >= 1 && currencyId <= 64) {
+										updatedPreference.setCurrencyID(currencyId);
+										update = true;
+										shouldProceed = true;
+									}
+									else{
+										System.err.println("ProfileCommand: Invalid Currency ID.");
+										request.setAttribute(Constants.ERROR, 1);
+										request.setAttribute(Constants.ERRORMSG, "Invalid currency chosen!");
+										update = false;
+										shouldProceed = false;
+									}
+								} 
+								else {
+									System.out.println("ProfileCommand: Currency same as previous.");
+								}
+							}
+							else {
+								System.err.println("ProfileCommand: Currency id must be a number.");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "Invalid currency chosen!");
+								update = false;
+								shouldProceed = false;
+							}
+						}
+						
+						if (shouldProceed){
+							if (occupation.matches("^[0-9]+$")) {
+								int occupationId = Integer.parseInt(occupation);
+								
+								//TODO add limit occupationID
+								
+								if (occupationId != updatedPreference.getOccupationID()) {
+									updatedPreference.setOccupationID(occupationId);
+									update = true;
+									shouldProceed = true;		
+								} 
+								else {
+									System.out.println("ProfileCommand: Occupation same as previous.");
+								}
+								
+							} 
+							else {
+								System.err.println("ProfileCommand: Occupation id must be a number.");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "Incorrect occupation format!");
+								update = false;
+								shouldProceed = false;
+							}
+						}
+						
+						if (update && shouldProceed) {
+							if (dao.updatePreference(updatedPreference)) {
+								preference = updatedPreference;
+								request.setAttribute(Constants.ERROR, 0);
+								request.setAttribute(Constants.ERRORMSG, "Your preferences has been updated!");
+							}
+						}
+					}
+					else {
+						System.err.println("ProfileCommand: Missing information.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Missing required information!");
+					}
+					
+					break;
 			}
 		}
 		
         request.setAttribute(Constants.USER, user);
-		
+        request.setAttribute(Constants.PREFERENCE, preference);
+
 		RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
 		rd.forward(request, response);
 	}	

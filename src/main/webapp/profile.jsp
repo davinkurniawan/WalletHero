@@ -105,14 +105,21 @@
         <div class="col-md-6">
           <h2 class="featurette-heading">Update Your Preferences</h2>
           
-          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return false">
+          <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return validator_update_preference(this)">
           
           	<div class="form-group" id="div-currency" name="div-currency">
 		  		<label>Your Currency <label style="color:red">*</label></label>
 		  		<br/>
 				<select id="currency" name="currency" class="form-control">				
-					<c:forEach var="cur" items="${currency}">
-						<option value="${cur.getCurrencyID()}">${cur.getLongName()} - ${cur.getShortName()}</option>
+					<c:forEach var="cur" items="${currency}">			
+						<c:choose>
+							<c:when test="${preference.getCurrencyID() == cur.getCurrencyID()}">
+								<option value="${cur.getCurrencyID()}" selected>${cur.getLongName()} - ${cur.getShortName()}</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${cur.getCurrencyID()}">${cur.getLongName()} - ${cur.getShortName()}</option>
+							</c:otherwise>
+						</c:choose>					
 					</c:forEach>
 				</select> 
 			</div>
@@ -122,7 +129,14 @@
 		  		<br/>
 				<select id="occupation" name="occupation" class="form-control">				
 					<c:forEach var="occ" items="${occupation}">
-						<option value="${occ.getOccupationID()}">${occ.getName()}</option>
+						<c:choose>
+							<c:when test="${preference.getOccupationID() == occ.getOccupationID()}">
+								<option value="${occ.getOccupationID()}" selected>${occ.getName()}</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${occ.getOccupationID()}">${occ.getName()}</option>
+							</c:otherwise>
+						</c:choose>						
 					</c:forEach>
 				</select> 
 			</div>
@@ -130,16 +144,31 @@
 			<div class="form-group" id="div-gender" name="div-gender">
 		  		<label>Gender <label style="color:red">*</label></label>
 		  		<br/>
-				<select id="gender" name="gender" class="form-control">				
-					<option value="M">Male</option>
-					<option value="F">Female</option>
-					<option value="O">Others</option>
+				<select id="gender" name="gender" class="form-control">	
+					<c:choose>
+						<c:when test="${preference.getGender().equalsIgnoreCase('M')}">
+							<option value="M" selected>Male</option>
+							<option value="F">Female</option>
+							<option value="O">Others</option>
+						</c:when>
+						<c:when test="${preference.getGender().equalsIgnoreCase('F')}">
+							<option value="M">Male</option>
+							<option value="F" selected>Female</option>
+							<option value="O">Others</option>
+						</c:when>
+						<c:otherwise>
+							<option value="M">Male</option>
+							<option value="F">Female</option>
+							<option value="O" selected>Others</option>
+						</c:otherwise>
+					</c:choose>
+							
 				</select> 
 			</div>
 			
 			<div class="form-group" id="div-age" name="div-age">
 		  		<label>Age <label style="color:red">*</label></label>
-				<input type="number" class="form-control" id="age" name="age" placeholder="Age..." value=""/>
+				<input type="number" class="form-control" id="age" name="age" placeholder="Age..." value="${preference.getAge()}"/>
 			</div>
           
           	<input type="hidden" name="action" value="update_preferences"/>	
@@ -251,6 +280,14 @@
 
 			return true;
 		};	
+		
+		function validator_update_preference(form){									
+			var age = form.age.value.trim();
+			age = age.replace(" ", "");
+			
+			var re = /^[0-9]+$/;
+		    return re.test(age);
+		};
 	</script>
 </body>
 </html>

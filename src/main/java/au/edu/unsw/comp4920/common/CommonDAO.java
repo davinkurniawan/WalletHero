@@ -6,17 +6,22 @@ import java.util.List;
 import au.edu.unsw.comp4920.objects.*;
 
 public interface CommonDAO {	
-	public User getUserDetails(String username);
 	public boolean createUser(User u);
 	public boolean createDefaultUserDetails(int userID);
 	public void deleteUser(int userID);
 	
+	public User getUserDetails(String username);
 	public User getUser(String userinfo, String password);
 	public User getUser(String sid);
 	public User getUser(String userinfo, String firstName, String lastName);
 	
 	public boolean updateUserNames(User u);
 	public boolean updateUserEmail(User u);
+
+	public Preference getUserPreference(int uid);
+	public Preference getUserPreference(String sid);
+	
+	public boolean updatePreference(Preference p);
 	
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);	

@@ -171,6 +171,15 @@ public class ViewTransactionsCommand implements Command {
 
 		for (Transaction t : transactions) { 
 			String dateString = t.getDate();
+			SimpleDateFormat df_old = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
+			try {
+				Date old_format = df_old.parse(dateString);
+				dateString = df_new.format(old_format);
+			} 
+			catch (ParseException e) {
+				e.printStackTrace();
+			}
 
 			HashMap<String, BigDecimal> childHashmap = null;
 			if (!parentHashmap.containsKey(dateString)) {

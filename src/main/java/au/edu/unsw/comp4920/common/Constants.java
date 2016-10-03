@@ -48,6 +48,7 @@ public final class Constants {
 	public static final String CURRENCY 				= "currency";
 	public static final String CATEGORY 				= "category";
 	public static final String OCCUPATION 				= "occupation";
+	public static final String PREFERENCE 				= "preference";
 
 	// Naming
 	public static final String WEB						= "WalletHero";

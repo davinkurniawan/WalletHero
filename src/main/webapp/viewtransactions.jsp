@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -114,11 +115,13 @@
 									<th>Type</th>
 								</tr>
 								<c:forEach items="${requestScope.transactionList}" var="t">
+									<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
+									
 									<tr class="${t.getTransactionType()}">
 										<td><c:out value="${t.transactionID}"></c:out></td>
 										<td><c:out value="${t.detail}"></c:out></td>
 										<td>$<c:out value="${t.amount}"></c:out></td>
-										<td><c:out value="${t.date}"></c:out></td>
+										<td><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
 										<td><c:out value="${t.getCategoryName()}"></c:out></td>
 										<td><c:out value="${t.getTransactionType()}"></c:out></td>
 									</tr>
