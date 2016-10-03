@@ -107,7 +107,7 @@
 
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">What is 'Wallethero'?  <span class="text-muted">It's the one budgeting app you need.</span></h2>
+          <h2 class="featurette-heading">What is Wallethero?  <span class="text-muted">It's the one budgeting app you need.</span></h2>
           <p class="lead">WalletHero is your one stop destination to keeping track of your budget. By signing up an account with us, we'll take care of the counting and remembering so that you have more time to do other stuff.</p>
         </div>
         <div class="col-md-5">
