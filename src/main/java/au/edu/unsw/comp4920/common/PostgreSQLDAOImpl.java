@@ -1070,7 +1070,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM category;");
+			PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM category ORDER BY name ASC;");
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -1109,7 +1109,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT id, short_name, long_name FROM currency;");
+			PreparedStatement stmt = conn.prepareStatement("SELECT id, short_name, long_name FROM currency ORDER BY long_name ASC;");
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -1149,7 +1149,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM occupation;");
+			PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM occupation ORDER BY name ASC;");
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {

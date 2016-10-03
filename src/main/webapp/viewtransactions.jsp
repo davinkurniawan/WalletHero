@@ -29,8 +29,7 @@
 		<div class="row featurette">
 			<div class="col-md-6">
 
-				<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}"
-					method="POST" onSubmit="">
+				<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return true">
 
 					<div class="form-group" id="div-from-date" name="div-from-date">
 						<label>From Date <label style="color: red">*</label></label> <input

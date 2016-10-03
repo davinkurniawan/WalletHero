@@ -30,7 +30,7 @@
 
       <div class="row featurette">
         <div class="col-md-12">
-          <h2 class="featurette-heading">About</h2>
+          <h3 class="featurette-heading">About</h3>
           Once upon a time there was an international student studying in Australia. The student has their parents send them money 
           monthly. That fixed sum would have to be enough to sustain them for the full month including rent transport and food.
           Usually they were able to manage their money carefully in order to have enough money to last the month. However they 
@@ -45,7 +45,7 @@
       
        <div class="row featurette">
         <div class="col-md-12">
-          <h2 class="featurette-heading">Team Members</h2>
+          <h3 class="featurette-heading">Team Members</h3>
 			<ul>
 				<li>
 					Gabriela Febriana
@@ -70,7 +70,7 @@
       
        <div class="row featurette">
         <div class="col-md-12">
-          <h2 class="featurette-heading">Credits and Acknowledgement</h2>
+          <h3 class="featurette-heading">Credits and Acknowledgement</h3>
           	<ul>
           		<li style="color:red">
           			List here...

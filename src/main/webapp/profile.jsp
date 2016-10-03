@@ -34,7 +34,7 @@
 
       <div class="row featurette">
         <div class="col-md-6">
-          <h2 class="featurette-heading">Your User Details</h2>
+          <h3 class="featurette-heading">Your User Details</h3>
           
           <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return validator_update_profile(this)">
 			  
@@ -79,7 +79,7 @@
       
        <div class="row featurette">
         <div class="col-md-6">
-          <h2 class="featurette-heading">Update Your Password</h2>
+          <h3 class="featurette-heading">Update Your Password</h3>
           
           <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return validator_update_password(this)">
 			  
@@ -103,7 +103,7 @@
       
        <div class="row featurette">
         <div class="col-md-6">
-          <h2 class="featurette-heading">Update Your Preferences</h2>
+          <h3 class="featurette-heading">Update Your Preferences</h3>
           
           <form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return validator_update_preference(this)">
           
@@ -168,7 +168,7 @@
 			
 			<div class="form-group" id="div-age" name="div-age">
 		  		<label>Age <label style="color:red">*</label></label>
-				<input type="number" class="form-control" id="age" name="age" placeholder="Age..." value="${preference.getAge()}"/>
+				<input type="number" class="form-control" id="age" name="age" placeholder="Age..." value="${preference.getAge()}" step="1" min="1"/>
 			</div>
           
           	<input type="hidden" name="action" value="update_preferences"/>	
