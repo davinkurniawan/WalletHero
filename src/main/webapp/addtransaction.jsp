@@ -21,23 +21,29 @@
 
 		<c:if test="${requestScope.error}">
 			<div class="alert alert-danger">
-				<strong>Error!</strong> Please fill in all fields.
+				<strong>Error!</strong> Missing Required Information.
 			</div>
 		</c:if>
 
 		<c:if test="${requestScope.success}">
 			<div class="alert alert-success">
-				<strong>Transaction successfully inserted!</strong>
+				<strong>Transaction successfully added!</strong>
 			</div>
 		</c:if>
 
 		<hr class="featurette-divider">
 
+		<h5 style="color:Red" name="error_message" id="error_message">
+        	<c:if test="${errorMessage != null}">
+          		${errorMessage}
+        	</c:if>
+      	</h5>
+
 		<div class="row featurette">
 			<div class="col-md-6">
 				<h3 class="featurette-heading">Please enter your transaction details:</h3>
 
-				<form action="${applicationScope['ROUTER_ADDTRANSACTION']}" method="POST" onSubmit="return true">
+				<form action="${applicationScope['ROUTER_ADDTRANSACTION']}" method="POST" onSubmit="return validator_add_transaction(this)">
 					
 					<div class="form-group" id="div-details" name="div-details">
 						<label>Details <label style="color: red">*</label></label> <input
@@ -161,7 +167,9 @@
 		        }
 		    });
 		});
-
+	</script>
+	
+	<script type="text/javascript">
 		$("input[type='radio'][name='transactionType']").change(function(){
 	
 		    var selected = $("input[type='radio'][name='transactionType']:checked").val();
@@ -198,6 +206,90 @@
 		        $("#categoryOption").append("<option value='"+v.val+"'>"+v.name+"</option>");
 		    });
 		});
+	</script>
+	
+	<script type="text/javascript">
+		function validator_add_transaction(form){									
+			var details = form.details.value.trim();
+			var amount = form.amount.value.trim();
+			
+			var e = document.getElementById("categoryOption");
+			var categoryOption = e.options[e.selectedIndex].text;
+						
+			var oneOff = form.oneOff.value.trim();
+			var paymentPeriod = form.paymentPeriod.value.trim();
+			var numberPayments = form.numberPayments.value.trim();
+			
+			amount = amount.replace(" ", "");
+			
+			if(details.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter the Transaction Detail!";
+				document.getElementById("div-details").className = "form-group has-error";
+				document.getElementById("div-amount").className = "form-group";
+				document.getElementById("div-category").className = "form-group";
+				document.getElementById("div-payment-number").className = "form-group";
+
+				form.details.focus();
+				return false;
+			}
+			else if(amount.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter the Transaction Amount!";
+				document.getElementById("div-details").className = "form-group";
+				document.getElementById("div-amount").className = "form-group has-error";
+				document.getElementById("div-category").className = "form-group";
+				document.getElementById("div-payment-number").className = "form-group";
+
+				form.amount.focus();
+				return false;
+			}
+			else if(amount <= 0){
+				document.getElementById("error_message").innerHTML = "Please enter a valid Amount!";
+				document.getElementById("div-details").className = "form-group";
+				document.getElementById("div-amount").className = "form-group has-error";
+				document.getElementById("div-category").className = "form-group";
+				document.getElementById("div-payment-number").className = "form-group";
+
+				form.amount.focus();
+				return false;
+			}
+			else if (categoryOption == 'Please Select'){
+				document.getElementById("error_message").innerHTML = "Please choose the category!";
+				document.getElementById("div-details").className = "form-group";
+				document.getElementById("div-amount").className = "form-group";
+				document.getElementById("div-category").className = "form-group has-error";
+				document.getElementById("div-payment-number").className = "form-group";
+
+				form.categoryOption.focus();
+				return false;
+			}
+			
+			if (oneOff == 'false'){
+				if (paymentPeriod == 'amount'){
+					if(numberPayments.length == 0){
+						document.getElementById("error_message").innerHTML = "Please enter the Number of Payment!";
+						document.getElementById("div-details").className = "form-group";
+						document.getElementById("div-amount").className = "form-group";
+						document.getElementById("div-category").className = "form-group";
+						document.getElementById("div-payment-number").className = "form-group has-error";
+
+						form.numberPayments.focus();
+						return false;
+					}
+					else if(numberPayments <= 0){
+						document.getElementById("error_message").innerHTML = "Please enter a Number of Payment Amount!";
+						document.getElementById("div-details").className = "form-group";
+						document.getElementById("div-amount").className = "form-group";
+						document.getElementById("div-category").className = "form-group";
+						document.getElementById("div-payment-number").className = "form-group has-error";
+						
+						form.numberPayments.focus();
+						return false;
+					}
+				}
+			}
+			
+			return true;
+		};
 	</script>
 </body>
 </html>

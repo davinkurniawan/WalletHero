@@ -80,7 +80,7 @@ public class ProfileCommand implements Command {
 							if (dao.updateUserNames(updatedUser)) {
 								user = updatedUser;			
 								request.setAttribute(Constants.ERROR, 0);
-								request.setAttribute(Constants.ERRORMSG, "Your name(s) has been updated!");		
+								request.setAttribute(Constants.ERRORMSG, "Your detail has been updated!");		
 							} 
 							else {
 								System.err.println("ProfileCommand: User names update failed.");
@@ -198,6 +198,7 @@ public class ProfileCommand implements Command {
 								} 
 								else {
 									System.out.println("ProfileCommand: Age same as previous.");
+									shouldProceed = true;
 								}
 							}
 							else{
@@ -233,6 +234,7 @@ public class ProfileCommand implements Command {
 							} 
 							else {
 								System.out.println("ProfileCommand: Gender same as previous.");
+								shouldProceed = true;
 							}
 						}
 						
@@ -256,6 +258,7 @@ public class ProfileCommand implements Command {
 								} 
 								else {
 									System.out.println("ProfileCommand: Currency same as previous.");
+									shouldProceed = true;
 								}
 							}
 							else {
@@ -280,6 +283,7 @@ public class ProfileCommand implements Command {
 								} 
 								else {
 									System.out.println("ProfileCommand: Occupation same as previous.");
+									shouldProceed = true;
 								}
 								
 							} 

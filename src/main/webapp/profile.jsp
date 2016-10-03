@@ -20,17 +20,19 @@
 
       <hr class="featurette-divider">
       
-      <h5 style="color:Red" name="error_message" id="error_message">
         <c:if test="${errorMessage != null && errorFlg == 1}">
-          ${errorMessage}
-        </c:if>
-      </h5>
+			<div class="alert alert-danger">
+				<strong>Error!</strong> ${errorMessage}.
+			</div>
+		</c:if>
+
+		<c:if test="${errorMessage != null && errorFlg == 0}">
+			<div class="alert alert-success">
+				<strong>${errorMessage}</strong>
+			</div>
+		</c:if>
       
-      <h5 style="color:Green" name="correct_message" id="correct_message">
-        <c:if test="${errorMessage != null && errorFlg == 0}">
-          ${errorMessage}
-        </c:if>
-      </h5>
+      <h5 style="color:Red" name="error_message" id="error_message"></h5>
 
       <div class="row featurette">
         <div class="col-md-6">
