@@ -46,6 +46,7 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.ABOUT_COMMAND, 				new AboutCommand());
 		_commands.put(Constants.ADDTRANSACTION_COMMAND, 	new AddTransactionCommand());
 		_commands.put(Constants.VIEWTRANSACTIONS_COMMAND, 	new ViewTransactionsCommand());
+		_commands.put(Constants.DEALS_COMMAND,				new DealsCommand());
 		_commands.put(Constants.FORGOTPASSWORD_COMMAND,  	new ForgotPasswordCommand());
 		_commands.put(Constants.RESETPASSWORD_COMMAND, 		new ResetPasswordCommand());
 
@@ -65,6 +66,7 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_ABOUT, 				Constants.ROUTER + Constants.ABOUT_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ADDTRANSACTION,    	Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VIEWTRANSACTIONS,    	Constants.ROUTER + Constants.VIEWTRANSACTIONS_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_DEALS,					Constants.ROUTER + Constants.DEALS_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_FORGOTPASSWORD,		Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_RESETPASSWORD,         Constants.ROUTER + Constants.RESETPASSWORD_COMMAND);
 	}
