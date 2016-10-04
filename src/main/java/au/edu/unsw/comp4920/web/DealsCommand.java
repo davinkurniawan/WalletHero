@@ -2,15 +2,30 @@ package au.edu.unsw.comp4920.web;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import au.edu.unsw.comp4920.common.CommonDAO;
+import au.edu.unsw.comp4920.objects.Deal;
 
 public class DealsCommand implements Command {
 
@@ -22,18 +37,29 @@ public class DealsCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
 			throws ServletException, IOException {
 		System.out.println("Inside: DealsCommand");
-		URL url = new URL(API_URL + "/deals");
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setRequestMethod("GET");
-		con.setRequestProperty("Authorization", PUBLIC_API_KEY);
-		BufferedReader buf = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer res = new StringBuffer();
-		while((inputLine = buf.readLine()) != null) {
-			res.append(inputLine);
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet req = new HttpGet(API_URL + "/deals");
+		req.addHeader("Authorization", PUBLIC_API_KEY);
+		req.addHeader("Accept", "application/json");
+		HttpResponse resp = client.execute(req);
+		HttpEntity entity = resp.getEntity();
+		BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = br.readLine())!= null) {
+			sb.append(line + "\n");
 		}
-		buf.close();
-		//System.out.println(response.toString());
+		JSONObject json = new JSONObject(sb.toString());
+		JSONArray array = json.getJSONArray("deals");
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayList<Deal> deals = new ArrayList<Deal>();
+		for (int i = 0; i < array.length(); ++i) {
+			String deal = array.getJSONObject(i).getJSONObject("deal").toString();
+			Deal d = mapper.readValue(deal, Deal.class);
+			deals.add(d);
+		}
+		assert deals.size() == 10;
+		
 	}
 	
 }
