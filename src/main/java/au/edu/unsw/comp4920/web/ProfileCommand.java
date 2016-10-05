@@ -45,7 +45,7 @@ public class ProfileCommand implements Command {
 		HttpSession session = request.getSession();
         String sid = session.getAttribute(Constants.SID).toString();
         String actionString = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
-        System.out.println("SignInCommand: Action is " + actionString);
+        System.out.println("ProfileCommand: Action is " + actionString);
 		
 		User user = dao.getUser(sid);
 		User updatedUser = null;
