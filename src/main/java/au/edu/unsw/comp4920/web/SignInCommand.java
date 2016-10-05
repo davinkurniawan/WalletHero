@@ -79,13 +79,13 @@ public class SignInCommand implements Command {
 					System.out.println("SignInCommand: Not Actived user");
 		
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Your account is not activated yet!");
+					request.setAttribute(Constants.ERRORMSG, "Your Account is not Activated yet!");
 					
 				} else if (user.getStatusID() == 3) {
 					System.out.println("SignInCommand: Disabled user");
 		
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Your account is disabled!");
+					request.setAttribute(Constants.ERRORMSG, "Your account is Disabled!");
 				}
 			}
 		}

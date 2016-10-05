@@ -164,7 +164,7 @@ public class ProfileCommand implements Command {
 					else{
 						System.err.println("ProfileCommand: Missing information.");
 						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Missing required information!");
+						request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 					}
 						
 					break;
@@ -307,7 +307,7 @@ public class ProfileCommand implements Command {
 					else {
 						System.err.println("ProfileCommand: Missing information.");
 						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "Missing required information!");
+						request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 					}
 					
 					break;

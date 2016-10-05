@@ -38,20 +38,28 @@ public class EmailUpdateCommand implements Command {
 				request.setAttribute(Constants.ERRORMSG, "Invalid User Account!");
 			}
 			else{
-				String user_token = user.getToken();
-				
-				if (user_token.equals(input_token)) {
-					user.setToken("");
-					user.setEmail(email);
-					dao.updateUserEmail(user);
+				if (user.getStatusID() != 2){
+					System.err.println("ResetPasswordCommand: Invalid Status ID");
 					
-					request.setAttribute(Constants.ERROR, 0);
-					request.setAttribute(Constants.ERRORMSG, "Your Email has been updated!");
-				} 
-				else {
-					System.err.println("EmailUpdateCommand: Invalid token");
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Invalid Token!");
+					request.setAttribute(Constants.ERRORMSG, "Your Account is not in a valid State!");
+				}
+				else{
+					String user_token = user.getToken();
+					
+					if (user_token.equals(input_token)) {
+						user.setToken("");
+						user.setEmail(email);
+						dao.updateUserEmail(user);
+						
+						request.setAttribute(Constants.ERROR, 0);
+						request.setAttribute(Constants.ERRORMSG, "Your Email has been successfully Updated!");
+					} 
+					else {
+						System.err.println("EmailUpdateCommand: Invalid token");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Invalid Token!");
+					}
 				}
 			}
 		}
@@ -59,7 +67,7 @@ public class EmailUpdateCommand implements Command {
 			System.err.println("EmailUpdateCommand: Invalid input");
 
 			request.setAttribute(Constants.ERROR, 1);
-			request.setAttribute(Constants.ERRORMSG, "Missing Information!");
+			request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/emailupdate.jsp");

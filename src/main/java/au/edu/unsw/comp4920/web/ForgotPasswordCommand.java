@@ -38,36 +38,39 @@ public class ForgotPasswordCommand implements Command {
 				
 				if (user != null) {
 					if (user.getStatusID() != 2) {
-						System.err.println("ForgotPasswordCommand: User account is not activated.");
+						System.err.println("ResetPasswordCommand: Invalid Status ID");
+						
 						request.setAttribute(Constants.ERROR, 1);
-						request.setAttribute(Constants.ERRORMSG, "User account is not yet activated!");
+						request.setAttribute(Constants.ERRORMSG, "Your Account is not in a valid State!");
 					}
-					
-					String token = UUID.randomUUID().toString();
-					dao.setToken(user, token);
-					System.out.println("Token: " + token);
-					
-					System.out.println("sending email to " + user.getEmail());
-					// Send email here 
-					
-					String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
-					content += "You recently requested to reset your password for your WalletHero account. ";
-					content += "Click the link below to reset it.<br/>";
-					content += Constants.SERVER + Constants.ROUTER + Constants.RESETPASSWORD_COMMAND;
-					content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
-					content += "<br/><br/>";
-					content += "If you did not request a password reset, please ignore this email.";
-					content += "<br/><br/>";
-					content += "Regards,<br/>";
-					content += "WalletHero Support Team";
-					
-					MailHelper mh = new MailHelper();
-					mh.sendEmail(user.getEmail(), "WalletHero Password Recovery", content);
-	
-					// Redirect to appropriate page
-					response.sendRedirect(Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND + "&success=yes");
-					return;
-				} else {
+					else{
+						String token = UUID.randomUUID().toString();
+						dao.setToken(user, token);
+						System.out.println("Token: " + token);
+						
+						System.out.println("sending email to " + user.getEmail());
+						// Send email here 
+						
+						String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
+						content += "You recently requested to reset your password for your WalletHero account. ";
+						content += "Click the link below to reset it.<br/>";
+						content += Constants.SERVER + Constants.ROUTER + Constants.RESETPASSWORD_COMMAND;
+						content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
+						content += "<br/><br/>";
+						content += "If you did not request a password reset, please ignore this email.";
+						content += "<br/><br/>";
+						content += "Regards,<br/>";
+						content += "WalletHero Support Team";
+						
+						MailHelper mh = new MailHelper();
+						mh.sendEmail(user.getEmail(), "WalletHero Password Recovery", content);
+		
+						// Redirect to appropriate page
+						response.sendRedirect(Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND + "&success=yes");
+						return;
+					}
+				} 
+				else {
 					System.err.println("ForgotPasswordCommand: Invalid credentials.");
 					request.setAttribute(Constants.ERROR, 1);
 					request.setAttribute(Constants.ERRORMSG, "Sorry, no matching user with supplied credentials!");

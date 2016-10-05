@@ -45,12 +45,18 @@ public class EmailValidationCommand implements Command {
 					request.setAttribute(Constants.ERROR, 0);
 					request.setAttribute(Constants.ERRORMSG, "Your Account has already been Activated!");
 				}
+				else if (user.getStatusID() == 3){
+					System.err.println("EmailValidationCommand: Invalid Status ID");
+					
+					request.setAttribute(Constants.ERROR, 0);
+					request.setAttribute(Constants.ERRORMSG, "Your Account is Disabled!");
+				}
 				else if (user_token.equals(input_token)) {
 					dao.setStatus(user, 2);
 					dao.setToken(user, "");
 					
 					request.setAttribute(Constants.ERROR, 0);
-					request.setAttribute(Constants.ERRORMSG, "Your Email has been validated!");
+					request.setAttribute(Constants.ERRORMSG, "Your Email has been Validated!");
 				} 
 				else {
 					System.err.println("EmailValidationCommand: Invalid token");
