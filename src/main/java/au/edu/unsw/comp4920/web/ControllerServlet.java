@@ -49,6 +49,7 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.DEALS_COMMAND,				new DealsCommand());
 		_commands.put(Constants.FORGOTPASSWORD_COMMAND,  	new ForgotPasswordCommand());
 		_commands.put(Constants.RESETPASSWORD_COMMAND, 		new ResetPasswordCommand());
+		_commands.put(Constants.CURRENCYCONVERTER_COMMAND, 	new CurrencyConverterCommand());
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
@@ -69,6 +70,7 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_DEALS,					Constants.ROUTER + Constants.DEALS_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_FORGOTPASSWORD,		Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_RESETPASSWORD,         Constants.ROUTER + Constants.RESETPASSWORD_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_CURRENCYCONVERTER,     Constants.ROUTER + Constants.CURRENCYCONVERTER_COMMAND);
 	}
 
 	/*
@@ -99,7 +101,8 @@ public class ControllerServlet extends HttpServlet {
 							dest.equals(Constants.NOTFOUND_COMMAND)			||
 							dest.equals(Constants.ABOUT_COMMAND) 			||
 							dest.equals(Constants.FORGOTPASSWORD_COMMAND)	||
-							dest.equals(Constants.RESETPASSWORD_COMMAND))
+							dest.equals(Constants.RESETPASSWORD_COMMAND)	||
+							dest.equals(Constants.CURRENCYCONVERTER_COMMAND)) 
 							
 							? dest : Constants.SIGNIN_COMMAND;
 				}

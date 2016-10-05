@@ -18,25 +18,24 @@
 
 	<div class="container marketing">
 		<h2>Add a Transaction</h2>
-
-		<c:if test="${requestScope.error}">
-			<div class="alert alert-danger">
-				<strong>Error!</strong> Missing Required Information.
-			</div>
-		</c:if>
-
-		<c:if test="${requestScope.success}">
-			<div class="alert alert-success">
-				<strong>Transaction successfully added!</strong>
-			</div>
-		</c:if>
+		
+		 <c:choose>
+		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
+		 		<div class="alert alert-success">
+					<strong>Transaction successfully added!</strong>
+				</div>
+		 	</c:when>
+			<c:when test="${errorMessage != null && errorFlg == 1}">
+				<div class="alert alert-danger">
+					<strong>Error!</strong> ${errorMessage}.
+				</div>
+			</c:when>
+		</c:choose>
 
 		<hr class="featurette-divider">
 
 		<h5 style="color:Red" name="error_message" id="error_message">
-        	<c:if test="${errorMessage != null}">
-          		${errorMessage}
-        	</c:if>
+
       	</h5>
 
 		<div class="row featurette">

@@ -86,7 +86,6 @@ public class EmailUpdateCommand implements Command {
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/emailupdate.jsp");
-		request.setAttribute(Constants.EMAILUPDATE_COMMAND, "active");
 		rd.forward(request, response);
 	}	
 }

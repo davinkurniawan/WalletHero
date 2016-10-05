@@ -31,8 +31,8 @@ public class ViewTransactionsCommand implements Command {
 		HttpSession session = request.getSession();
 		int personID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
 
-		String fromDate = request.getParameter("from_date");
-		String toDate = request.getParameter("to_date");
+		String fromDate = (request.getParameter("from_date") != null) ? request.getParameter("from_date") : "";
+		String toDate = (request.getParameter("to_date") != null) ? request.getParameter("to_date") : "";
 
 		int categoryID;
 		boolean viewIncomes = true;
@@ -138,7 +138,6 @@ public class ViewTransactionsCommand implements Command {
 		request.setAttribute("graphType", graphType);
 
 		RequestDispatcher rd = request.getRequestDispatcher("/viewtransactions.jsp");
-		request.setAttribute(Constants.VIEWTRANSACTIONS_COMMAND, "active");
 		rd.forward(request, response);
 	}
 

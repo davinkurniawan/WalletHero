@@ -470,7 +470,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			if (!showIncomes && showExpenses) {
 				query.append(" AND is_income = 'f'");
 			}
-
+			
 			query.append(";");
 
 			PreparedStatement stmt = conn.prepareStatement(query.toString());
@@ -640,7 +640,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		Collections.sort(masterTransactionList, new Comparator<Transaction>() {
 			@Override
 			public int compare(Transaction t1, Transaction t2) {
-				return t1.compareTo(t2);
+				return t2.compareTo(t1);
 			}
 		});
 
@@ -1225,7 +1225,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public void deleteUser(int userID) {
+	public boolean deleteUser(int userID) {
+		boolean result = true;
 		Connection conn = null;
 
 		try {
@@ -1244,6 +1245,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			stmt.close();
 		} 
 		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
 			System.err.println(e.getMessage());
 		} 
 		finally {
@@ -1251,9 +1253,30 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				try {
 					_factory.close();
 				} catch (SQLException e) {
+					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean disableUser(int userID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteAllUserData(int userID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteUserCompletely(int userID) {
+		// TODO Auto-generated method stub
+		return false;
 	} 
 }

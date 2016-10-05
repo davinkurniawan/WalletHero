@@ -8,8 +8,12 @@ import au.edu.unsw.comp4920.objects.*;
 public interface CommonDAO {	
 	public boolean createUser(User u);
 	public boolean createDefaultUserDetails(int userID);
-	public void deleteUser(int userID);
 	
+	public boolean disableUser(int userID);
+	public boolean deleteUser(int userID);
+	public boolean deleteAllUserData(int userID);
+	public boolean deleteUserCompletely(int userID);
+
 	public User getUserDetails(String username);
 	public User getUser(String userinfo, String password);
 	public User getUser(String sid);

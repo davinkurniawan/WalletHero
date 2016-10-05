@@ -105,7 +105,8 @@ public class Transaction {
 	}
 
 	public int compareTo(Transaction t) {
-		return this.getDate().compareTo(t.getDate());
+		//return this.getDate().compareTo(t.getDate());
+		return (this.getTransactionID() < t.getTransactionID()) ? -1 : 1; // Order by Insertion rather than date.
 	}
 
 	public int getCategoryID() {

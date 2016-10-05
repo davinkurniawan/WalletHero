@@ -12,6 +12,9 @@
 
     <title>${applicationScope['WEB_NAME']} - Home</title>
     <%@ include file="bootstrapHeader.jsp" %>
+    
+    <script src="js/highcharts.js"></script>
+	<script src="js/exporting.js"></script>
 </head>
 <body>
 	<jsp:include page="signedinnavbar.jsp"></jsp:include>

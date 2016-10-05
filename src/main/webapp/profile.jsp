@@ -163,8 +163,7 @@
 							<option value="F">Female</option>
 							<option value="O" selected>Others</option>
 						</c:otherwise>
-					</c:choose>
-							
+					</c:choose>		
 				</select> 
 			</div>
 			
@@ -176,8 +175,30 @@
           	<input type="hidden" name="action" value="update_preferences"/>	
 			<button type="submit" class="btn btn-primary">Update</button>	
 		  </form>
+         </div>
         </div>
-      </div>
+        
+        <hr class="featurette-divider">
+      
+       	<div class="row featurette">
+        	<div class="col-md-6">
+          		<h3 class="featurette-heading">Others</h3>
+          
+          		<div class="form-group" id="div-delete-data" name="div-delete-data">
+	          		<form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete all of your data (Transactions)?');">
+	          			<input type="hidden" name="action" value="delete_user_data"/>	
+						<button type="submit" class="btn btn-danger">Delete All User Data</button>	
+	      			</form>
+      			</div>
+
+          		<div class="form-group" id="div-delete-account" name="div-delete-account">
+	      			<form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete your WalletHero Account?');">
+	          			<input type="hidden" name="action" value="delete_account"/>	
+						<button type="submit" class="btn btn-danger">Delete Account</button>	
+	      			</form>
+      			</div>
+      		</div>
+      	</div>
 
   	   <%@ include file="footer.jsp" %>
     </div>

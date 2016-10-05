@@ -22,13 +22,16 @@ import au.edu.unsw.comp4920.objects.User;
  */
 public class ProfileCommand implements Command {
 	
-	private static enum Commands {PROFILE, PASSWORD, PREFERENCE};
+	private static enum Commands {PROFILE, PASSWORD, PREFERENCE, DELETE_DATA, DELETE_ACCOUNT};
 	
 	private static Commands commands (String s) {
 		if (s == null) return null;
-		if (s.equalsIgnoreCase("update_profile"    )) return Commands.PROFILE;
-		if (s.equalsIgnoreCase("update_password"   )) return Commands.PASSWORD;
-		if (s.equalsIgnoreCase("update_preferences")) return Commands.PREFERENCE;
+		if (s.equalsIgnoreCase("update_profile"    )) 	return Commands.PROFILE;
+		if (s.equalsIgnoreCase("update_password"   )) 	return Commands.PASSWORD;
+		if (s.equalsIgnoreCase("update_preferences")) 	return Commands.PREFERENCE;
+		if (s.equalsIgnoreCase("delete_user_data")) 	return Commands.DELETE_DATA;
+		if (s.equalsIgnoreCase("delete_account")) 		return Commands.DELETE_ACCOUNT;
+
 		return null;
 	}
 
@@ -310,6 +313,12 @@ public class ProfileCommand implements Command {
 						request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 					}
 					
+					break;
+					
+				case DELETE_DATA:
+					break;
+				
+				case DELETE_ACCOUNT:
 					break;
 			}
 		}

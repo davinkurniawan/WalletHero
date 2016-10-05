@@ -11,7 +11,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	
 	<title>${applicationScope['WEB_NAME']} - Transactions Overview</title>
-	
 	<%@ include file="bootstrapHeader.jsp"%>
 	
 	<script src="js/highcharts.js"></script>
@@ -113,11 +112,12 @@
 									<th>Category</th>
 									<th>Type</th>
 								</tr>
-								<c:forEach items="${requestScope.transactionList}" var="t">
+								<c:forEach items="${requestScope.transactionList}" var="t" varStatus="myIndex">
 									<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
 									
 									<tr class="${t.getTransactionType()}">
-										<td><c:out value="${t.transactionID}"></c:out></td>
+										<td style="display:none;"><c:out value="${t.transactionID}"></c:out></td>
+										<td><c:out value="${requestScope.transactionList.size() - myIndex.index}"></c:out></td>
 										<td><c:out value="${t.detail}"></c:out></td>
 										<td>$<c:out value="${t.amount}"></c:out></td>
 										<td><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>

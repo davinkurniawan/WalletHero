@@ -20,6 +20,7 @@
                 
                 <li class="${viewTransactions }"><a href="${applicationScope['ROUTER_VIEWTRANSACTIONS']}">Transactions</a></li>
                 <li class="${addTransaction }"><a href="${applicationScope['ROUTER_ADDTRANSACTION']}">Add a Transaction</a></li>
+                <li class="${currencyConverter }"><a href="${applicationScope['ROUTER_CURRENCYCONVERTER']}">Currency Converter</a></li>
                 
                 <li class="${profile }"><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
                 <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>

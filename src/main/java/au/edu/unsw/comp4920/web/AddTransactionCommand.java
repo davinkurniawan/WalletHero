@@ -28,20 +28,21 @@ public class AddTransactionCommand implements Command {
 		// enter in a transaction.
 		if (request.getParameterMap().size() == 1) {
 			// NOP
-		} else if (!request.getParameter("amount").equals("") && !request.getParameter("details").equals("")
-				&& !request.getParameter("categoryOption").equals("")) {
-			
+		} 
+		else if (request.getParameter("amount") != null && request.getParameter("details") != null && request.getParameter("categoryOption") != null) {		
 			String details = request.getParameter("details");
 			String transactionType = request.getParameter("transactionType");
 			BigDecimal value = new BigDecimal(request.getParameter("amount"));
 			int personID = (int) request.getSession().getAttribute(Constants.USERID);
+			
 			String type = request.getParameter("oneOff");
 			int category = Integer.parseInt(request.getParameter("categoryOption"));
 
 			Boolean isIncome = null;
 			if (transactionType.equals("income")) {
 				isIncome = true;
-			} else if (transactionType.equals("expense")) {
+			} 
+			else if (transactionType.equals("expense")) {
 				isIncome = false;
 			}
 
@@ -58,9 +59,8 @@ public class AddTransactionCommand implements Command {
 			// One off expense.
 			if (type.equals("true")) {
 				dao.addTransaction(t);
-
-				// Recurring expense.
-			} else {
+			} 
+			else { // Recurring expense.
 				t.setRecurrence(true);
 				int transactionID = dao.addTransaction(t);
 
@@ -81,15 +81,17 @@ public class AddTransactionCommand implements Command {
 
 				dao.addRecurring(r);
 			}
-
-			request.setAttribute("success", true);
-		} else {
-			System.out.println("AddTransactionCommand: Failed as something was null.");
-			request.setAttribute("error", true);
+			
+			response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=yes");
+			return;
+		}
+		else {
+			System.out.println("AddTransactionCommand: Failed as something was null.");			
+			request.setAttribute(Constants.ERROR, 1);
+			request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher("/addtransaction.jsp");
-		request.setAttribute(Constants.ADDTRANSACTION_COMMAND, "active");
 		rd.forward(request, response);
 	}
 }

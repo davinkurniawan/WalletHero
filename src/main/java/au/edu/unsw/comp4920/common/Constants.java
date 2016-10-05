@@ -23,7 +23,8 @@ public final class Constants {
 	public static final String VIEWTRANSACTIONS_COMMAND = "viewTransactions";
 
 	public static final String DEALS_COMMAND			= "deals";
-	
+	public static final String CURRENCYCONVERTER_COMMAND=  "currencyConverter";
+
 	public static final String VALIDATE_COMMAND 		= "emailvalidation";
 	public static final String EMAILUPDATE_COMMAND 		= "emailupdate";
 	public static final String ROUTER					= "router?operation=";
@@ -79,7 +80,8 @@ public final class Constants {
 	public static final String ROUTER_DEALS				= "ROUTER_DEALS";
 	public static final String ROUTER_FORGOTPASSWORD	= "ROUTER_FORGOTPASSWORD";
 	public static final String ROUTER_RESETPASSWORD		= "ROUTER_RESETPASSWORD";
-	
+	public static final String ROUTER_CURRENCYCONVERTER	= "ROUTER_CURRENCYCONVERTER";
+
 	// Status
 	public static enum Status {INACTIVE, ACTIVE, DISABLED};
 	
