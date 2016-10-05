@@ -330,15 +330,20 @@ public class ProfileCommand implements Command {
 		
 		// Send email here 
 		String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
-		content += "Please confirm your new email using the following link below" + "<br/>";
+		content += "You recently requested to update your email for your WalletHero account. ";
+		content += "You must follow this link to upadte your email:";
+		content += "<br/><br/>";
 		content += Constants.SERVER + Constants.ROUTER + Constants.EMAILUPDATE_COMMAND;
 		content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
 		content += "&email" + "=" + email;
 		content += "<br/><br/>";
-		content += "Regards,<br/>";
-		content += "WalletHero Support Team";
+		content += "Have fun, and don't hesitate to contact us with your feedback.";
+		content += "<br/><br/>";
+		content += "WalletHero Team";
+		content += "<br/><br/>";
+		content += Constants.SERVER;
 		
 		MailHelper mh = new MailHelper();
-		mh.sendEmail(email, "WalletHero - Update Email Confirmation.", content);
+		mh.sendEmail(email, "WalletHero - Email Update", content);
 	}
 }

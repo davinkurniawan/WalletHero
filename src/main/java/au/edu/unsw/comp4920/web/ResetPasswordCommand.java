@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
+import au.edu.unsw.comp4920.common.MailHelper;
 import au.edu.unsw.comp4920.objects.User;
 import au.edu.unsw.comp4920.web.Command;
 
@@ -74,6 +75,21 @@ public class ResetPasswordCommand implements Command {
 								dao.setPassword(user, hashedPassword);
 								dao.setToken(user, "");
 								System.out.println("ResetPasswordCommand: Password reset successful");
+								
+								System.out.println("sending email to " + user.getEmail());
+								
+								String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
+								content += "You have successfully resetted your password for your WalletHero account.";
+								content += "<br/><br/>";
+								content += "Have fun, and don't hesitate to contact us with your feedback.";
+								content += "<br/><br/>";
+								content += "WalletHero Team";
+								content += "<br/><br/>";
+								content += Constants.SERVER;
+								
+								MailHelper mh = new MailHelper();
+								mh.sendEmail(user.getEmail(), "WalletHero - Successful Reset Password", content);
+								
 								response.sendRedirect(Constants.ROUTER + Constants.RESETPASSWORD_COMMAND + "&success=yes");
 								return;
 							} 

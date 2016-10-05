@@ -100,18 +100,21 @@ public class SignUpCommand implements Command {
 							if (dao.createDefaultUserDetails(user.getUserID())){
 							
 								System.out.println("sending email");
-								// Send email here 
 								
 								String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
-								content += "Please confirm your email using the following link below" + "<br/>";
+								content += "Thanks for signing up with WalletHero! You must follow this link to activate your account:";
+								content += "<br/><br/>";
 								content += Constants.SERVER + Constants.ROUTER + Constants.VALIDATE_COMMAND;
 								content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
 								content += "<br/><br/>";
-								content += "Regards,<br/>";
-								content += "WalletHero Support Team";
+								content += "Have fun, and don't hesitate to contact us with your feedback.";
+								content += "<br/><br/>";
+								content += "WalletHero Team";
+								content += "<br/><br/>";
+								content += Constants.SERVER;
 								
 								MailHelper mh = new MailHelper();
-								mh.sendEmail(user.getEmail(), "Welcome to WalletHero. Please validate Your Email Account.", content);
+								mh.sendEmail(user.getEmail(), "Welcome to WalletHero. Please confirm your account on WalletHero.", content);
 		
 								// Redirect to appropriate page: public view
 								response.sendRedirect(Constants.ROUTER + Constants.SIGNUP_COMMAND + "&success=yes");

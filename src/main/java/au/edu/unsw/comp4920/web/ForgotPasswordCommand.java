@@ -53,17 +53,19 @@ public class ForgotPasswordCommand implements Command {
 						
 						String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
 						content += "You recently requested to reset your password for your WalletHero account. ";
-						content += "Click the link below to reset it.<br/>";
+						content += "You must follow this link to reset your password:";
+						content += "<br/><br/>";
 						content += Constants.SERVER + Constants.ROUTER + Constants.RESETPASSWORD_COMMAND;
 						content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
 						content += "<br/><br/>";
-						content += "If you did not request a password reset, please ignore this email.";
+						content += "Have fun, and don't hesitate to contact us with your feedback.";
 						content += "<br/><br/>";
-						content += "Regards,<br/>";
-						content += "WalletHero Support Team";
+						content += "WalletHero Team";
+						content += "<br/><br/>";
+						content += Constants.SERVER;
 						
 						MailHelper mh = new MailHelper();
-						mh.sendEmail(user.getEmail(), "WalletHero Password Recovery", content);
+						mh.sendEmail(user.getEmail(), "WalletHero - Reset Password", content);
 		
 						// Redirect to appropriate page
 						response.sendRedirect(Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND + "&success=yes");

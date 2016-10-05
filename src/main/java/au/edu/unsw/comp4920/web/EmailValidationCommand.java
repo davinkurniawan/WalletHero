@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
+import au.edu.unsw.comp4920.common.MailHelper;
 import au.edu.unsw.comp4920.objects.*;
 
 /**
@@ -54,6 +55,20 @@ public class EmailValidationCommand implements Command {
 				else if (user_token.equals(input_token)) {
 					dao.setStatus(user, 2);
 					dao.setToken(user, "");
+					
+					System.out.println("sending email to " + user.getEmail());
+					
+					String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
+					content += "You have successfully activated your WalletHero account.";
+					content += "<br/><br/>";
+					content += "Have fun, and don't hesitate to contact us with your feedback.";
+					content += "<br/><br/>";
+					content += "WalletHero Team";
+					content += "<br/><br/>";
+					content += Constants.SERVER;
+					
+					MailHelper mh = new MailHelper();
+					mh.sendEmail(user.getEmail(), "WalletHero - Successful Account Activation", content);
 					
 					request.setAttribute(Constants.ERROR, 0);
 					request.setAttribute(Constants.ERRORMSG, "Your Email has been Validated!");
