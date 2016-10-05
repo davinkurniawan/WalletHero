@@ -22,6 +22,13 @@
 	  <h2>Sign Up Now to ${applicationScope['WEB_NAME']}</h2>
 
 	  <hr class="featurette-divider">
+	  
+	  <div id="div-loading" name="div-loading">
+	  	<div id="loader" name="loader"></div>
+	  	<center>
+	  		<h3 id="loadertext" name="loadertext">Signing You Up...</h3>
+	  	</center>
+	  </div>
 
 	  <c:choose>
 		  <c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
@@ -30,6 +37,8 @@
 				<br/><br/>
 				Please Activate Your Account. Before you can login, you must active your account with the code sent to your email address. If you did not receive this email, please check your junk/spam folder. If you entered an incorrect email address, you will need to re-register with the correct email address.
 			</h5>
+			 <div class="row featurette" name="div-content" id="div-content">
+			 </div>
 		  </c:when>
 		  <c:otherwise>
 			  <h5 style="color:Red" name="error_message" id="error_message">
@@ -38,10 +47,10 @@
 		        </c:if>
 		      </h5>
 
-		      <div class="row featurette">
+		      <div class="row featurette" name="div-content" id="div-content">
 		      	<div class="col-md-6"> 
 
-			      <form action="${applicationScope['ROUTER_SIGNUP']}" method="POST" onSubmit="return validator_signup(this)">
+			      <form action="${applicationScope['ROUTER_SIGNUP']}" method="POST">
 
 				  	<div class="form-group" id="div-username" name="div-username">
 				  		<label>Username <label style="color:red">*</label></label>
@@ -91,6 +100,12 @@
     </div>
 
     <script type="text/javascript">
+	    $(document).ready(function(){
+	 		document.getElementById('div-loading').style.display = 'none';	
+	 		document.getElementById('div-content').style.display = 'block';
+	 		document.getElementById('div-footer').style.display = 'block';
+	 	});
+	    
 		function validateEmail(email) {
 		    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		    return re.test(email);
@@ -239,9 +254,26 @@
 				form.email.focus();
 				return false;
 			}
-
+				 		
 			return true;
 		};	
+		
+		$('form').submit( function(event) {
+	       	var form = this;
+			
+			if (validator_signup(form)){
+				document.getElementById('div-loading').style.display = 'block';	
+		 		document.getElementById('div-content').style.display = 'none';
+		 		document.getElementById('div-footer').style.display = 'none';
+		 		document.getElementById("error_message").innerHTML = '';
+	
+			    event.preventDefault();
+			    
+			    setTimeout( function () { 
+			        form.submit();
+			    }, 1000);
+			}
+		}); 
 	</script>
 </body>
 </html>

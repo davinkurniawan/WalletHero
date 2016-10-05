@@ -35,7 +35,7 @@
 	  	</center>
 	  </div>
 	  
-	  <div class="row featurette animate-bottom" name="div-content" id="div-content">
+	  <div class="row featurette" name="div-content" id="div-content">
         <div class="col-md-4">
         
         	<form action="#" onSubmit="return onClickGetRate(this)">
@@ -90,7 +90,6 @@
 	 		document.getElementById('div-loading').style.display = 'none';	
 	 		document.getElementById('div-content').style.display = 'block';
 	 		document.getElementById('div-footer').style.display = 'block';
-	 		document.getElementById('div-footer').className = 'animate-bottom';	
 	 	});
 	 	
 	 	function onClickGetRate(form){
@@ -121,6 +120,8 @@
 			
 			var amount_from = document.getElementById("from_amount").value.trim();
 			var converted_temp = rate * amount_from;
+			var converted_from = 1.00 * amount_from;
+			document.getElementById("from_amount").value = converted_from.toFixed(2);
 			document.getElementById("to_amount").value = converted_temp.toFixed(2);
 			
 			document.getElementById('div-loading').style.display = 'none';	

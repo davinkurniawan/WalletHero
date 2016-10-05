@@ -19,8 +19,8 @@
 	position: absolute;
   	left: 50%;
   	top: 60%;
-  	width: 150px;
-  	margin: -15px -10px 0 -75px;
+  	width: 300px;
+  	margin: -15px 0 0 -150px;
 }
 
 @-webkit-keyframes spin {
