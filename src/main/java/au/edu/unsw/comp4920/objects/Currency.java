@@ -5,9 +5,8 @@ public class Currency {
 	private String shortName;
 	private String longName;
 	
-
 	public Currency() {
-		
+		super();
 	}
 	
 	public Currency(int currencyID, String shortName, String longName) {

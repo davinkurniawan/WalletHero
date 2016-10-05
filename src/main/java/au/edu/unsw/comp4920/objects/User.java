@@ -17,7 +17,7 @@ public class User {
 	private double budget;
 	
 	public User(){
-		
+		super();
 	}
 
 	public User(int userID, String username, String email, String password, String salt_hash, String first_name,

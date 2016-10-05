@@ -11,7 +11,7 @@ public class Category {
 	private String category;
 	
 	public Category() {
-		
+		super();
 	}
 	
 	public Category(String category, int categoryID) {

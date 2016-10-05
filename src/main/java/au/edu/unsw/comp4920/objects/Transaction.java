@@ -13,17 +13,15 @@ public class Transaction {
 	private int transactionID;
 	private int personID;
 	private boolean recurrence = false;
-
 	private String date;
 	private String detail;
 	private BigDecimal amount;
 	private int categoryID;
 	private String categoryName;
-
 	private boolean isIncome;
 
 	public Transaction() {
-
+		super();
 	}
 
 	public Transaction(int transactionID, int personID, boolean recurrence, String date, String detail, BigDecimal amount,
@@ -79,7 +77,6 @@ public class Transaction {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 		this.amount = this.amount.setScale(2, BigDecimal.ROUND_HALF_UP);
-
 	}
 
 	public boolean isIncome() {
@@ -92,11 +89,7 @@ public class Transaction {
 
 	// Don't delete this, used in viewtransactions.jsp.
 	public String getTransactionType() {
-		if (this.isIncome()) {
-			return "Income";
-		} else {
-			return "Expense";
-		}
+		return (this.isIncome()) ? "Income" : "Expense";
 	}
 
 	public boolean isRecurrence() {
@@ -106,20 +99,9 @@ public class Transaction {
 	public void setRecurrence(boolean recurrence) {
 		this.recurrence = recurrence;
 	}
-
-	@Override
-	public String toString() {
-		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", recurrence=" + recurrence
-				+ ", date=" + date + ", detail=" + detail + ", amount=" + amount + ", categoryID=" + categoryID
-				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + "]";
-	}
-
+	
 	public int getRecurrence() {
-		if (recurrence) {
-			return 1;
-		} else {
-			return -1;
-		}
+		return (this.recurrence) ? 1 : -1;
 	}
 
 	public int compareTo(Transaction t) {
@@ -140,5 +122,12 @@ public class Transaction {
 
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+	
+	@Override
+	public String toString() {
+		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", recurrence=" + recurrence
+				+ ", date=" + date + ", detail=" + detail + ", amount=" + amount + ", categoryID=" + categoryID
+				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + "]";
 	}
 }

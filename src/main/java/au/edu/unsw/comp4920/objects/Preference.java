@@ -12,10 +12,21 @@ public class Preference {
 	private Occupation occupation;
 	
 	public Preference() {
-		currency = new Currency();
-		occupation = new Occupation();
+		super();
+		this.currency = new Currency();
+		this.occupation = new Occupation();
 	}
 	
+	public Preference(int preferenceID, int userID, int age, String gender, Currency currency, Occupation occupation) {
+		super();	
+		this.preferenceID = preferenceID;
+		this.userID = userID;
+		this.age = age;
+		this.gender = gender;
+		this.currency = currency;
+		this.occupation = occupation;
+	}
+
 	public Preference(ResultSet rs) throws SQLException {
 		preferenceID = rs.getInt("id");
 		userID = rs.getInt("user_id");

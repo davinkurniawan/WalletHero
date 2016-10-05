@@ -4,9 +4,8 @@ public class Occupation {
 	private int occupationID;
 	private String name;
 	
-
 	public Occupation() {
-		
+		super();
 	}
 
 	public Occupation(int occupationID, String name) {

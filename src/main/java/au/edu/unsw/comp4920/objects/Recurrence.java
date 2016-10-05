@@ -13,10 +13,11 @@ public class Recurrence {
 	private int recurrenceNumber;
 
 	public Recurrence() {
-
+		super();
 	}
 	
 	public Recurrence(int transactionID, String recurrenceFreq, int recurrenceNumber) {
+		super();
 		this.transactionID = transactionID;
 		this.recurrenceFreq = recurrenceFreq;
 		this.recurrenceNumber = recurrenceNumber;

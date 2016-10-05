@@ -6,7 +6,7 @@ public class Session {
 	private String lastAccess;
 	
 	public Session() {
-		
+		super();
 	}
 
 	public Session(String sessionID, int userID, String lastAccess) {
