@@ -23,12 +23,19 @@
 	</c:choose>
 	
 	<div class="container marketing">
-
+	  
 	  <h2>Currency Converter</h2>
 	  
 	  <hr class="featurette-divider">
 	  
-	  <div class="row featurette">
+	  <div id="div-loading" name="div-loading">
+	  	<div id="loader" name="loader"></div>
+	  	<center>
+	  		<h3 id="loadertext" name="loadertext">Converting...</h3>
+	  	</center>
+	  </div>
+	  
+	  <div class="row featurette animate-bottom" name="div-content" id="div-content">
         <div class="col-md-4">
         
         	<form action="#" onSubmit="return onClickGetRate(this)">
@@ -75,9 +82,22 @@
 			</form>
 		</div>
 	   </div>
+	   
+	   <%@ include file="footer.jsp" %>
 	 </div>
 	 <script type="text/javascript">
+	 	$(document).ready(function(){
+	 		document.getElementById('div-loading').style.display = 'none';	
+	 		document.getElementById('div-content').style.display = 'block';
+	 		document.getElementById('div-footer').style.display = 'block';
+	 		document.getElementById('div-footer').className = 'animate-bottom';	
+	 	});
+	 	
 	 	function onClickGetRate(form){
+	 		document.getElementById('div-loading').style.display = 'block';
+	 		document.getElementById('div-content').style.display = 'none';
+	 		document.getElementById('div-footer').style.display = 'none';
+	 		
 	 		var from = document.getElementById("from_currency");
 	 		var selected_from = from.options[from.selectedIndex].value;
 	 		
@@ -103,7 +123,9 @@
 			var converted_temp = rate * amount_from;
 			document.getElementById("to_amount").value = converted_temp.toFixed(2);
 			
-			//alert("Exchange rate " + name + " is " + rate);
+			document.getElementById('div-loading').style.display = 'none';	
+	 		document.getElementById('div-content').style.display = 'block';	
+	 		document.getElementById('div-footer').style.display = 'block';
 		}
 
 		//getRate("SEK", "USD");

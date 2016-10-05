@@ -42,7 +42,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="${applicationScope['ROUTER_PUBLIC']}">Home</a></li>
+                <li class="${public_home }" ><a href="${applicationScope['ROUTER_PUBLIC']}">Home</a></li>
                 <li class="${signIn }"><a href="${applicationScope['ROUTER_SIGNIN']}">Sign In</a></li>
                 <li class="${signUp }"><a href="${applicationScope['ROUTER_SIGNUP']}">Sign Up</a></li>
                 <li class="${currencyConverter }"><a href="${applicationScope['ROUTER_CURRENCYCONVERTER']}">Currency Converter</a></li>

@@ -135,7 +135,7 @@ public class ControllerServlet extends HttpServlet {
 		}
 		
 		Command cmd = (Command) _commands.get(dest) == null ? (Command) _commands.get(Constants.NOTFOUND_COMMAND) : (Command) _commands.get(dest);
-		request.setAttribute(dest, "active");
+		request.setAttribute(!dest.equals("public") ? dest : "public_home", "active");
 		cmd.execute(request,response, _dao);
 	}
 
