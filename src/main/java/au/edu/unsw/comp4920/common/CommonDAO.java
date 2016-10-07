@@ -31,6 +31,8 @@ public interface CommonDAO {
 	public boolean addRecurring(Recurrence r);	
 	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
 	
+	public boolean addGoal(Goal g);
+	
 	public void createSession(Session session);
 	public Session getSession(String sessionId);
 	public Session getUserSession(String userId, String sessionId);
