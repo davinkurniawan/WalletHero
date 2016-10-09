@@ -33,8 +33,6 @@ public interface CommonDAO {
 	public List<Transaction> getAllTransactions(int userID);
 	public boolean deleteUserTransaction(int transactionID);
 	
-	public boolean addGoal(Goal g);
-	
 	public void createSession(Session session);
 	public Session getSession(String sessionID);
 	public Session getUserSession(String userID, String sessionID);
@@ -51,5 +49,6 @@ public interface CommonDAO {
 	public List<Currency> getAllCurrencies();
 	public List<Occupation> getAllOccupations();
 	
+	public boolean addGoal(Goal g);
 	public boolean deleteUserGoal(int goalID);
 }
