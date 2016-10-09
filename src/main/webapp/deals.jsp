@@ -17,10 +17,10 @@
 		</tr>
 		<c:forEach var="i" items="${deals}">
 			<tr>
-				<td><img src="${i.image_url}" height="200" width="250"></td>
+				<td align="center"><img src="${i.image_url}" height="200" width="250"></td>
 				<td>${i.title}</td>
-				<td>${i.price}</td>
-				<td>${i.discount_amount}</td>
+				<td align="center">${i.price}</td>
+				<td align="center">${i.discount_amount}</td>
 			</tr>
 		</c:forEach>
 	</table>
