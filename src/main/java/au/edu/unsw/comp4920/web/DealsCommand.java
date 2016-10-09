@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,8 +59,10 @@ public class DealsCommand implements Command {
 			Deal d = mapper.readValue(deal, Deal.class);
 			deals.add(d);
 		}
-		assert deals.size() == 10;
-		
+		request.setAttribute("deals", deals);
+		// Display resulting deals page
+		RequestDispatcher rd = request.getRequestDispatcher("/deals.jsp");
+		rd.forward(request, response);
 	}
 	
 }
