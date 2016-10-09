@@ -185,7 +185,7 @@
           		<h3 class="featurette-heading">Others</h3>
           
           		<div class="form-group" id="div-delete-data" name="div-delete-data">
-	          		<form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete all of your data (Transactions)?');">
+	          		<form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete all of your data (Transactions and Goals)?');">
 	          			<input type="hidden" name="action" value="delete_user_data"/>	
 						<button type="submit" class="btn btn-danger">Delete All User Data</button>	
 	      			</form>

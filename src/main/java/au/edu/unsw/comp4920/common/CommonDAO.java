@@ -10,9 +10,9 @@ public interface CommonDAO {
 	public boolean createDefaultUserDetails(int userID);
 	
 	public boolean disableUser(int userID);
-	public boolean deleteUser(int userID);
+	public boolean deleteUser(int userID); // Roll back on Sign Up Failure
 	public boolean deleteAllUserData(int userID);
-	public boolean deleteUserCompletely(int userID);
+	public boolean deleteUserCompletely(int userID); // Delete completely
 
 	public User getUserDetails(String username);
 	public User getUser(String userinfo, String password);
@@ -29,12 +29,14 @@ public interface CommonDAO {
 	
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);	
-	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
+	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
+	public List<Transaction> getAllTransactions(int userID);
+	public boolean deleteUserTransaction(int transactionID);
 	
 	public void createSession(Session session);
-	public Session getSession(String sessionId);
-	public Session getUserSession(String userId, String sessionId);
-	public void deleteSession(String sessionId);
+	public Session getSession(String sessionID);
+	public Session getUserSession(String userID, String sessionID);
+	public void deleteSession(String sessionID);
 	
 	public String getToken(User u);
 	public void setToken(User u, String token);
@@ -46,4 +48,6 @@ public interface CommonDAO {
 	public List<Category> getAllCategories();
 	public List<Currency> getAllCurrencies();
 	public List<Occupation> getAllOccupations();
+	
+	public boolean deleteUserGoal(int goalID);
 }

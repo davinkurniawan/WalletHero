@@ -316,6 +316,17 @@ public class ProfileCommand implements Command {
 					break;
 					
 				case DELETE_DATA:
+					
+					if (dao.deleteAllUserData(user.getUserID())){
+						request.setAttribute(Constants.ERROR, 0);
+						request.setAttribute(Constants.ERRORMSG, "All of your Data has been deleted!");
+					}
+					else{
+						System.err.println("ProfileCommand: Failed to delete user's data.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Failed to Delete your Data!");
+					}
+					
 					break;
 				
 				case DELETE_ACCOUNT:

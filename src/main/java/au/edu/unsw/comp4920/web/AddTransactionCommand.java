@@ -32,8 +32,8 @@ public class AddTransactionCommand implements Command {
 		else if (request.getParameter("amount") != null && request.getParameter("details") != null && request.getParameter("categoryOption") != null) {		
 			String details = request.getParameter("details");
 			String transactionType = request.getParameter("transactionType");
-			BigDecimal value = new BigDecimal(request.getParameter("amount"));
-			int personID = (int) request.getSession().getAttribute(Constants.USERID);
+			BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
+			int userID = (int) request.getSession().getAttribute(Constants.USERID);
 			
 			String type = request.getParameter("oneOff");
 			int category = Integer.parseInt(request.getParameter("categoryOption"));
@@ -49,7 +49,7 @@ public class AddTransactionCommand implements Command {
 			SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy"); 
 
 			Transaction t = new Transaction();
-			t.setPersonID(personID);
+			t.setUserID(userID);
 			t.setDetail(details);
 			t.setAmount(value);
 			t.setIsIncome(isIncome);

@@ -29,7 +29,7 @@ public class ViewTransactionsCommand implements Command {
 		System.out.println("Inside: ViewTransactionsCommand");
 
 		HttpSession session = request.getSession();
-		int personID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
+		int userID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
 
 		String fromDate = (request.getParameter("from_date") != null) ? request.getParameter("from_date") : "";
 		String toDate = (request.getParameter("to_date") != null) ? request.getParameter("to_date") : "";
@@ -95,7 +95,7 @@ public class ViewTransactionsCommand implements Command {
 			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 		}
 
-		transactions = dao.getTransactionsByDate(personID, from, to, viewIncomes, viewExpenses, categoryID);
+		transactions = dao.getTransactionsByDate(userID, from, to, viewIncomes, viewExpenses, categoryID);
 
 		request.setAttribute("transactionList", transactions);
 		request.setAttribute("transactionRange", transactionRange);
