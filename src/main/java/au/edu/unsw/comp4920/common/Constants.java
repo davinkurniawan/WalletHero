@@ -21,7 +21,8 @@ public final class Constants {
 	
 	public static final String ADDTRANSACTION_COMMAND   = "addTransaction";
 	public static final String VIEWTRANSACTIONS_COMMAND = "viewTransactions";
-
+	public static final String ADDGOAL_COMMAND 			= "addGoal";
+	
 	public static final String DEALS_COMMAND			= "deals";
 	public static final String CURRENCYCONVERTER_COMMAND=  "currencyConverter";
 
@@ -81,6 +82,7 @@ public final class Constants {
 	public static final String ROUTER_FORGOTPASSWORD	= "ROUTER_FORGOTPASSWORD";
 	public static final String ROUTER_RESETPASSWORD		= "ROUTER_RESETPASSWORD";
 	public static final String ROUTER_CURRENCYCONVERTER	= "ROUTER_CURRENCYCONVERTER";
+	public static final String ROUTER_ADDGOAL			= "ROUTER_ADDGOAL";
 
 	// Status
 	public static enum Status {INACTIVE, ACTIVE, DISABLED};

@@ -114,7 +114,7 @@ public class ViewTransactionsCommand implements Command {
 		int BOTH = 3;
 
 		if (viewIncomes == true && viewExpenses == true) {
-			HashMap<String, HashMap<String, BigDecimal>> hashmap = getBalance(transactions);
+			HashMap<String, HashMap<String, BigDecimal>> hashmap = getBalance(transactions, from, to);
 			
 			graphType = BOTH;
 			request.setAttribute("graphData", hashmap);
@@ -165,13 +165,31 @@ public class ViewTransactionsCommand implements Command {
 
 	// Parent hash is the date.
 	// Child hash is the profit/loss associated with said date.
-	private LinkedHashMap<String, HashMap<String, BigDecimal>> getBalance(List<Transaction> transactions) {
+	private LinkedHashMap<String, HashMap<String, BigDecimal>> getBalance(List<Transaction> transactions, Date from, Date to) {
 		LinkedHashMap<String, HashMap<String, BigDecimal>> parentHashmap = new LinkedHashMap<String, HashMap<String, BigDecimal>>();
+		SimpleDateFormat df_old = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
+		
+		
+		// Setup hash correctly to include all dates in defined period, even if a transaction did not occur in the period.
+		Date iterator = new Date(from.getTime());
+		
+		while (iterator.before(to) || iterator.equals(to)) {
+			String dateString = df_new.format(iterator);		
+			
+			HashMap<String, BigDecimal> childHashmap = new HashMap<String, BigDecimal>();
+			parentHashmap.put(dateString, childHashmap);
+			
+			childHashmap.put("income", new BigDecimal(0));
+			childHashmap.put("expense", new BigDecimal(0));
+			childHashmap.put("profit", new BigDecimal(0));
+			
+			iterator = new Date(iterator.getTime() + 24 * 60 * 60 * 1000);
+		}
 
 		for (Transaction t : transactions) { 
 			String dateString = t.getDate();
-			SimpleDateFormat df_old = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
+			
 			try {
 				Date old_format = df_old.parse(dateString);
 				dateString = df_new.format(old_format);
@@ -180,18 +198,8 @@ public class ViewTransactionsCommand implements Command {
 				e.printStackTrace();
 			}
 
-			HashMap<String, BigDecimal> childHashmap = null;
-			if (!parentHashmap.containsKey(dateString)) {
-				childHashmap = new HashMap<String, BigDecimal>();
-				childHashmap.put("income", new BigDecimal(0));
-				childHashmap.put("expense", new BigDecimal(0));
-				childHashmap.put("profit", new BigDecimal(0));
-
-				parentHashmap.put(dateString, childHashmap);
-			} else {
-				childHashmap = parentHashmap.get(dateString);
-			}
-
+			HashMap<String, BigDecimal> childHashmap = parentHashmap.get(dateString);	
+			
 			if (!t.isIncome()) {
 				BigDecimal prevExpense = childHashmap.get("expense");
 				childHashmap.put("expense", prevExpense.subtract(t.getAmount()));

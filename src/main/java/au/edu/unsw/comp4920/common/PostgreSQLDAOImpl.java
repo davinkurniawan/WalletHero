@@ -1431,4 +1431,41 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		//TODO
 		return true;
 	} 
+
+	@Override
+	public boolean addGoal(Goal g) {
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement(
+					"INSERT INTO goal (user_id, detail, goal_amount, goal_type, category, frequency) VALUES (?, ?, ?, ?, ?, ?);");
+						
+			stmt.setInt(1, g.getUserID());
+			stmt.setString(2, g.getDetail());
+			stmt.setBigDecimal(3, g.getAmount());
+			stmt.setInt(4, g.getGoalType());
+			stmt.setInt(5, g.getCategory());
+			stmt.setString(6, g.getGoalPeriod());
+			
+			stmt.executeQuery();
+			stmt.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println(e.getMessage());
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
 }
