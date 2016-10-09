@@ -72,6 +72,9 @@
         <div class="col-md-12">
           <h3 class="featurette-heading">Credits and Acknowledgement</h3>
           	<ul>
+          		<li>
+          			Yahoo! Finance
+          		</li>
           		<li style="color:red">
           			List here...
           		</li>
