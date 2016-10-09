@@ -491,6 +491,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				int isReccurence = rs.getInt("recur_id"); 
 
 				if (isReccurence == -1) {
+					t.setRecurrence(false);
 					
 					// This is the format PostgreSQL stores their dates.
 					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -504,6 +505,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 					catch (ParseException e) {
 						e.printStackTrace();
 					}
+				}
+				else{
+					t.setRecurrence(true);
 				}
 			}
 
@@ -698,6 +702,60 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		}
 
 		return transactions;
+	}
+	
+	@Override
+	public Transaction getTransaction(int transactionID) {
+		Connection conn = null;
+		Transaction t = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM transaction WHERE id = ?");
+
+			stmt.setInt(1, transactionID);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				t = new Transaction();
+				
+				t.setTransactionID(rs.getInt("id"));
+				t.setUserID(rs.getInt("user_id"));
+				t.setDate(rs.getString("date"));
+				t.setDetail(rs.getString("detail"));
+				t.setAmount(rs.getBigDecimal("amount"));
+				t.setIsIncome(rs.getBoolean("is_income"));
+
+				int isReccurence = rs.getInt("recur_id"); 
+
+				if (isReccurence == -1) {
+					t.setRecurrence(false);
+				}
+				else{
+					t.setRecurrence(true);
+				}
+			}
+
+			stmt.close();
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return t;
 	}
 
 	@Override
@@ -1381,7 +1439,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return result;
 	}
 	
-	private boolean deleteRecurrence(int transactionID) {
+	@Override
+	public boolean deleteRecurrence(int transactionID) {
 		boolean result = true;
 		Connection conn = null;
 

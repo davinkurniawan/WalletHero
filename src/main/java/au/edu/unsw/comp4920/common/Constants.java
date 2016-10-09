@@ -43,7 +43,9 @@ public final class Constants {
 	public static final String SEARCH					= "search";
 	public static final String TOKEN					= "token";
 	public static final String USERNAME					= "username";
-	
+	public static final String TOOLS					= "tools";
+	public static final String TRANSACTIONS				= "transactions";
+
 	// Session Parameters
 	public static final String USERID	 				= "userID";
 	public static final String SID 						= "sessionID";

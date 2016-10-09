@@ -136,6 +136,13 @@ public class ControllerServlet extends HttpServlet {
 			}
 		}
 		
+		if (dest.equals(Constants.CURRENCYCONVERTER_COMMAND)){
+			request.setAttribute(Constants.TOOLS, "active");
+		}
+		else if (dest.equals(Constants.VIEWTRANSACTIONS_COMMAND) || dest.equals(Constants.ADDTRANSACTION_COMMAND)){
+			request.setAttribute(Constants.TRANSACTIONS, "active");
+		}
+		
 		Command cmd = (Command) _commands.get(dest) == null ? (Command) _commands.get(Constants.NOTFOUND_COMMAND) : (Command) _commands.get(dest);
 		request.setAttribute(!dest.equals("public") ? dest : "public_home", "active");
 		cmd.execute(request,response, _dao);

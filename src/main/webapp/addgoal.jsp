@@ -154,7 +154,7 @@
 		    $.each(opts, function(k,v){
 		        $("#categoryOption").append("<option value='"+v.val+"'>"+v.name+"</option>");
 		    });
-		)};
+		});
 	</script>
 	
 	<script type="text/javascript">

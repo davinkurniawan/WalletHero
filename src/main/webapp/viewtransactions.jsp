@@ -83,7 +83,7 @@
 							</c:forEach>
 						</select>
 					</div>
-
+					
 					<input type=submit value="Confirm" class="btn btn-primary" />
 				</form>
 			</div>
@@ -111,6 +111,7 @@
 									<th>Date</th>
 									<th>Category</th>
 									<th>Type</th>
+									<th>Actions</th>
 								</tr>
 								<c:forEach items="${requestScope.transactionList}" var="t" varStatus="myIndex">
 									<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
@@ -123,6 +124,21 @@
 										<td><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
 										<td><c:out value="${t.getCategoryName()}"></c:out></td>
 										<td><c:out value="${t.getTransactionType()}"></c:out></td>
+										<td>
+											<div class="form-group">
+												<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return false">
+													<input type="hidden" name="action" value="editTransaction"/>
+													<input type=submit value="Edit" class="btn btn-warning" />
+												</form>
+											</div>
+											<div class="form-group">
+												<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return confirm('Are you sure you want to delete Transaction #' + ${requestScope.transactionList.size() - myIndex.index} + '?');">
+													<input type="hidden" name="transactionID" value="${t.transactionID }"/>
+													<input type="hidden" name="action" value="deleteTransaction"/> 
+													<input type=submit value="Delete" class="btn btn-danger" />
+												</form>
+											</div>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>

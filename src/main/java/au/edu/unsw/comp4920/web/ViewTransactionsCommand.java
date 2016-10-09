@@ -28,6 +28,30 @@ public class ViewTransactionsCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: ViewTransactionsCommand");
 
+		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+		System.out.println("ViewTransactionsCommand: Action is " + action);
+		
+		if (action != null && action.equalsIgnoreCase("deleteTransaction") && request.getParameter("transactionID") != null) {
+			int transactionID = Integer.parseInt(request.getParameter("transactionID"));
+			Transaction t = dao.getTransaction(transactionID);
+			
+			if (t != null) {
+				boolean result = dao.deleteUserTransaction(transactionID);
+				
+				if (result){
+					System.out.println("ViewTransactionsCommand: Successfully deleted transaction ID: " + transactionID);
+				}
+				
+				if (t.isRecurrence()) {
+					result = dao.deleteRecurrence(transactionID);
+					
+					if (result){
+						System.out.println("ViewTransactionsCommand: Successfully deleted recurrence with transaction ID: " + transactionID);
+					}
+				}
+			}
+		}
+		
 		HttpSession session = request.getSession();
 		int userID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
 

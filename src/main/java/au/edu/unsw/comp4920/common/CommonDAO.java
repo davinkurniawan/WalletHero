@@ -28,10 +28,12 @@ public interface CommonDAO {
 	public boolean updatePreference(Preference p);
 	
 	public int addTransaction(Transaction t);
-	public boolean addRecurring(Recurrence r);	
+	public boolean addRecurring(Recurrence r);
 	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
 	public List<Transaction> getAllTransactions(int userID);
+	public Transaction getTransaction(int transactionID);
 	public boolean deleteUserTransaction(int transactionID);
+	public boolean deleteRecurrence(int transactionID);
 	
 	public void createSession(Session session);
 	public Session getSession(String sessionID);

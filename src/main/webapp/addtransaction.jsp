@@ -131,7 +131,8 @@
 							</div>
 						</div>
 					</div>
-
+					
+					<input type="hidden" name="action" value="addTransaction"/> 
 					<input type=submit value="Confirm" class="btn btn-primary" />
 				</form>
 			</div>
