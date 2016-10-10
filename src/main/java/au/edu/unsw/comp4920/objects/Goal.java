@@ -4,29 +4,40 @@ import java.math.BigDecimal;
 
 public class Goal {
 	private int goalID;
-	private int userID;
+	private int personID;
 	private String goalPeriod;
 	private String detail;
-	private BigDecimal amount;
+
+	private BigDecimal goalAmount;
+	private BigDecimal currentAmount;
+
 	private int type;
 	private int category;
+	private String categoryString;
+	private String statusString;
+	private int userID;
 
 	public static int SAVING_GOAL = 1;
 	public static int EXPENSE_RESTRICTION_GOAL = 2;
 
-	public Goal() {
+	public Goal(){
 		super();
 	}
 	
-	public Goal(int goalID, int userID, String goalPeriod, String detail, BigDecimal amount, int type, int category) {
+	public Goal(int goalID, int personID, String goalPeriod, String detail, BigDecimal goalAmount,
+			BigDecimal currentAmount, int type, int category, String categoryString, String statusString, int userID) {
 		super();
 		this.goalID = goalID;
-		this.userID = userID;
+		this.personID = personID;
 		this.goalPeriod = goalPeriod;
 		this.detail = detail;
-		this.amount = amount;
+		this.goalAmount = goalAmount;
+		this.currentAmount = currentAmount;
 		this.type = type;
 		this.category = category;
+		this.categoryString = categoryString;
+		this.statusString = statusString;
+		this.userID = userID;
 	}
 
 	public int getGoalID() {
@@ -53,13 +64,22 @@ public class Goal {
 		this.detail = detail;
 	}
 
-	public BigDecimal getAmount() {
-		return amount;
+	public BigDecimal getGoalAmount() {
+		return goalAmount;
 	}
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-		this.amount = this.amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+	public void setGoalAmount(BigDecimal amount) {
+		this.goalAmount = amount;
+		this.goalAmount = this.goalAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
+
+	public BigDecimal getCurrentAmount() {
+		return currentAmount;
+	}
+
+	public void setCurrentAmount(BigDecimal amount) {
+		this.currentAmount = amount;
+		this.currentAmount = this.currentAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public void setSavingGoal() {
@@ -77,7 +97,7 @@ public class Goal {
 	public boolean isExpenseRestrictionGoal() {
 		return this.type == Goal.EXPENSE_RESTRICTION_GOAL;
 	}
-	
+
 	public int getGoalType() {
 		return this.type;
 	}
@@ -98,9 +118,27 @@ public class Goal {
 		this.userID = userID;
 	}
 
+	public void setCategoryString(String categoryString) {
+		this.categoryString = categoryString;
+	}
+
+	public String getStatusString() {
+		return statusString;
+	}
+
+	public void setStatusString(String statusString) {
+		this.statusString = statusString;
+	}
+
+	public String getCategoryString() {
+		return this.categoryString;
+	}
+
 	@Override
 	public String toString() {
-		return "Goal [goalID=" + goalID + ", userID=" + userID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
-				+ ", amount=" + amount + ", type=" + type + ", category=" + category + "]";
+		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
+				+ ", goalAmount=" + goalAmount + ", currentAmount=" + currentAmount + ", type=" + type + ", category="
+				+ category + ", categoryString=" + categoryString + ", statusString=" + statusString + ", userID="
+				+ userID + "]";
 	}
 }

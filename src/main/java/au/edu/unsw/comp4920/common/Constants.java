@@ -18,7 +18,6 @@ public final class Constants {
 	public static final String SEARCH_COMMAND 				= "search";
 	public static final String NOTFOUND_COMMAND 			= "PAGE_NOT_FOUND";
 	public static final String ABOUT_COMMAND 				= "about";
-	
 	public static final String ADDTRANSACTION_COMMAND   	= "addTransaction";
 	public static final String VIEWTRANSACTIONS_COMMAND 	= "viewTransactions";
 	public static final String ADDGOAL_COMMAND 				= "addGoal";

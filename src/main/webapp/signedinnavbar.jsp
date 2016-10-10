@@ -27,6 +27,7 @@
                 	</ul>
                 </li>
                 
+<<<<<<< HEAD
                 <li class="dropdown ${goals }">
                 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Goals <span class="caret"></span></a>
                 	<ul class="dropdown-menu" aria-labelledby="goals">
@@ -34,6 +35,15 @@
                 		<li class="${viewGoals }"><a href="#">View Goals</a></li> 
                 		<li role="separator" class="divider"></li>
                 		<li class="${addGoal }"><a href="${applicationScope['ROUTER_ADDGOAL']}">Add a Goal</a></li>
+=======
+                
+                <li class="dropdown ${goals }">
+                	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Goals <span class="caret"></span></a>
+                	<ul class="dropdown-menu" aria-labelledby="goals">
+ 						<li class="${viewGoals }"><a href="${applicationScope['ROUTER_VIEWGOALS']}">View Goals</a></li>
+                		<li role="separator" class="divider"></li>
+                		<li class="${addGoal }"><a href="${applicationScope['ROUTER_ADDGOAL']}">Add a Goal</a></li>               		
+>>>>>>> 93f8b1a609757f09d00b8b0080c3ed6b22332048
                 	</ul>
                 </li>
               

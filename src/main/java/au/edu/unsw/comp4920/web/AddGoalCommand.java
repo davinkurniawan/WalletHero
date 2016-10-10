@@ -26,7 +26,7 @@ public class AddGoalCommand implements Command {
 		if (request.getParameterMap().size() == 1) {
 			// NOP
 		} 
-		else if (request.getParameter("details") != null && request.getParameter("goalType") != null && request.getParameter("amount") != null && request.getParameter("goalFreq") != null) {		
+		else if (!request.getParameter("details").equals("") && request.getParameter("goalType") != null && !request.getParameter("amount").equals("") && request.getParameter("goalFreq") != null) {		
 			int userID = (int) request.getSession().getAttribute(Constants.USERID);
 			String details = request.getParameter("details");
 			//String transactionType = request.getParameter("goalType");
@@ -37,7 +37,7 @@ public class AddGoalCommand implements Command {
 
 			Goal g = new Goal();
 
-			g.setAmount(value);
+			g.setGoalAmount(value);
 			g.setDetail(details);
 			g.setUserID(userID);
 			g.setGoalPeriod(goalFreq);

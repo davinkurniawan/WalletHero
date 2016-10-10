@@ -51,6 +51,7 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.RESETPASSWORD_COMMAND, 		new ResetPasswordCommand());
 		_commands.put(Constants.CURRENCYCONVERTER_COMMAND, 	new CurrencyConverterCommand());
 		_commands.put(Constants.ADDGOAL_COMMAND, 			new AddGoalCommand());
+		_commands.put(Constants.VIEWGOALS_COMMAND, 			new ViewGoalsCommand());
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
