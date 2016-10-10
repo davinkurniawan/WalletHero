@@ -37,13 +37,14 @@ public interface CommonDAO {
 	public boolean createSession(Session session);
 	public Session getSession(String sessionID);
 	public Session getUserSession(String userID, String sessionID);
-	public void deleteSession(String sessionID);
+	public boolean deleteSession(String sessionID);
+	public boolean deleteAllSession(int userID);
 	
 	public String getToken(User u);
-	public void setToken(User u, String token);
-	public void setStatus(User u, int Status);
+	public boolean setToken(User u, String token);
+	public boolean setStatus(User u, int Status);
 	
-	public void setPassword(User u, String hashedPassword);
+	public boolean setPassword(User u, String hashedPassword);
 	public String getSalt(String userinfo);
 	
 	public List<Category> getAllCategories();

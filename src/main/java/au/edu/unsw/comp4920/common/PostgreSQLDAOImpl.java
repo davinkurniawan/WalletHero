@@ -887,7 +887,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public void deleteSession(String sessionID) {
+	public boolean deleteSession(String sessionID) {
+		boolean result = true;
 		Connection conn = null;
 
 		try {
@@ -905,16 +906,20 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			stmt.close();
 		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
 			System.err.println(e.getMessage());
 		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
 				} catch (SQLException e) {
+					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
+		
+		return result;
 	}
 
 	@Override
@@ -956,8 +961,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public void setStatus(User u, int status) {
+	public boolean setStatus(User u, int status) {
 		System.out.println("Inside setStatus: Now setting status.");
+		boolean result = true;
 		Connection conn = null;
 
 		try {
@@ -977,21 +983,26 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			System.out.println("Success");
 			stmt.close();
 		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
 			System.err.println(e.getMessage());
 		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
 				} catch (SQLException e) {
+					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
+		
+		return result;
 	}
 
 	@Override
-	public void setToken(User u, String token) {
+	public boolean setToken(User u, String token) {
 		System.out.println("Inside setToken: Now setting token.");
+		boolean result = true;
 		Connection conn = null;
 
 		try {
@@ -1011,16 +1022,20 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			System.out.println("Success");
 			stmt.close();
 		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
 			System.err.println(e.getMessage());
 		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
 				} catch (SQLException e) {
+					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
+		
+		return result;
 	}
 
 	@Override
@@ -1089,8 +1104,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public void setPassword(User u, String hashedPassword) {
+	public boolean setPassword(User u, String hashedPassword) {
 		System.out.println("Inside setPassword: Now resetting password.");
+		boolean result = true;
 		Connection conn = null;
 
 		try {
@@ -1110,16 +1126,20 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			System.out.println("Success");
 			stmt.close();
 		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
 			System.err.println(e.getMessage());
 		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
 				} catch (SQLException e) {
+					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
+		
+		return result;
 	}
 
 	@Override
@@ -1590,6 +1610,43 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 		}
 
+		return result;
+	}
+	
+	public boolean deleteAllSession(int userID) {
+		boolean result = true;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("DELETE FROM session WHERE user_id = ?;");
+
+			stmt.setInt(1, userID);
+			int n = stmt.executeUpdate();
+
+			if (n < 0) {
+				throw new DataSourceException("Did not delete all of the user's session!");
+			}
+			
+			stmt.close();
+		} 
+		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					result = false;
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		
 		return result;
 	}
 }
