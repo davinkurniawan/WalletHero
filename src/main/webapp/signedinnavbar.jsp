@@ -26,9 +26,17 @@
                 		<li class="${addTransaction }"><a href="${applicationScope['ROUTER_ADDTRANSACTION']}">Add a Transaction</a></li>               		
                 	</ul>
                 </li>
+                
+                
+                <li class="dropdown ${goals }">
+                	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Goals <span class="caret"></span></a>
+                	<ul class="dropdown-menu" aria-labelledby="goals">
+ 						<li class="${viewGoals }"><a href="${applicationScope['ROUTER_VIEWGOALS']}">View Goals</a></li>
+                		<li role="separator" class="divider"></li>
+                		<li class="${addGoal }"><a href="${applicationScope['ROUTER_ADDGOAL']}">Add a Goal</a></li>               		
+                	</ul>
+                </li>
               
-                <li class="${viewGoals }"><a href="${applicationScope['ROUTER_VIEWGOALS']}">Goals</a></li>
-                <li class="${addGoal }"><a href="${applicationScope['ROUTER_ADDGOAL']}">Add a Goal</a></li>
 				<li class="${deals }"><a href="${applicationScope['ROUTER_DEALS']}">Deals</a></li>
 				
 				<li class="dropdown ${tools }">

@@ -429,8 +429,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return transactionID;
 	}
 
-	private ArrayList<Transaction> getOneOffTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
-	private ArrayList<Transaction> getOneOffTransactions(int personID, Date from, Date to, boolean showIncomes,
+	private ArrayList<Transaction> getOneOffTransactions(int userID, Date from, Date to, boolean showIncomes,
 			boolean showExpenses, int categoryID) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		Connection conn = null;
@@ -477,7 +476,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 				if (isReccurence == -1) {
 					t.setRecurrence(false);
-					
 
 					// This is the format PostgreSQL stores their dates.
 					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -487,12 +485,11 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 						if ((found_date.after(from) || found_date.equals(from))
 								&& (found_date.before(to) || found_date.equals(from))) {
 							transactions.add(t);
-						} 
+						}
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
-				}
-				else{
+				} else {
 					t.setRecurrence(true);
 				}
 			}
@@ -513,8 +510,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return transactions;
 	}
 
-	private ArrayList<Transaction> getRecurringTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
-	private ArrayList<Transaction> getRecurringTransactions(int personID, Date from, Date to, boolean showIncomes,
+	private ArrayList<Transaction> getRecurringTransactions(int userID, Date from, Date to, boolean showIncomes,
 			boolean showExpenses, int categoryID) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		Connection conn = null;
@@ -540,15 +536,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 
 			StringBuilder query = new StringBuilder();
-			query.append("SELECT transaction_id, type, reccur_num, t.date::DATE, t.detail, t.amount, t.is_income, c.name "
-					+ "FROM recurrence r " + "LEFT JOIN transaction t ON t.id = r.transaction_id "
-					+ "LEFT JOIN category c ON c.id = t.category_id "
-					+ "WHERE t.user_id = " + userID);
-			
 			query.append(
 					"SELECT transaction_id, type, reccur_num, t.date::DATE, t.detail, t.amount, t.is_income, c.name "
 							+ "FROM recurrence r " + "LEFT JOIN transaction t ON t.id = r.transaction_id "
-							+ "LEFT JOIN category c ON c.id = t.category_id " + "WHERE t.user_id = " + personID);
+							+ "LEFT JOIN category c ON c.id = t.category_id " + "WHERE t.user_id = " + userID);
 
 			if (categoryID != -1) {
 				query.append(" AND category_id = " + categoryID);
@@ -626,15 +617,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return transactions;
 	}
 
-	public List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
-	public List<Transaction> getTransactions(int personID, Date from, Date to, boolean showIncomes,
-			boolean showExpenses, int categoryID) {
+	public List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses,
+			int categoryID) {
 		ArrayList<Transaction> masterTransactionList = new ArrayList<Transaction>();
-		ArrayList<Transaction> oneOffTransactionList = this.getOneOffTransactions(userID, from, to, showIncomes, showExpenses, categoryID);
-		ArrayList<Transaction> recurringTransactionList = this.getRecurringTransactions(userID, from, to, showIncomes, showExpenses, categoryID);
-		ArrayList<Transaction> oneOffTransactionList = this.getOneOffTransactions(personID, from, to, showIncomes,
+		ArrayList<Transaction> oneOffTransactionList = this.getOneOffTransactions(userID, from, to, showIncomes,
 				showExpenses, categoryID);
-		ArrayList<Transaction> recurringTransactionList = this.getRecurringTransactions(personID, from, to, showIncomes,
+		ArrayList<Transaction> recurringTransactionList = this.getRecurringTransactions(userID, from, to, showIncomes,
 				showExpenses, categoryID);
 
 		masterTransactionList.addAll(oneOffTransactionList);
@@ -651,13 +639,11 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to, boolean showIncomes,
+	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes,
 			boolean showExpenses, int categoryID) {
-		return this.getTransactions(personID, from, to, showIncomes, showExpenses, categoryID);
-	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID) {
 		return this.getTransactions(userID, from, to, showIncomes, showExpenses, categoryID);
 	}
-	
+
 	@Override
 	public List<Transaction> getAllTransactions(int userID) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
@@ -675,29 +661,25 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			while (rs.next()) {
 				Transaction t = new Transaction();
 				t.setTransactionID(rs.getInt("id"));
-				int isReccurence = rs.getInt("recur_id"); 
-				
+				int isReccurence = rs.getInt("recur_id");
+
 				if (isReccurence == 1) {
 					t.setRecurrence(true);
-				}
-				else{
+				} else {
 					t.setRecurrence(false);
 				}
-				
+
 				transactions.add(t);
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -705,7 +687,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return transactions;
 	}
-	
+
 	@Override
 	public Transaction getTransaction(int transactionID) {
 		Connection conn = null;
@@ -723,7 +705,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			while (rs.next()) {
 				t = new Transaction();
-				
+
 				t.setTransactionID(rs.getInt("id"));
 				t.setUserID(rs.getInt("user_id"));
 				t.setDate(rs.getString("date"));
@@ -731,27 +713,23 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				t.setAmount(rs.getBigDecimal("amount"));
 				t.setIsIncome(rs.getBoolean("is_income"));
 
-				int isReccurence = rs.getInt("recur_id"); 
+				int isReccurence = rs.getInt("recur_id");
 
 				if (isReccurence == -1) {
 					t.setRecurrence(false);
-				}
-				else{
+				} else {
 					t.setRecurrence(true);
 				}
 			}
 
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException e) {
+		} catch (SQLException | ServiceLocatorException e) {
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 				}
 			}
@@ -1367,31 +1345,31 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	public boolean deleteAllUserData(int userID) {
 		boolean result = false;
 		int count = 0;
-		
+
 		List<Transaction> transactions = this.getAllTransactions(userID);
 
-		while (!result && count < 3) {		
+		while (!result && count < 3) {
 			for (Transaction t : transactions) {
 				if (t.isRecurrence()) {
 					result = this.deleteRecurrence(t.getTransactionID());
 				}
 			}
-			
+
 			for (Transaction t : transactions) {
 				result = this.deleteUserTransaction(t.getTransactionID());
 			}
-			
-			//TODO
+
+			// TODO
 			result = deleteUserGoal(-1);
-			
+
 			count++;
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
-	public boolean deleteUserTransaction(int transactionID){
+	public boolean deleteUserTransaction(int transactionID) {
 		boolean result = true;
 		Connection conn = null;
 
@@ -1407,14 +1385,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			if (n != 1) {
 				throw new DataSourceException("Did not delete user's transaction!");
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			result = false;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
@@ -1424,10 +1400,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public boolean deleteRecurrence(int transactionID) {
 		boolean result = true;
@@ -1445,14 +1421,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			if (n != 1) {
 				throw new DataSourceException("Did not delete all of user's recurrences!");
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			result = false;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
@@ -1462,23 +1436,23 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
-	public boolean deleteUserGoal(int goalID){
-		//boolean result = true;
-		//TODO
+	public boolean deleteUserGoal(int goalID) {
+		// boolean result = true;
+		// TODO
 		return true;
 	}
 
 	@Override
 	public boolean deleteUserCompletely(int userID) {
-		//boolean result = true;
-		//TODO
+		// boolean result = true;
+		// TODO
 		return true;
-	} 
+	}
 
 	@Override
 	public boolean addGoal(Goal g) {
