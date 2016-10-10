@@ -21,6 +21,13 @@
 	  <h2>Sign In</h2>
 
     <hr class="featurette-divider">
+    
+    <div id="div-loading" name="div-loading">
+	  	<div id="loader" name="loader"></div>
+	  	<center>
+	  		<h3 id="loadertext" name="loadertext">Signing You In...</h3>
+	  	</center>
+	</div>
 
     <h5 style="color:Red" name="error_message" id="error_message">
       <c:if test="${errorMessage != null}">
@@ -28,9 +35,9 @@
       </c:if>
     </h5>
 
-    <div class="row featurette">
+    <div class="row featurette" name="div-content" id="div-content">
       <div class="col-md-6">          
-        <form action="${applicationScope['ROUTER_SIGNIN']}" method="POST" onSubmit="return validator_signin(this)">
+        <form action="${applicationScope['ROUTER_SIGNIN']}" method="POST">
 
         <div class="form-group" id="div-username" name="div-username">
           <label>Username or Email</label>
@@ -60,39 +67,65 @@
     </div>
 
     <script type="text/javascript">
-    function validator_signin(form){                  
-      var username = form.username.value.trim();
-      var password = form.password.value.trim();
-
-      username = username.replace(" ", "");
-
-      if(username.length == 0){
-        document.getElementById("error_message").innerHTML = "Please enter your Username or Email!";
-        document.getElementById("div-username").className = "form-group has-error";
-        document.getElementById("div-password").className = "form-group";
-
-        form.username.focus();
-        return false;
-      }
-      else if (password.length == 0){
-        document.getElementById("error_message").innerHTML = "Please enter your Password!";
-        document.getElementById("div-username").className = "form-group";
-        document.getElementById("div-password").className = "form-group has-error";
-
-        form.password.focus();
-        return false;
-      }
-      else if (username.length > 32 || username.length < 6){
-        document.getElementById("error_message").innerHTML = "Username must be 6 to 32 characters!";
-        document.getElementById("div-username").className = "form-group has-error";
-        document.getElementById("div-password").className = "form-group";
-
-        form.username.focus();
-        return false;
-      }
-
-      return true;
-    };  
+	    $(document).ready(function(){
+	 		document.getElementById('div-loading').style.display = 'none';	
+	 		document.getElementById('div-content').style.display = 'block';
+	 		document.getElementById('div-footer').style.display = 'block';
+	 	});
+	    
+	    function validator_signin(form){                  
+	      var username = form.username.value.trim();
+	      var password = form.password.value.trim();
+	
+	      username = username.replace(" ", "");
+	
+	      if(username.length == 0){
+	        document.getElementById("error_message").innerHTML = "Please enter your Username or Email!";
+	        document.getElementById("div-username").className = "form-group has-error";
+	        document.getElementById("div-password").className = "form-group";
+	
+	        form.username.focus();
+	        return false;
+	      }
+	      else if (password.length == 0){
+	        document.getElementById("error_message").innerHTML = "Please enter your Password!";
+	        document.getElementById("div-username").className = "form-group";
+	        document.getElementById("div-password").className = "form-group has-error";
+	
+	        form.password.focus();
+	        return false;
+	      }
+	      else if (username.length > 32 || username.length < 6){
+	        document.getElementById("error_message").innerHTML = "Username must be 6 to 32 characters!";
+	        document.getElementById("div-username").className = "form-group has-error";
+	        document.getElementById("div-password").className = "form-group";
+	
+	        form.username.focus();
+	        return false;
+	      }
+	
+	      return true;
+	    };  
+	    
+	    $('form').submit( function(event) {
+	       	var form = this;
+			
+			if (validator_signin(form)){
+				document.getElementById('div-loading').style.display = 'block';	
+		 		document.getElementById('div-content').style.display = 'none';
+		 		document.getElementById('div-footer').style.display = 'none';
+		 		document.getElementById("error_message").innerHTML = '';
+	
+			    event.preventDefault();
+			    
+			    setTimeout( function () { 
+			        form.submit();
+			    }, 1000);
+			}
+			else {
+				event.preventDefault();
+			}
+		});
   </script>
 </body>
 </html>
