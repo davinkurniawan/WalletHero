@@ -24,71 +24,77 @@ public class AddTransactionCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: AddTransactionCommand"); 
 
-		// User has just navigated to the page and has not yet attempted to
-		// enter in a transaction.
-		if (request.getParameterMap().size() == 1) {
-			// NOP
-		} 
-		else if (request.getParameter("amount") != null && request.getParameter("details") != null && request.getParameter("categoryOption") != null) {		
-			String details = request.getParameter("details");
-			String transactionType = request.getParameter("transactionType");
-			BigDecimal value = new BigDecimal(request.getParameter("amount"));
-			int personID = (int) request.getSession().getAttribute(Constants.USERID);
-			
-			String type = request.getParameter("oneOff");
-			int category = Integer.parseInt(request.getParameter("categoryOption"));
+		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+		System.out.println("AddTransactionCommand: Action is " + action);
+		
+		if (action != null && action.equalsIgnoreCase("addTransaction")) {
 
-			Boolean isIncome = null;
-			if (transactionType.equals("income")) {
-				isIncome = true;
+			// User has just navigated to the page and has not yet attempted to
+			// enter in a transaction.
+			if (request.getParameterMap().size() == 1) {
+				// NOP
 			} 
-			else if (transactionType.equals("expense")) {
-				isIncome = false;
-			}
-
-			SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy"); 
-
-			Transaction t = new Transaction();
-			t.setPersonID(personID);
-			t.setDetail(details);
-			t.setAmount(value);
-			t.setIsIncome(isIncome);
-			t.setDate(df.format(new Date()));
-			t.setCategoryID(category);
-
-			// One off expense.
-			if (type.equals("true")) {
-				dao.addTransaction(t);
-			} 
-			else { // Recurring expense.
-				t.setRecurrence(true);
-				int transactionID = dao.addTransaction(t);
-
-				String recurrenceFreq = request.getParameter("recurrenceFreq");
-				String paymentPeriod = request.getParameter("paymentPeriod");
-				int recurrenceNumber;
-
-				if (paymentPeriod.equals("indefinite")) {
-					recurrenceNumber = -1;
-				} else {
-					recurrenceNumber = new Integer(request.getParameter("numberPayments"));
+			else if (request.getParameter("amount") != null && request.getParameter("details") != null && request.getParameter("categoryOption") != null) {		
+				String details = request.getParameter("details");
+				String transactionType = request.getParameter("transactionType");
+				BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
+				int userID = (int) request.getSession().getAttribute(Constants.USERID);
+				
+				String type = request.getParameter("oneOff");
+				int category = Integer.parseInt(request.getParameter("categoryOption"));
+	
+				Boolean isIncome = null;
+				if (transactionType.equals("income")) {
+					isIncome = true;
+				} 
+				else if (transactionType.equals("expense")) {
+					isIncome = false;
 				}
-
-				Recurrence r = new Recurrence();
-				r.setTransactionID(transactionID);
-				r.setRecurrenceFreq(recurrenceFreq);
-				r.setRecurrenceNumber(recurrenceNumber);
-
-				dao.addRecurring(r);
+	
+				SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy"); 
+	
+				Transaction t = new Transaction();
+				t.setUserID(userID);
+				t.setDetail(details);
+				t.setAmount(value);
+				t.setIsIncome(isIncome);
+				t.setDate(df.format(new Date()));
+				t.setCategoryID(category);
+	
+				// One off expense.
+				if (type.equals("true")) {
+					dao.addTransaction(t);
+				} 
+				else { // Recurring expense.
+					t.setRecurrence(true);
+					int transactionID = dao.addTransaction(t);
+	
+					String recurrenceFreq = request.getParameter("recurrenceFreq");
+					String paymentPeriod = request.getParameter("paymentPeriod");
+					int recurrenceNumber;
+	
+					if (paymentPeriod.equals("indefinite")) {
+						recurrenceNumber = -1;
+					} else {
+						recurrenceNumber = new Integer(request.getParameter("numberPayments"));
+					}
+	
+					Recurrence r = new Recurrence();
+					r.setTransactionID(transactionID);
+					r.setRecurrenceFreq(recurrenceFreq);
+					r.setRecurrenceNumber(recurrenceNumber);
+	
+					dao.addRecurring(r);
+				}
+				
+				response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=yes");
+				return;
 			}
-			
-			response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=yes");
-			return;
-		}
-		else {
-			System.out.println("AddTransactionCommand: Failed as something was null.");			
-			request.setAttribute(Constants.ERROR, 1);
-			request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
+			else {
+				System.out.println("AddTransactionCommand: Failed as something was null.");			
+				request.setAttribute(Constants.ERROR, 1);
+				request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
+			}
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher("/addtransaction.jsp");

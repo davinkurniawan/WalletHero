@@ -28,6 +28,12 @@
 	  
 	  <hr class="featurette-divider">
 	  
+	  <h5 style="color:Red" name="error_message" id="error_message">
+        <c:if test="${errorMessage != null}">
+          ${errorMessage}
+        </c:if>
+      </h5>
+	  
 	  <div id="div-loading" name="div-loading">
 	  	<div id="loader" name="loader"></div>
 	  	<center>
@@ -38,7 +44,7 @@
 	  <div class="row featurette" name="div-content" id="div-content">
         <div class="col-md-4">
         
-        	<form action="#" onSubmit="return onClickGetRate(this)">
+        	<form action="#">
 	          	<div class="form-group" id="div-from-currency" name="div-from-currency">
 			  		<label>From: <label style="color:red">*</label></label>
 			  		<br/>
@@ -86,27 +92,87 @@
 	   <%@ include file="footer.jsp" %>
 	 </div>
 	 <script type="text/javascript">
+	 	function isNumeric(n) {
+		  return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+	 
+	 	function validator_currency(form){									
+			var from_amount = form.from_amount.value.trim();
+			var to_amount = form.to_amount.value.trim();
+			
+			from_amount = from_amount.replace(" ", "");
+			to_amount = to_amount.replace(" ", "");
+			
+			if(from_amount.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter the from Currency amount!";
+				document.getElementById("div-from-currency").className = "form-group has-error";
+				document.getElementById("div-to-currency").className = "form-group";
+
+				form.from_amount.focus();
+				return false;
+			}
+			else if(to_amount.length == 0){
+				document.getElementById("error_message").innerHTML = "Please enter the to Currency amount!";
+				document.getElementById("div-from-currency").className = "form-group";
+				document.getElementById("div-to-currency").className = "form-group has-error";
+
+				form.to_amount.focus();
+				return false;
+			}
+			else if (!isNumeric(from_amount)) {
+				document.getElementById("error_message").innerHTML = "Please enter a valid from Currency amount!";
+				document.getElementById("div-from-currency").className = "form-group has-error";
+				document.getElementById("div-to-currency").className = "form-group";
+
+				form.from_amount.focus();
+				return false;
+			}
+			else if (!isNumeric(to_amount)) {
+				document.getElementById("error_message").innerHTML = "Please enter a valid to Currency amount!";
+				document.getElementById("div-from-currency").className = "form-group";
+				document.getElementById("div-to-currency").className = "form-group has-error";
+
+				form.to_amount.focus();
+				return false;
+			}
+			
+			return true;
+	 	};
+	 
 	 	$(document).ready(function(){
 	 		document.getElementById('div-loading').style.display = 'none';	
 	 		document.getElementById('div-content').style.display = 'block';
 	 		document.getElementById('div-footer').style.display = 'block';
+	 		document.getElementById("error_message").innerHTML = '';
+	 		document.getElementById("div-from-currency").className = "form-group";
+			document.getElementById("div-to-currency").className = "form-group";
 	 	});
 	 	
-	 	function onClickGetRate(form){
-	 		document.getElementById('div-loading').style.display = 'block';
-	 		document.getElementById('div-content').style.display = 'none';
-	 		document.getElementById('div-footer').style.display = 'none';
-	 		
-	 		var from = document.getElementById("from_currency");
-	 		var selected_from = from.options[from.selectedIndex].value;
-	 		
-	 		var to = document.getElementById("to_currency");
-	 		var selected_to = to.options[to.selectedIndex].value;
-	 		
-	 		getRate(selected_from, selected_to);
-	 		
-	 		return false;
-	 	}
+	 	$('form').submit( function(event) {
+	       	var form = this;
+	       	
+	       	if (validator_currency(form)){
+	       		document.getElementById('div-loading').style.display = 'block';
+		 		document.getElementById('div-content').style.display = 'none';
+		 		document.getElementById('div-footer').style.display = 'none';
+		 		document.getElementById("error_message").innerHTML = '';
+		 		document.getElementById("div-from-currency").className = "form-group";
+				document.getElementById("div-to-currency").className = "form-group";
+		 		
+		 		var from = document.getElementById("from_currency");
+		 		var selected_from = from.options[from.selectedIndex].value;
+		 		
+		 		var to = document.getElementById("to_currency");
+		 		var selected_to = to.options[to.selectedIndex].value;
+		 		
+		 		getRate(selected_from, selected_to);
+	
+			    event.preventDefault();
+			}
+			else {
+				event.preventDefault();
+			}
+	 	});
 	 
 		function getRate(from, to) {
 			var script = document.createElement('script');
@@ -127,6 +193,9 @@
 			document.getElementById('div-loading').style.display = 'none';	
 	 		document.getElementById('div-content').style.display = 'block';	
 	 		document.getElementById('div-footer').style.display = 'block';
+	 		document.getElementById("error_message").innerHTML = '';
+	 		document.getElementById("div-from-currency").className = "form-group";
+			document.getElementById("div-to-currency").className = "form-group";
 		}
 
 		//getRate("SEK", "USD");

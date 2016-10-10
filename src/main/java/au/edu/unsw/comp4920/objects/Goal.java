@@ -89,8 +89,8 @@ public class Goal {
 		this.category = category;
 	}
 
-	public String getCategoryString() {
-		return categoryString;
+	public int getUserID() {
+		return userID;
 	}
 
 	public void setCategoryString(String categoryString) {
@@ -103,6 +103,8 @@ public class Goal {
 
 	public void setPersonID(int personID) {
 		this.personID = personID;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	public String getStatusString() {

@@ -131,7 +131,8 @@
 							</div>
 						</div>
 					</div>
-
+					
+					<input type="hidden" name="action" value="addTransaction"/> 
 					<input type=submit value="Confirm" class="btn btn-primary" />
 				</form>
 			</div>
@@ -208,6 +209,10 @@
 	</script>
 	
 	<script type="text/javascript">
+		function isNumeric(n) {
+		  return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+	
 		function validator_add_transaction(form){									
 			var details = form.details.value.trim();
 			var amount = form.amount.value.trim();
@@ -241,7 +246,7 @@
 				form.amount.focus();
 				return false;
 			}
-			else if(amount <= 0){
+			else if(!isNumeric(amount)){
 				document.getElementById("error_message").innerHTML = "Please enter a valid Amount!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group has-error";

@@ -28,8 +28,32 @@ public class ViewTransactionsCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: ViewTransactionsCommand");
 
+		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+		System.out.println("ViewTransactionsCommand: Action is " + action);
+		
+		if (action != null && action.equalsIgnoreCase("deleteTransaction") && request.getParameter("transactionID") != null) {
+			int transactionID = Integer.parseInt(request.getParameter("transactionID"));
+			Transaction t = dao.getTransaction(transactionID);
+			
+			if (t != null) {
+				boolean result = dao.deleteUserTransaction(transactionID);
+				
+				if (result){
+					System.out.println("ViewTransactionsCommand: Successfully deleted transaction ID: " + transactionID);
+				}
+				
+				if (t.isRecurrence()) {
+					result = dao.deleteRecurrence(transactionID);
+					
+					if (result){
+						System.out.println("ViewTransactionsCommand: Successfully deleted recurrence with transaction ID: " + transactionID);
+					}
+				}
+			}
+		}
+		
 		HttpSession session = request.getSession();
-		int personID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
+		int userID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
 
 		String fromDate = (request.getParameter("from_date") != null) ? request.getParameter("from_date") : "";
 		String toDate = (request.getParameter("to_date") != null) ? request.getParameter("to_date") : "";
@@ -95,7 +119,7 @@ public class ViewTransactionsCommand implements Command {
 			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 		}
 
-		transactions = dao.getTransactionsByDate(personID, from, to, viewIncomes, viewExpenses, categoryID);
+		transactions = dao.getTransactionsByDate(userID, from, to, viewIncomes, viewExpenses, categoryID);
 
 		request.setAttribute("transactionList", transactions);
 		request.setAttribute("transactionRange", transactionRange);
