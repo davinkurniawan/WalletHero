@@ -51,6 +51,7 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.RESETPASSWORD_COMMAND, 		new ResetPasswordCommand());
 		_commands.put(Constants.CURRENCYCONVERTER_COMMAND, 	new CurrencyConverterCommand());
 		_commands.put(Constants.ADDGOAL_COMMAND, 			new AddGoalCommand());
+		_commands.put(Constants.VIEWGOALS_COMMAND, 			new ViewGoalsCommand());
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
@@ -73,6 +74,7 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_RESETPASSWORD,         Constants.ROUTER + Constants.RESETPASSWORD_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_CURRENCYCONVERTER,     Constants.ROUTER + Constants.CURRENCYCONVERTER_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ADDGOAL,     			Constants.ROUTER + Constants.ADDGOAL_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_VIEWGOALS,     		Constants.ROUTER + Constants.VIEWGOALS_COMMAND);
 	}
 
 	/*

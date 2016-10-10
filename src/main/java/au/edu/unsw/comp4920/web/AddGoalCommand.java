@@ -41,7 +41,7 @@ public class AddGoalCommand implements Command {
 
 			Goal g = new Goal();
 
-			g.setAmount(value);
+			g.setGoalAmount(value);
 			g.setDetail(details);
 			g.setPersonID(personID);
 			g.setGoalPeriod(goalFreq);

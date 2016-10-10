@@ -7,9 +7,14 @@ public class Goal {
 	private int personID;
 	private String goalPeriod;
 	private String detail;
-	private BigDecimal amount;
+
+	private BigDecimal goalAmount;
+	private BigDecimal currentAmount;
+
 	private int type;
 	private int category;
+	private String categoryString;
+	private String statusString;
 
 	public static int SAVING_GOAL = 1;
 	public static int EXPENSE_RESTRICTION_GOAL = 2;
@@ -38,13 +43,22 @@ public class Goal {
 		this.detail = detail;
 	}
 
-	public BigDecimal getAmount() {
-		return amount;
+	public BigDecimal getGoalAmount() {
+		return goalAmount;
 	}
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-		this.amount = this.amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+	public void setGoalAmount(BigDecimal amount) {
+		this.goalAmount = amount;
+		this.goalAmount = this.goalAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
+
+	public BigDecimal getCurrentAmount() {
+		return currentAmount;
+	}
+
+	public void setCurrentAmount(BigDecimal amount) {
+		this.currentAmount = amount;
+		this.currentAmount = this.currentAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public void setSavingGoal() {
@@ -62,7 +76,7 @@ public class Goal {
 	public boolean isExpenseRestrictionGoal() {
 		return this.type == Goal.EXPENSE_RESTRICTION_GOAL;
 	}
-	
+
 	public int getGoalType() {
 		return this.type;
 	}
@@ -75,12 +89,35 @@ public class Goal {
 		this.category = category;
 	}
 
+	public String getCategoryString() {
+		return categoryString;
+	}
+
+	public void setCategoryString(String categoryString) {
+		this.categoryString = categoryString;
+	}
+
 	public int getPersonID() {
 		return personID;
 	}
 
 	public void setPersonID(int personID) {
 		this.personID = personID;
+	}
+
+	public String getStatusString() {
+		return statusString;
+	}
+
+	public void setStatusString(String statusString) {
+		this.statusString = statusString;
+	}
+
+	@Override
+	public String toString() {
+		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
+				+ ", goalAmount=" + goalAmount + ", currentAmount=" + currentAmount + ", type=" + type + ", category="
+				+ category + ", categoryString=" + categoryString + ", statusString=" + statusString + "]";
 	}
 
 }
