@@ -1,5 +1,6 @@
 package au.edu.unsw.comp4920.common;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -33,7 +34,7 @@ public class MailHelper {
 	    
 		try {
 			Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress(from, "WalletHero Team"));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			message.setSubject(subject);
 			message.setContent(content, "text/html");
@@ -41,7 +42,7 @@ public class MailHelper {
 			Transport.send(message);
 			System.out.println("Email sent successfully");
 		} 
-		catch (MessagingException e) {
+		catch (MessagingException | UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -306,6 +306,10 @@ public class ProfileCommand implements Command {
 								request.setAttribute(Constants.ERRORMSG, "Your preferences has been updated!");
 							}
 						}
+						else if (!update) {
+							request.setAttribute(Constants.ERROR, 3);
+							request.setAttribute(Constants.ERRORMSG, "No Changes Made!");
+						}
 					}
 					else {
 						System.err.println("ProfileCommand: Missing information.");
