@@ -128,7 +128,7 @@
 											<div class="form-group">
 												<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return false">
 													<input type="hidden" name="action" value="editTransaction"/>
-													<input type=submit value="Edit" class="btn btn-warning" />
+													<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Edit</button>
 												</form>
 											</div>
 											<div class="form-group">
@@ -156,6 +156,44 @@
 				</div>
 			</c:otherwise>
 		</c:choose>
+		
+		<!-- Modal -->
+	    <div class="modal fade" id="myModal" role="dialog">
+	      <div class="modal-dialog">
+	    
+	        <!-- Modal content-->
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal">&times;</button>
+	            <h4 class="modal-title">Edit Transaction #...</h4>
+	          </div>
+	          <div class="modal-body">
+
+	            <div class="form-group" id="div-details" name="div-details">
+					<label>Details <label style="color: red">*</label></label> <input
+						type="text" class="form-control" id="details"
+						name="details" placeholder="Details..."
+						value="${param['details']}" />
+				</div>
+				
+				<div class="form-group" id="div-amount" name="div-amount">
+					<label>Amount <label style="color: red">*</label></label> 
+					<div class="input-group">
+						<span class="input-group-addon">$</span>
+						<input type="number" class="form-control" id="amount"
+							name="amount" placeholder="Amount..."
+							value="${param['amount']}" 
+							step="0.01" min="0.00"/>
+					</div>
+				</div>
+				
+	          </div>
+	          <div class="modal-footer">
+	            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
 		
 		<%@ include file="footer.jsp"%>
 	</div>
