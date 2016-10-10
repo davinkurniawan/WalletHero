@@ -78,7 +78,7 @@
     <div class="container marketing">
 
 	  <h2>Welcome back, ${username}</h2>
-	  <h4>Last Accessed: ${lastaccessed}</h4>
+	  <h4>Last Sign In: ${lastaccessed}</h4>
       
       <hr class="featurette-divider">
       
