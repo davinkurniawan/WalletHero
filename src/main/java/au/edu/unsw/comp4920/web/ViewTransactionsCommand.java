@@ -31,22 +31,44 @@ public class ViewTransactionsCommand implements Command {
 		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
 		System.out.println("ViewTransactionsCommand: Action is " + action);
 		
-		if (action != null && action.equalsIgnoreCase("deleteTransaction") && request.getParameter("transactionID") != null) {
+		if (request.getParameter("transactionID") != null) {
 			int transactionID = Integer.parseInt(request.getParameter("transactionID"));
 			Transaction t = dao.getTransaction(transactionID);
 			
 			if (t != null) {
-				boolean result = dao.deleteUserTransaction(transactionID);
-				
-				if (result){
-					System.out.println("ViewTransactionsCommand: Successfully deleted transaction ID: " + transactionID);
-				}
-				
-				if (t.isRecurrence()) {
-					result = dao.deleteRecurrence(transactionID);
+				if (action != null && action.equalsIgnoreCase("deleteTransaction")) {
+					boolean result = dao.deleteUserTransaction(transactionID);
 					
 					if (result){
-						System.out.println("ViewTransactionsCommand: Successfully deleted recurrence with transaction ID: " + transactionID);
+						System.out.println("ViewTransactionsCommand: Successfully deleted transaction ID: " + transactionID);
+					}
+					
+					if (t.isRecurrence()) {
+						result = dao.deleteRecurrence(transactionID);
+						
+						if (result){
+							System.out.println("ViewTransactionsCommand: Successfully deleted recurrence with transaction ID: " + transactionID);
+						}
+					}
+				}
+				else if (action != null && action.equalsIgnoreCase("editTransaction")) {
+					Transaction t_new = t;
+					//Recurrence
+					//TODO
+					
+					boolean result = dao.updateUserTransaction(t_new);
+					
+					if (result){
+						System.out.println("ViewTransactionsCommand: Successfully updated transaction ID: " + transactionID);
+					}
+					
+					if (t.isRecurrence()) {
+						//result = dao.deleteRecurrence(transactionID);
+						//TODO
+						
+						if (result){
+							System.out.println("ViewTransactionsCommand: Successfully updated recurrence with transaction ID: " + transactionID);
+						}
 					}
 				}
 			}

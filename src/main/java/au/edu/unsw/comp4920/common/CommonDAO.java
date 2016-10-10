@@ -31,6 +31,7 @@ public interface CommonDAO {
 	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
 	public List<Transaction> getAllTransactions(int userID);
 	public Transaction getTransaction(int transactionID);
+	public boolean updateUserTransaction(Transaction t);
 	public boolean deleteUserTransaction(int transactionID);
 	public boolean deleteRecurrence(int transactionID);
 	
