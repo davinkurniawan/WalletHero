@@ -2,8 +2,6 @@ package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.objects.Goal;
-import au.edu.unsw.comp4920.objects.Recurrence;
-import au.edu.unsw.comp4920.objects.Transaction;
 
 public class AddGoalCommand implements Command {
 
@@ -33,7 +29,7 @@ public class AddGoalCommand implements Command {
 		else if (request.getParameter("details") != null && request.getParameter("goalType") != null && request.getParameter("amount") != null && request.getParameter("goalFreq") != null) {		
 			int userID = (int) request.getSession().getAttribute(Constants.USERID);
 			String details = request.getParameter("details");
-			String transactionType = request.getParameter("goalType");
+			//String transactionType = request.getParameter("goalType");
 
 			BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
 			String goalFreq = request.getParameter("goalFreq");
@@ -56,7 +52,21 @@ public class AddGoalCommand implements Command {
 				g.setCategory(-1);
 			}
 			
-			dao.addGoal(g);
+			boolean result = dao.addGoal(g);
+			
+			if (result){
+				response.sendRedirect(Constants.ROUTER + Constants.ADDGOAL_COMMAND + "&success=yes");
+			}
+			else{
+				response.sendRedirect(Constants.ROUTER + Constants.ADDGOAL_COMMAND + "&success=no");
+			}
+			
+			return;
+		}
+		else {
+			System.out.println("AddGoalCommand: Failed as something was null.");			
+			request.setAttribute(Constants.ERROR, 1);
+			request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher("/addgoal.jsp");

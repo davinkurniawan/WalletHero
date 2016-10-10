@@ -39,6 +39,7 @@ public class AddTransactionCommand implements Command {
 				String transactionType = request.getParameter("transactionType");
 				BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
 				int userID = (int) request.getSession().getAttribute(Constants.USERID);
+				boolean result = false;
 				
 				String type = request.getParameter("oneOff");
 				int category = Integer.parseInt(request.getParameter("categoryOption"));
@@ -63,7 +64,14 @@ public class AddTransactionCommand implements Command {
 	
 				// One off expense.
 				if (type.equals("true")) {
-					dao.addTransaction(t);
+					int tID = dao.addTransaction(t);
+					
+					if (tID == -1) {
+						result = false;
+					}
+					else{
+						result = true;
+					}
 				} 
 				else { // Recurring expense.
 					t.setRecurrence(true);
@@ -84,10 +92,16 @@ public class AddTransactionCommand implements Command {
 					r.setRecurrenceFreq(recurrenceFreq);
 					r.setRecurrenceNumber(recurrenceNumber);
 	
-					dao.addRecurring(r);
+					result = dao.addRecurring(r);
 				}
 				
-				response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=yes");
+				if (result){
+					response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=yes");
+				}
+				else{
+					response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=no");
+				}
+				
 				return;
 			}
 			else {

@@ -406,7 +406,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	@Override
 	public int addTransaction(Transaction t) {
 		Connection conn = null;
-		int transactionID;
+		int transactionID = -1;
 
 		try {
 			_factory.open();
@@ -757,9 +757,49 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return t;
 	}
+	
+	@Override
+	public List<Goal> getAllGoals(int userID) {
+		ArrayList<Goal> goals = new ArrayList<Goal>();
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM goal WHERE user_id = ?;");
+
+			stmt.setInt(1, userID);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Goal g = new Goal();
+				g.setGoalID(rs.getInt("id"));				
+				goals.add(g);
+			}
+			
+			stmt.close();
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return goals;
+	}
 
 	@Override
-	public void createSession(Session session) {
+	public boolean createSession(Session session) {
+		boolean result = true;
 		Connection conn = null;
 
 		try {
@@ -781,16 +821,20 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			stmt.close();
 		} catch (SQLException | DataSourceException | ServiceLocatorException e) {
+			result = false;
 			System.err.println(e.getMessage());
 		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
 				} catch (SQLException e) {
+					result = false;
 					System.err.println(e.getMessage());
 				}
 			}
 		}
+		
+		return result;
 	}
 
 	@Override
@@ -1380,8 +1424,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		int count = 0;
 		
 		List<Transaction> transactions = this.getAllTransactions(userID);
+		List<Goal> goals = this.getAllGoals(userID);
 
-		while (!result && count < 3) {		
+		while (!result && count < 3) { // Fail check up to 3 times
 			for (Transaction t : transactions) {
 				if (t.isRecurrence()) {
 					result = this.deleteRecurrence(t.getTransactionID());
@@ -1392,9 +1437,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				result = this.deleteUserTransaction(t.getTransactionID());
 			}
 			
-			//TODO
-			result = deleteUserGoal(-1);
-			
+			for (Goal g : goals) {
+				result = this.deleteUserGoal(g.getGoalID());
+			}
+
 			count++;
 		}
 		
@@ -1479,9 +1525,40 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	
 	@Override
 	public boolean deleteUserGoal(int goalID){
-		//boolean result = true;
-		//TODO
-		return true;
+		boolean result = true;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("DELETE FROM goal WHERE id = ?;");
+
+			stmt.setInt(1, goalID);
+			int n = stmt.executeUpdate();
+
+			if (n != 1) {
+				throw new DataSourceException("Did not delete user's goal!");
+			}
+			
+			stmt.close();
+		} 
+		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					result = false;
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -1493,6 +1570,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 	@Override
 	public boolean addGoal(Goal g) {
+		boolean result = true;
 		Connection conn = null;
 
 		try {
@@ -1509,22 +1587,30 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			stmt.setInt(5, g.getCategory());
 			stmt.setString(6, g.getGoalPeriod());
 			
-			stmt.executeQuery();
+			int n = stmt.executeUpdate();
+
+			if (n != 1) {
+				throw new DataSourceException("Did not insert a new user's goal!");
+			}
+			
 			stmt.close();
-		} catch (SQLException | ServiceLocatorException e) {
+		} 
+		catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			System.err.println(e.getMessage());
-			return false;
-		} finally {
+			result = false;
+		} 
+		finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} catch (SQLException e) {
+				} 
+				catch (SQLException e) {
 					System.err.println(e.getMessage());
-					return false;
+					result = false;
 				}
 			}
 		}
 
-		return true;
+		return result;
 	}
 }

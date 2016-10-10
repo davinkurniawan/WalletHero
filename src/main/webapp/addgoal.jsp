@@ -22,7 +22,12 @@
 		 <c:choose>
 		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
 		 		<div class="alert alert-success">
-					<strong>Transaction successfully added!</strong>
+					<strong>Goal Successfully Added!</strong>
+				</div>
+		 	</c:when>
+		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('no')}" >
+		 		<div class="alert alert-danger">
+					<strong>Goal Failed to be Added!</strong>
 				</div>
 		 	</c:when>
 			<c:when test="${errorMessage != null && errorFlg == 1}">
@@ -168,29 +173,23 @@
 			
 			var e = document.getElementById("categoryOption");
 			var categoryOption = e.options[e.selectedIndex].text;
-						
-			var oneOff = form.oneOff.value.trim();
-			var paymentPeriod = form.paymentPeriod.value.trim();
-			var numberPayments = form.numberPayments.value.trim();
 			
 			amount = amount.replace(" ", "");
 			
 			if(details.length == 0){
-				document.getElementById("error_message").innerHTML = "Please enter the Transaction Detail!";
+				document.getElementById("error_message").innerHTML = "Please enter the Goal Detail!";
 				document.getElementById("div-details").className = "form-group has-error";
 				document.getElementById("div-amount").className = "form-group";
-				document.getElementById("div-category").className = "form-group";
-				document.getElementById("div-payment-number").className = "form-group";
+ 				document.getElementById("div-category").className = "form-group";
 
 				form.details.focus();
 				return false;
 			}
 			else if(amount.length == 0){
-				document.getElementById("error_message").innerHTML = "Please enter the Transaction Amount!";
+				document.getElementById("error_message").innerHTML = "Please enter the Goal Amount!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group has-error";
-				document.getElementById("div-category").className = "form-group";
-				document.getElementById("div-payment-number").className = "form-group";
+ 				document.getElementById("div-category").className = "form-group";
 
 				form.amount.focus();
 				return false;
@@ -199,46 +198,19 @@
 				document.getElementById("error_message").innerHTML = "Please enter a valid Amount!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group has-error";
-				document.getElementById("div-category").className = "form-group";
-				document.getElementById("div-payment-number").className = "form-group";
+ 				document.getElementById("div-category").className = "form-group";
 
 				form.amount.focus();
 				return false;
 			}
 			else if (categoryOption == 'Please Select'){
-				document.getElementById("error_message").innerHTML = "Please choose the category!";
+				document.getElementById("error_message").innerHTML = "Please choose the Category!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group";
 				document.getElementById("div-category").className = "form-group has-error";
-				document.getElementById("div-payment-number").className = "form-group";
 
 				form.categoryOption.focus();
 				return false;
-			}
-			
-			if (oneOff == 'false'){
-				if (paymentPeriod == 'amount'){
-					if(numberPayments.length == 0){
-						document.getElementById("error_message").innerHTML = "Please enter the Number of Payment!";
-						document.getElementById("div-details").className = "form-group";
-						document.getElementById("div-amount").className = "form-group";
-						document.getElementById("div-category").className = "form-group";
-						document.getElementById("div-payment-number").className = "form-group has-error";
-
-						form.numberPayments.focus();
-						return false;
-					}
-					else if(numberPayments <= 0){
-						document.getElementById("error_message").innerHTML = "Please enter a Number of Payment Amount!";
-						document.getElementById("div-details").className = "form-group";
-						document.getElementById("div-amount").className = "form-group";
-						document.getElementById("div-category").className = "form-group";
-						document.getElementById("div-payment-number").className = "form-group has-error";
-						
-						form.numberPayments.focus();
-						return false;
-					}
-				}
 			}
 			
 			return true;

@@ -24,7 +24,6 @@ public interface CommonDAO {
 
 	public Preference getUserPreference(int uid);
 	public Preference getUserPreference(String sid);
-	
 	public boolean updatePreference(Preference p);
 	
 	public int addTransaction(Transaction t);
@@ -35,7 +34,7 @@ public interface CommonDAO {
 	public boolean deleteUserTransaction(int transactionID);
 	public boolean deleteRecurrence(int transactionID);
 	
-	public void createSession(Session session);
+	public boolean createSession(Session session);
 	public Session getSession(String sessionID);
 	public Session getUserSession(String userID, String sessionID);
 	public void deleteSession(String sessionID);
@@ -52,5 +51,6 @@ public interface CommonDAO {
 	public List<Occupation> getAllOccupations();
 	
 	public boolean addGoal(Goal g);
+	public List<Goal> getAllGoals(int userID);
 	public boolean deleteUserGoal(int goalID);
 }

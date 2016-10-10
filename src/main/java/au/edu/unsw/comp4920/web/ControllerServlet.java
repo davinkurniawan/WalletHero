@@ -73,6 +73,7 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_RESETPASSWORD,         Constants.ROUTER + Constants.RESETPASSWORD_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_CURRENCYCONVERTER,     Constants.ROUTER + Constants.CURRENCYCONVERTER_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_ADDGOAL,     			Constants.ROUTER + Constants.ADDGOAL_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_VIEWGOALS,    			Constants.ROUTER + Constants.VIEWGOALS_COMMAND);
 	}
 
 	/*
@@ -141,6 +142,9 @@ public class ControllerServlet extends HttpServlet {
 		}
 		else if (dest.equals(Constants.VIEWTRANSACTIONS_COMMAND) || dest.equals(Constants.ADDTRANSACTION_COMMAND)){
 			request.setAttribute(Constants.TRANSACTIONS, "active");
+		}
+		else if (dest.equals(Constants.VIEWGOALS_COMMAND) || dest.equals(Constants.ADDGOAL_COMMAND)){
+			request.setAttribute(Constants.GOALS, "active");
 		}
 		
 		Command cmd = (Command) _commands.get(dest) == null ? (Command) _commands.get(Constants.NOTFOUND_COMMAND) : (Command) _commands.get(dest);

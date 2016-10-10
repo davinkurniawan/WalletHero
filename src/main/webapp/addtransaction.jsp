@@ -22,7 +22,12 @@
 		 <c:choose>
 		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
 		 		<div class="alert alert-success">
-					<strong>Transaction successfully added!</strong>
+					<strong>Transaction Successfully Added!</strong>
+				</div>
+		 	</c:when>
+		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('no')}" >
+		 		<div class="alert alert-danger">
+					<strong>Transaction Failed to be Added!</strong>
 				</div>
 		 	</c:when>
 			<c:when test="${errorMessage != null && errorFlg == 1}">
@@ -257,7 +262,7 @@
 				return false;
 			}
 			else if (categoryOption == 'Please Select'){
-				document.getElementById("error_message").innerHTML = "Please choose the category!";
+				document.getElementById("error_message").innerHTML = "Please choose the Category!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group";
 				document.getElementById("div-category").className = "form-group has-error";
