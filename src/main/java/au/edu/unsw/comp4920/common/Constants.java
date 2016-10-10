@@ -47,6 +47,7 @@ public final class Constants {
 	public static final String TOOLS						= "tools";
 	public static final String TRANSACTIONS					= "transactions";
 	public static final String GOALS						= "goals";
+	public static final String LASTACCESSED					= "lastaccessed";
 
 	// Session Parameters
 	public static final String USERID	 					= "userID";
@@ -66,6 +67,7 @@ public final class Constants {
 	
 	// Date format
 	public static final String DEFAULT_DATE_FORMAT			= "dd MMMM yyyy hh:mm:ss";
+	public static final String SIMPLE_DEFAULT_DATE_FORMAT	= "dd MMMM yyyy";
 	
 	// Servlet Global Attributes
 	public static final String WEB_NAME						= "WEB_NAME";

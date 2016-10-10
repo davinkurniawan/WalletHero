@@ -38,6 +38,8 @@
           have enough money in their wallets. They had to call up a friend to quickly save them.
           <br/><br/>
           Our aim is to be a hero to prevent such scenarios and save your wallet.
+          <br/><br/>
+          - <b>WalletHero Team</b>
         </div>
       </div>
 
@@ -74,6 +76,9 @@
           	<ul>
           		<li>
           			Yahoo! Finance
+          		</li>
+          		<li>
+          			Sqoot Deals
           		</li>
           		<li style="color:red">
           			List here...

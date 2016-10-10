@@ -58,7 +58,7 @@ public class ViewTransactionsCommand implements Command {
 		String fromDate = (request.getParameter("from_date") != null) ? request.getParameter("from_date") : "";
 		String toDate = (request.getParameter("to_date") != null) ? request.getParameter("to_date") : "";
 
-		int categoryID;
+		int categoryID = -1; // All Categories
 		boolean viewIncomes = true;
 		boolean viewExpenses = true;
 
@@ -90,7 +90,7 @@ public class ViewTransactionsCommand implements Command {
 
 		Date from = null;
 		Date to = null;
-		SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+		SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
 
 		if (!fromDate.equals("") && !toDate.equals("")) {
 			// If a date range is specified, look in that range.
