@@ -1,7 +1,8 @@
 package au.edu.unsw.comp4920.objects;
 
 public class Merchant {
-	private int merchantID;
+	
+	private String id;
 	private String name;
 	private String address;
 	private String locality;
@@ -9,8 +10,8 @@ public class Merchant {
 	private String postal_code;
 	private String country;
 	private String country_code;
-	private double latitude;
-	private double longitude;
+	private Double latitude;
+	private Double longitude;
 	private String phone_number;
 	private String url;
 	
@@ -18,29 +19,12 @@ public class Merchant {
 		super();
 	}
 	
-	public Merchant(int merchantID, String name, String address, String locality, String region, String postal_code,
-			String country, String country_code, double latitude, double longitude, String phone_number, String url) {
-		super();
-		this.merchantID = merchantID;
-		this.name = name;
-		this.address = address;
-		this.locality = locality;
-		this.region = region;
-		this.postal_code = postal_code;
-		this.country = country;
-		this.country_code = country_code;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.phone_number = phone_number;
-		this.url = url;
+	public String getId() {
+		return id;
 	}
 
-	public int getMerchantID() {
-		return merchantID;
-	}
-
-	public void setMerchantID(int merchantID) {
-		this.merchantID = merchantID;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -99,19 +83,19 @@ public class Merchant {
 		this.country_code = country_code;
 	}
 
-	public double getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(double latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public double getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(double longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
@@ -130,12 +114,5 @@ public class Merchant {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	@Override
-	public String toString() {
-		return "Merchant [merchantID=" + merchantID + ", name=" + name + ", address=" + address + ", locality="
-				+ locality + ", region=" + region + ", postal_code=" + postal_code + ", country=" + country
-				+ ", country_code=" + country_code + ", latitude=" + latitude + ", longitude=" + longitude
-				+ ", phone_number=" + phone_number + ", url=" + url + "]";
-	}
+	
 }
