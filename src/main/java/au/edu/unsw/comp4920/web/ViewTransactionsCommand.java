@@ -215,12 +215,12 @@ public class ViewTransactionsCommand implements Command {
 		LinkedHashMap<String, HashMap<String, BigDecimal>> parentHashmap = new LinkedHashMap<String, HashMap<String, BigDecimal>>();
 		SimpleDateFormat df_old = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
-		
-		
+				
 		// Setup hash correctly to include all dates in defined period, even if a transaction did not occur in the period.
 		Date iterator = new Date(from.getTime());
+		Date iteratorEnd = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 		
-		while (iterator.before(to) || iterator.equals(to)) {
+		while (iterator.before(iteratorEnd) || iterator.equals(iteratorEnd)) {
 			String dateString = df_new.format(iterator);		
 			
 			HashMap<String, BigDecimal> childHashmap = new HashMap<String, BigDecimal>();

@@ -4,32 +4,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	
-	<title>${applicationScope['WEB_NAME']} - Add a Transaction</title>
-	
-	<%@ include file="bootstrapHeader.jsp"%>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>${applicationScope['WEB_NAME']}- Add a Transaction</title>
+
+<%@ include file="bootstrapHeader.jsp"%>
 </head>
 <body>
 	<%@ include file="signedinnavbar.jsp"%>
 
 	<div class="container marketing">
 		<h2>Add a Transaction</h2>
-		
-		 <c:choose>
-		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
-		 		<div class="alert alert-success">
+
+		<c:choose>
+			<c:when
+				test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}">
+				<div class="alert alert-success">
 					<strong>Transaction Successfully Added!</strong>
 				</div>
-		 	</c:when>
-		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('no')}" >
-		 		<div class="alert alert-danger">
+			</c:when>
+			<c:when
+				test="${param['success'] != null && param['success'].equalsIgnoreCase('no')}">
+				<div class="alert alert-danger">
 					<strong>Transaction Failed to be Added!</strong>
 				</div>
-		 	</c:when>
+			</c:when>
 			<c:when test="${errorMessage != null && errorFlg == 1}">
 				<div class="alert alert-danger">
 					<strong>Error!</strong> ${errorMessage}.
@@ -39,50 +41,60 @@
 
 		<hr class="featurette-divider">
 
-		<h5 style="color:Red" name="error_message" id="error_message">
-
-      	</h5>
+		<h5 style="color: Red" name="error_message" id="error_message"></h5>
 
 		<div class="row featurette">
 			<div class="col-md-6">
-				<h3 class="featurette-heading">Please enter your transaction details:</h3>
+				<h3 class="featurette-heading">Please enter your transaction
+					details:</h3>
 
-				<form action="${applicationScope['ROUTER_ADDTRANSACTION']}" method="POST" onSubmit="return validator_add_transaction(this)">
-					
+				<form action="${applicationScope['ROUTER_ADDTRANSACTION']}"
+					method="POST" onSubmit="return validator_add_transaction(this)">
+
 					<div class="form-group" id="div-details" name="div-details">
 						<label>Details <label style="color: red">*</label></label> <input
-							type="text" class="form-control" id="details"
-							name="details" placeholder="Details..."
-							value="${param['details']}" />
+							type="text" class="form-control" id="details" name="details"
+							placeholder="Details..." value="${param['details']}" />
 					</div>
-					
+
 					<div class="form-group" id="div-amount" name="div-amount">
-						<label>Amount <label style="color: red">*</label></label> 
-							<div class="input-group">
-								<span class="input-group-addon">$</span>
-								<input type="number" class="form-control" id="amount"
-									name="amount" placeholder="Amount..."
-									value="${param['amount']}" 
-									step="0.01" min="0.00"/>
-							</div>
-					</div>
-					
-					<div class="form-group" id="div-transaction-type" name="div-transaction-type">
-						<label>Transaction Type <label style="color: red">*</label></label> 
-						<div class="radio">
-							<label><input type="radio" name="transactionType" value="income" id="income">Income</label>
-						</div>
-						<div class="radio">
-							<label><input type="radio" name="transactionType" value="expense" id="expense" checked>Expense</label>
+						<label>Amount <label style="color: red">*</label></label>
+						<div class="input-group">
+							<span class="input-group-addon">$</span> <input type="number"
+								class="form-control" id="amount" name="amount"
+								placeholder="Amount..." value="${param['amount']}" step="0.01"
+								min="0.00" />
 						</div>
 					</div>
-					
+
+					<div class="form-group" id="div-from-date" name="div-from-date">
+						<label>Date / Recurrence Starting Date<label style="color: red">*</label></label> <input
+							type="text" class="form-control datepicker" id="from_date"
+							name="from_date" placeholder="From Date..."
+							value="${param['from_date']}" />
+					</div>
+
+					<div class="form-group" id="div-transaction-type"
+						name="div-transaction-type">
+						<label>Transaction Type <label style="color: red">*</label></label>
+						<div class="radio">
+							<label><input type="radio" name="transactionType"
+								value="income" id="income">Income</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="transactionType"
+								value="expense" id="expense" checked>Expense</label>
+						</div>
+					</div>
+
 					<div class="form-group" id="div-category" name="div-category">
 						<label>Category <label style="color: red">*</label></label> <br />
-						<select id="categoryOption" name="categoryOption" class="form-control">
+						<select id="categoryOption" name="categoryOption"
+							class="form-control">
 							<option value="" selected>Please Select</option>
 							<c:forEach items="${category}" var="c">
-								<c:if test="${ c.getCategoryID() != 1 && c.getCategoryID() != 2 }">
+								<c:if
+									test="${ c.getCategoryID() != 1 && c.getCategoryID() != 2 }">
 									<c:choose>
 										<c:when test="${param['category'] == c.getCategoryID()}">
 											<option value="${c.getCategoryID()}" selected>${c.getCategory()}</option>
@@ -95,24 +107,29 @@
 							</c:forEach>
 						</select>
 					</div>
-					
-					<div class="form-group" id="div-payment-type" name="div-payment-type">
-						<label>Payment Type <label style="color: red">*</label></label> 
+
+					<div class="form-group" id="div-payment-type"
+						name="div-payment-type">
+						<label>Payment Type <label style="color: red">*</label></label>
 						<div class="radio">
-							<label><input type="radio" name="oneOff" value="true" id="oneOffPayment" checked>One-off</label>
+							<label><input type="radio" name="oneOff" value="true"
+								id="oneOffPayment" checked>One-off</label>
 						</div>
 						<div class="radio">
-							<label><input type="radio" name="oneOff" value="false" id="recurringPayment">Recurring</label>
+							<label><input type="radio" name="oneOff" value="false"
+								id="recurringPayment">Recurring</label>
 						</div>
 					</div>
-					
-					<div class="panel panel-primary" id="div-recurrence-option" name="div-recurrence-option" style="display:none">
-						<div class="panel-heading">Recurrence Option</div>		
-						
+
+					<div class="panel panel-primary" id="div-recurrence-option"
+						name="div-recurrence-option" style="display: none">
+						<div class="panel-heading">Recurrence Option</div>
+
 						<div class="panel-body">
 							<div class="form-group" id="div-frequencey" name="div-frequencey">
 								<label>Recurrence Frequency <label style="color: red">*</label></label>
-								<select id="recurrenceFreq" name="recurrenceFreq" class="form-control">						 
+								<select id="recurrenceFreq" name="recurrenceFreq"
+									class="form-control">
 									<option value="weekly">Weekly</option>
 									<option value="fortnightly">Fortnightly</option>
 									<option value="monthly">Monthly</option>
@@ -121,28 +138,33 @@
 									<option value="yearly">Yearly</option>
 								</select>
 							</div>
-							
+
 							<div class="form-group" id="div-period" name="div-period">
 								<label>Payment Period <label style="color: red">*</label></label>
 								<div class="radio">
-									<label><input type="radio" name="paymentPeriod" id="indefinite" value="indefinite" checked>Indefinite</label>
+									<label><input type="radio" name="paymentPeriod"
+										id="indefinite" value="indefinite" checked>Indefinite</label>
 								</div>
 								<div class="radio">
-									<label><input type="radio" name="paymentPeriod" id="paymentNumber" value="amount">Number of payments:</label>
+									<label><input type="radio" name="paymentPeriod"
+										id="paymentNumber" value="amount">Number of payments:</label>
 								</div>
-								<div class="form-group" id="div-payment-number" name="div-payment-number" style="display:none">
-									<input type="number" class="form-control" id="numberPayments" name="numberPayments" placeholder="Number of Payments..." value="${param['numberPayments']}" />
+								<div class="form-group" id="div-payment-number"
+									name="div-payment-number" style="display: none">
+									<input type="number" class="form-control" id="numberPayments"
+										name="numberPayments" placeholder="Number of Payments..."
+										value="${param['numberPayments']}" />
 								</div>
 							</div>
 						</div>
 					</div>
-					
-					<input type="hidden" name="action" value="addTransaction"/> 
-					<input type=submit value="Confirm" class="btn btn-primary" />
+
+					<input type="hidden" name="action" value="addTransaction" /> <input
+						type=submit value="Confirm" class="btn btn-primary" />
 				</form>
 			</div>
 		</div>
-		
+
 		<%@ include file="footer.jsp"%>
 	</div>
 
@@ -212,26 +234,26 @@
 		    });
 		});
 	</script>
-	
+
 	<script type="text/javascript">
 		function isNumeric(n) {
-		  return !isNaN(parseFloat(n)) && isFinite(n);
+			return !isNaN(parseFloat(n)) && isFinite(n);
 		}
-	
-		function validator_add_transaction(form){									
+
+		function validator_add_transaction(form) {
 			var details = form.details.value.trim();
 			var amount = form.amount.value.trim();
-			
+
 			var e = document.getElementById("categoryOption");
 			var categoryOption = e.options[e.selectedIndex].text;
-						
+
 			var oneOff = form.oneOff.value.trim();
 			var paymentPeriod = form.paymentPeriod.value.trim();
 			var numberPayments = form.numberPayments.value.trim();
-			
+
 			amount = amount.replace(" ", "");
-			
-			if(details.length == 0){
+
+			if (details.length == 0) {
 				document.getElementById("error_message").innerHTML = "Please enter the Transaction Detail!";
 				document.getElementById("div-details").className = "form-group has-error";
 				document.getElementById("div-amount").className = "form-group";
@@ -240,8 +262,7 @@
 
 				form.details.focus();
 				return false;
-			}
-			else if(amount.length == 0){
+			} else if (amount.length == 0) {
 				document.getElementById("error_message").innerHTML = "Please enter the Transaction Amount!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group has-error";
@@ -250,8 +271,7 @@
 
 				form.amount.focus();
 				return false;
-			}
-			else if(!isNumeric(amount)){
+			} else if (!isNumeric(amount)) {
 				document.getElementById("error_message").innerHTML = "Please enter a valid Amount!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group has-error";
@@ -260,8 +280,7 @@
 
 				form.amount.focus();
 				return false;
-			}
-			else if (categoryOption == 'Please Select'){
+			} else if (categoryOption == 'Please Select') {
 				document.getElementById("error_message").innerHTML = "Please choose the Category!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group";
@@ -271,10 +290,10 @@
 				form.categoryOption.focus();
 				return false;
 			}
-			
-			if (oneOff == 'false'){
-				if (paymentPeriod == 'amount'){
-					if(numberPayments.length == 0){
+
+			if (oneOff == 'false') {
+				if (paymentPeriod == 'amount') {
+					if (numberPayments.length == 0) {
 						document.getElementById("error_message").innerHTML = "Please enter the Number of Payment!";
 						document.getElementById("div-details").className = "form-group";
 						document.getElementById("div-amount").className = "form-group";
@@ -283,22 +302,76 @@
 
 						form.numberPayments.focus();
 						return false;
-					}
-					else if(numberPayments <= 0){
+					} else if (numberPayments <= 0) {
 						document.getElementById("error_message").innerHTML = "Please enter a Number of Payment Amount!";
 						document.getElementById("div-details").className = "form-group";
 						document.getElementById("div-amount").className = "form-group";
 						document.getElementById("div-category").className = "form-group";
 						document.getElementById("div-payment-number").className = "form-group has-error";
-						
+
 						form.numberPayments.focus();
 						return false;
 					}
 				}
 			}
-			
+
 			return true;
 		};
+	</script>
+
+	<script type="text/javascript">
+		// Code from viewtransactions.jsp.
+		function populateDefaultValues() {
+			var today = new Date();
+
+			$('#from_date').val(
+					$.datepicker.formatDate('dd MM yy', today))
+					.datepicker(
+							{
+								dateFormat : 'dd MM yy',
+								onSelect : function(selected) {
+									$("#to_date").datepicker("option",
+											"minDate", selected)
+								},
+								onClose : function() {
+									var newDate = $('#from_date').val();
+
+									if (newDate == '' || newDate == null)
+										populateDefaultValues();
+								}
+							});
+		}
+
+		function populateGivenValues() {
+			var toDate = $.datepicker
+					.parseDate('dd MM yy', $('#to_date').val());
+			var fromDate = $.datepicker.parseDate('dd MM yy', $('#from_date')
+					.val());
+
+			$('#from_date').val($.datepicker.formatDate('dd MM yy', fromDate))
+					.datepicker(
+							{
+								dateFormat : 'dd MM yy',
+								onSelect : function(selected) {
+									$("#to_date").datepicker("option",
+											"minDate", selected)
+								},
+								onClose : function() {
+									var newDate = $('#from_date').val();
+
+									if (newDate == '' || newDate == null)
+										populateDefaultValues();
+								}
+							});
+		}
+
+		$(document).ready(function() {
+			if ($('#from_date').val() == "") {
+				populateDefaultValues();
+			} else {
+				populateGivenValues();
+			}
+		});
 	</script>
 </body>
 </html>
