@@ -80,6 +80,15 @@
           		<li>
           			Sqoot Deals
           		</li>
+          		<li>
+          			Bootstrap
+          		</li>
+          		<li>
+          			PostgreSQL
+          		</li>
+          		<li>
+          			HighChart.js
+          		</li>
           		<li style="color:red">
           			List here...
           		</li>
