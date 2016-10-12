@@ -19,6 +19,23 @@ public class Merchant {
 		super();
 	}
 	
+	public Merchant(String id, String name, String address, String locality, String region, String postal_code,
+			String country, String country_code, Double latitude, Double longitude, String phone_number, String url) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.locality = locality;
+		this.region = region;
+		this.postal_code = postal_code;
+		this.country = country;
+		this.country_code = country_code;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.phone_number = phone_number;
+		this.url = url;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -114,5 +131,12 @@ public class Merchant {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Merchant [id=" + id + ", name=" + name + ", address=" + address + ", locality=" + locality + ", region="
+				+ region + ", postal_code=" + postal_code + ", country=" + country + ", country_code=" + country_code
+				+ ", latitude=" + latitude + ", longitude=" + longitude + ", phone_number=" + phone_number + ", url="
+				+ url + "]";
+	}
 }
