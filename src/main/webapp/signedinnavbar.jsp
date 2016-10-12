@@ -1,10 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>    
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<div class="navbar-wrapper">
-      <div class="container">
-        <nav class="navbar navbar-custom navbar-static-top">
-          <div class="container">
+
+       <nav class="navbar transparent navbar-custom navbar-fixed-top" style="" role="navigation">
+          <div class="container navbar-border">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -12,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="${applicationScope['ROUTER_PUBLIC']}">WalletHero</a>
+              <a class="navbar-brand" href="${applicationScope['ROUTER_HOME']}"><b>WalletHero</b></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
@@ -53,5 +49,3 @@
             </div>
           </div>
         </nav>
-      </div>
-    </div>

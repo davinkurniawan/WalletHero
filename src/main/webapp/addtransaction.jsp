@@ -65,7 +65,7 @@
 					</div>
 
 					<div class="form-group" id="div-from-date" name="div-from-date">
-						<label>Date / Recurrence Starting Date<label style="color: red">*</label></label> <input
+						<label>Transaction Date / Recurrence Starting Date<label style="color: red">*</label></label> <input
 							type="text" class="form-control datepicker" id="from_date"
 							name="from_date" placeholder="From Date..."
 							value="${param['from_date']}" />

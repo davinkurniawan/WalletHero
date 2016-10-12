@@ -13,6 +13,8 @@
 	<%@ include file="bootstrapHeader.jsp" %>
 </head>
 <body>
+	<%@ include file="signedinnavbar.jsp" %>
+	
 	<div class="container" align="center">
 	<c:choose>
 	<c:when test="${empty errormsg}">
@@ -24,7 +26,7 @@
 			<th align="center">Discount</th>
 			<th align="center">Price</th>
 		</tr>
-		<c:forEach var="i" items="${deals}">
+		<c:forEach var="i" items="${deals_list}">
 			<tr>
 				<td align="center">
 					<div class="container_deal">
