@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
+import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.objects.Deal;
 
 public class DealsCommand implements Command {
@@ -38,8 +39,17 @@ public class DealsCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
 			throws ServletException, IOException {
 		System.out.println("Inside: DealsCommand");
+		int req_page = 1;
+		try {
+			req_page = Integer.parseInt(request.getParameter("page"));
+		} catch (Exception e) {
+			
+		}
+		//int pages = 9;
+		int starting_page = 1;
+		int ending_page = 9;
 		HttpClient client = HttpClientBuilder.create().build();
-		HttpGet req = new HttpGet(API_URL + "/deals");
+		HttpGet req = new HttpGet(API_URL + "/deals" + "?page=" + req_page);
 		req.addHeader("Authorization", PUBLIC_API_KEY);
 		req.addHeader("Accept", "application/json");
 		HttpResponse resp = client.execute(req);
@@ -51,15 +61,43 @@ public class DealsCommand implements Command {
 			sb.append(line + "\n");
 		}
 		JSONObject json = new JSONObject(sb.toString());
-		JSONArray array = json.getJSONArray("deals");
-		ObjectMapper mapper = new ObjectMapper();
-		ArrayList<Deal> deals = new ArrayList<Deal>();
-		for (int i = 0; i < array.length(); ++i) {
-			String deal = array.getJSONObject(i).getJSONObject("deal").toString();
-			Deal d = mapper.readValue(deal, Deal.class);
-			deals.add(d);
+		
+		//String json_error = json.getString("error");
+		//System.out.println(json_query.toString());
+		if (!json.isNull("error")) {
+			request.setAttribute(Constants.ERROR, 1);
+			request.setAttribute(Constants.ERRORMSG, "Sorry, page does not exist!");
+		} else {
+			JSONObject json_query = json.getJSONObject("query");
+			int total = json_query.getInt("total");
+			System.out.println(total);
+			int max_page = (int) Math.ceil((double)total/10);
+			System.out.println(max_page);
+			if (max_page < 10) {
+				ending_page = max_page;
+			}
+			if (req_page > 5) {
+				starting_page = req_page - 4;
+				if (req_page + 4 < max_page) {
+					ending_page = req_page + 4;
+				} else {
+					ending_page = max_page;
+				}
+			}
+			JSONArray array = json.getJSONArray("deals");
+			ObjectMapper mapper = new ObjectMapper();
+			ArrayList<Deal> deals = new ArrayList<Deal>();
+			for (int i = 0; i < array.length(); ++i) {
+				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
+				Deal d = mapper.readValue(deal, Deal.class);
+				deals.add(d);
+			}
+			request.setAttribute("deals", deals);
+			request.setAttribute("max_page", max_page);
 		}
-		request.setAttribute("deals", deals);
+		request.setAttribute("starting_page", starting_page);
+		request.setAttribute("ending_page", ending_page);
+		
 		// Display resulting deals page
 		RequestDispatcher rd = request.getRequestDispatcher("/deals.jsp");
 		rd.forward(request, response);
