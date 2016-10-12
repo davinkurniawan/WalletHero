@@ -93,6 +93,11 @@ public final class Constants {
 	// Status
 	public static enum Status {INACTIVE, ACTIVE, DISABLED};
 	
+	// Deals
+	public static  final String API_URL = "http://api.sqoot.com/v2";
+	public static final String PUBLIC_API_KEY = "api_key 8bv8fw";
+	public static final String PRIVATE_API_KEY = "api_key DlRDddP_GW6htiuxZiRY";
+	
 	// Prevent instantiation
 	private Constants() {};
 }

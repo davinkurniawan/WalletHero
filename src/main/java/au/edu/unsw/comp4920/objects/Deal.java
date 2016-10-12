@@ -26,6 +26,41 @@ public class Deal {
 	private String updated_at;
 	private Merchant merchant;
 	
+	public Deal() {
+		super();
+	}
+	
+	public Deal(String id, String title, String short_title, String description, String fine_print, int number_sold,
+			String url, String untracked_url, Double price, Double discount_amount, Double discount_percentage,
+			Double value, Double commission, String provider_name, String provider_slug, String category_name,
+			String category_slug, String image_url, boolean online, String expires_at, String created_at,
+			String updated_at, Merchant merchant) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.short_title = short_title;
+		this.description = description;
+		this.fine_print = fine_print;
+		this.number_sold = number_sold;
+		this.url = url;
+		this.untracked_url = untracked_url;
+		this.price = price;
+		this.discount_amount = discount_amount;
+		this.discount_percentage = discount_percentage;
+		this.value = value;
+		this.commission = commission;
+		this.provider_name = provider_name;
+		this.provider_slug = provider_slug;
+		this.category_name = category_name;
+		this.category_slug = category_slug;
+		this.image_url = image_url;
+		this.online = online;
+		this.expires_at = expires_at;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.merchant = merchant;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -185,6 +220,14 @@ public class Deal {
 	public void setExpires_at(String expires_at) {
 		this.expires_at = expires_at;
 	}
+	
+	public String getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
+	}
 
 	public String getUpdated_at() {
 		return updated_at;
@@ -202,15 +245,15 @@ public class Deal {
 		this.merchant = merchant;
 	}
 
-	public Deal() {
-		super();
-	}
-
-	public String getCreated_at() {
-		return created_at;
-	}
-
-	public void setCreated_at(String created_at) {
-		this.created_at = created_at;
-	}
+	@Override
+	public String toString() {
+		return "Deal [id=" + id + ", title=" + title + ", short_title=" + short_title + ", description=" + description
+				+ ", fine_print=" + fine_print + ", number_sold=" + number_sold + ", url=" + url + ", untracked_url="
+				+ untracked_url + ", price=" + price + ", discount_amount=" + discount_amount + ", discount_percentage="
+				+ discount_percentage + ", value=" + value + ", commission=" + commission + ", provider_name="
+				+ provider_name + ", provider_slug=" + provider_slug + ", category_name=" + category_name
+				+ ", category_slug=" + category_slug + ", image_url=" + image_url + ", online=" + online
+				+ ", expires_at=" + expires_at + ", created_at=" + created_at + ", updated_at=" + updated_at
+				+ ", merchant=" + merchant + "]";
+	}	
 }

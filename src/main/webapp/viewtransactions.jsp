@@ -130,10 +130,10 @@
 													<input type="hidden" name="action" value="editTransaction"/>
 													<c:choose>
 														<c:when test="${t.isIncome() }">
-															<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalIncome">Edit</button>
+															<button style="min-width:100px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalIncome">Edit</button>
 														</c:when>
 														<c:otherwise>
-															<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalExpense">Edit</button>
+															<button style="min-width:100px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalExpense">Edit</button>
 														</c:otherwise>
 													</c:choose>
 												</form>
@@ -142,7 +142,7 @@
 												<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return confirm('Are you sure you want to delete Transaction #' + ${requestScope.transactionList.size() - myIndex.index} + '?');">
 													<input type="hidden" name="transactionID" value="${t.transactionID }"/>
 													<input type="hidden" name="action" value="deleteTransaction"/> 
-													<input type=submit value="Delete" class="btn btn-danger" />
+													<input style="min-width:100px" type=submit value="Delete" class="btn btn-danger" />
 												</form>
 											</div>
 										</td>

@@ -30,36 +30,36 @@ import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.objects.Deal;
 
 public class DealsCommand implements Command {
-
-	private static final String API_URL = "http://api.sqoot.com/v2";
-	private static final String PUBLIC_API_KEY = "api_key 8bv8fw";
-	private static final String PRIVATE_API_KEY = "api_key DlRDddP_GW6htiuxZiRY";
 	
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
-			throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: DealsCommand");
 		int req_page = 1;
+		
 		try {
 			req_page = Integer.parseInt(request.getParameter("page"));
-		} catch (Exception e) {
-			
+		} 
+		catch (Exception e) {
+			req_page = 1;
 		}
+		
 		//int pages = 9;
 		int starting_page = 1;
 		int ending_page = 9;
 		HttpClient client = HttpClientBuilder.create().build();
-		HttpGet req = new HttpGet(API_URL + "/deals" + "?page=" + req_page);
-		req.addHeader("Authorization", PUBLIC_API_KEY);
+		HttpGet req = new HttpGet(Constants.API_URL + "/deals" + "?page=" + req_page);
+		req.addHeader("Authorization", Constants.PUBLIC_API_KEY);
 		req.addHeader("Accept", "application/json");
 		HttpResponse resp = client.execute(req);
 		HttpEntity entity = resp.getEntity();
 		BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 		StringBuilder sb = new StringBuilder();
-		String line;
+		String line = "";
+		
 		while ((line = br.readLine())!= null) {
 			sb.append(line + "\n");
 		}
+		
 		JSONObject json = new JSONObject(sb.toString());
 		
 		//String json_error = json.getString("error");
@@ -67,34 +67,45 @@ public class DealsCommand implements Command {
 		if (!json.isNull("error")) {
 			request.setAttribute(Constants.ERROR, 1);
 			request.setAttribute(Constants.ERRORMSG, "Sorry, page does not exist!");
-		} else {
+		} 
+		else {
 			JSONObject json_query = json.getJSONObject("query");
+			
 			int total = json_query.getInt("total");
 			System.out.println(total);
+			
 			int max_page = (int) Math.ceil((double)total/10);
 			System.out.println(max_page);
+			
 			if (max_page < 10) {
 				ending_page = max_page;
 			}
+			
 			if (req_page > 5) {
 				starting_page = req_page - 4;
+				
 				if (req_page + 4 < max_page) {
 					ending_page = req_page + 4;
-				} else {
+				} 
+				else {
 					ending_page = max_page;
 				}
 			}
+			
 			JSONArray array = json.getJSONArray("deals");
 			ObjectMapper mapper = new ObjectMapper();
 			ArrayList<Deal> deals = new ArrayList<Deal>();
+			
 			for (int i = 0; i < array.length(); ++i) {
 				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
 				Deal d = mapper.readValue(deal, Deal.class);
 				deals.add(d);
 			}
-			request.setAttribute("deals", deals);
+			
+			request.setAttribute("deals_list", deals);
 			request.setAttribute("max_page", max_page);
 		}
+		
 		request.setAttribute("starting_page", starting_page);
 		request.setAttribute("ending_page", ending_page);
 		
@@ -102,5 +113,4 @@ public class DealsCommand implements Command {
 		RequestDispatcher rd = request.getRequestDispatcher("/deals.jsp");
 		rd.forward(request, response);
 	}
-	
 }

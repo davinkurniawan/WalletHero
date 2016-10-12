@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="css/sticky-footer.css">
 <!-- <link rel="stylesheet" href="css/datepicker.css">  -->
 <link rel="stylesheet" href="css/loader.css">
+<link rel="stylesheet" href="css/deals.css">
 
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
 
