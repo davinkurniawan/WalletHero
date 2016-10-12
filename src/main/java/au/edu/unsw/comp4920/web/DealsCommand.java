@@ -70,12 +70,8 @@ public class DealsCommand implements Command {
 		} 
 		else {
 			JSONObject json_query = json.getJSONObject("query");
-			
 			int total = json_query.getInt("total");
-			System.out.println(total);
-			
 			int max_page = (int) Math.ceil((double)total/10);
-			System.out.println(max_page);
 			
 			if (max_page < 10) {
 				ending_page = max_page;

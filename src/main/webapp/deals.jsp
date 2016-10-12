@@ -30,13 +30,14 @@
 			<tr>
 				<td align="center">
 					<div class="container_deal">
-						<img src="${i.image_url}" onerror="this.src='images/not_available.png'"/>
+						<a href="${i.url}"><img src="${i.image_url}" onerror="this.src='images/not_available.png'"/></a>
 					</div>
 				</td>
-				<td>${i.title}</td>
+				<td align="center"><a href="${i.url}">${i.title}</a></td>
 				<td align="center">${i.value}</td>
 				<td align="center">${i.discount_amount}</td>
 				<td align="center">${i.price}</td>
+				<td>${i.image_url}</td>
 			</tr>
 		</c:forEach>
 	</table>
