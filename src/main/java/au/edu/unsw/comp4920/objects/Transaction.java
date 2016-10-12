@@ -1,6 +1,8 @@
 package au.edu.unsw.comp4920.objects;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Basic transaction implementation, no support for recurring incomes and
@@ -11,7 +13,7 @@ import java.math.BigDecimal;
  */
 public class Transaction {
 	private int transactionID;
-	private int personID;
+	private int userID;
 	private boolean recurrence = false;
 	private String date;
 	private String detail;
@@ -24,11 +26,11 @@ public class Transaction {
 		super();
 	}
 
-	public Transaction(int transactionID, int personID, boolean recurrence, String date, String detail, BigDecimal amount,
+	public Transaction(int transactionID, int userID, boolean recurrence, String date, String detail, BigDecimal amount,
 			int categoryID, String categoryName, boolean isIncome) {
 		super();
 		this.transactionID = transactionID;
-		this.personID = personID;
+		this.userID = userID;
 		this.recurrence = recurrence;
 		this.date = date;
 		this.detail = detail;
@@ -46,12 +48,12 @@ public class Transaction {
 		this.transactionID = transactionID;
 	}
 
-	public int getPersonID() {
-		return personID;
+	public int getUserID() {
+		return userID;
 	}
 
-	public void setPersonID(int personID) {
-		this.personID = personID;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	public String getDate() {
@@ -105,8 +107,23 @@ public class Transaction {
 	}
 
 	public int compareTo(Transaction t) {
-		//return this.getDate().compareTo(t.getDate());
-		return (this.getTransactionID() < t.getTransactionID()) ? -1 : 1; // Order by Insertion rather than date.
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if (sdf.parse(this.getDate()).before(sdf.parse(t.getDate()))){
+				return -1;
+			}
+			else if (sdf.parse(this.getDate()).equals(sdf.parse(t.getDate()))){
+				return (this.getTransactionID() < t.getTransactionID()) ? -1 : 1; // Order by Insertion rather than date.
+			}
+			else{
+				return 1;
+			}
+		} 
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return 1;
 	}
 
 	public int getCategoryID() {
@@ -127,7 +144,7 @@ public class Transaction {
 	
 	@Override
 	public String toString() {
-		return "Transaction [transactionID=" + transactionID + ", personID=" + personID + ", recurrence=" + recurrence
+		return "Transaction [transactionID=" + transactionID + ", userID=" + userID + ", recurrence=" + recurrence
 				+ ", date=" + date + ", detail=" + detail + ", amount=" + amount + ", categoryID=" + categoryID
 				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + "]";
 	}

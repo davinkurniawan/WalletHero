@@ -28,13 +28,59 @@ public class ViewTransactionsCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: ViewTransactionsCommand");
 
+		String action = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
+		System.out.println("ViewTransactionsCommand: Action is " + action);
+		
+		if (request.getParameter("transactionID") != null) {
+			int transactionID = Integer.parseInt(request.getParameter("transactionID"));
+			Transaction t = dao.getTransaction(transactionID);
+			
+			if (t != null) {
+				if (action != null && action.equalsIgnoreCase("deleteTransaction")) {
+					boolean result = dao.deleteUserTransaction(transactionID);
+					
+					if (result){
+						System.out.println("ViewTransactionsCommand: Successfully deleted transaction ID: " + transactionID);
+					}
+					
+					if (t.isRecurrence()) {
+						result = dao.deleteRecurrence(transactionID);
+						
+						if (result){
+							System.out.println("ViewTransactionsCommand: Successfully deleted recurrence with transaction ID: " + transactionID);
+						}
+					}
+				}
+				else if (action != null && action.equalsIgnoreCase("editTransaction")) {
+					Transaction t_new = t;
+					//Recurrence
+					//TODO
+					
+					boolean result = dao.updateUserTransaction(t_new);
+					
+					if (result){
+						System.out.println("ViewTransactionsCommand: Successfully updated transaction ID: " + transactionID);
+					}
+					
+					if (t.isRecurrence()) {
+						//result = dao.deleteRecurrence(transactionID);
+						//TODO
+						
+						if (result){
+							System.out.println("ViewTransactionsCommand: Successfully updated recurrence with transaction ID: " + transactionID);
+						}
+					}
+				}
+			}
+		}
+		
 		HttpSession session = request.getSession();
-		int personID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
+		int userID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
 
 		String fromDate = (request.getParameter("from_date") != null) ? request.getParameter("from_date") : "";
 		String toDate = (request.getParameter("to_date") != null) ? request.getParameter("to_date") : "";
 
-		int categoryID;
+		int categoryID = -1; // All Categories
 		boolean viewIncomes = true;
 		boolean viewExpenses = true;
 
@@ -66,7 +112,7 @@ public class ViewTransactionsCommand implements Command {
 
 		Date from = null;
 		Date to = null;
-		SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+		SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
 
 		if (!fromDate.equals("") && !toDate.equals("")) {
 			// If a date range is specified, look in that range.
@@ -95,7 +141,7 @@ public class ViewTransactionsCommand implements Command {
 			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 		}
 
-		transactions = dao.getTransactionsByDate(personID, from, to, viewIncomes, viewExpenses, categoryID);
+		transactions = dao.getTransactionsByDate(userID, from, to, viewIncomes, viewExpenses, categoryID);
 
 		request.setAttribute("transactionList", transactions);
 		request.setAttribute("transactionRange", transactionRange);
@@ -114,7 +160,7 @@ public class ViewTransactionsCommand implements Command {
 		int BOTH = 3;
 
 		if (viewIncomes == true && viewExpenses == true) {
-			HashMap<String, HashMap<String, BigDecimal>> hashmap = getBalance(transactions);
+			HashMap<String, HashMap<String, BigDecimal>> hashmap = getBalance(transactions, from, to);
 			
 			graphType = BOTH;
 			request.setAttribute("graphData", hashmap);
@@ -165,13 +211,31 @@ public class ViewTransactionsCommand implements Command {
 
 	// Parent hash is the date.
 	// Child hash is the profit/loss associated with said date.
-	private LinkedHashMap<String, HashMap<String, BigDecimal>> getBalance(List<Transaction> transactions) {
+	private LinkedHashMap<String, HashMap<String, BigDecimal>> getBalance(List<Transaction> transactions, Date from, Date to) {
 		LinkedHashMap<String, HashMap<String, BigDecimal>> parentHashmap = new LinkedHashMap<String, HashMap<String, BigDecimal>>();
+		SimpleDateFormat df_old = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
+				
+		// Setup hash correctly to include all dates in defined period, even if a transaction did not occur in the period.
+		Date iterator = new Date(from.getTime());
+		Date iteratorEnd = new Date(to.getTime() + 24 * 60 * 60 * 1000);
+		
+		while (iterator.before(iteratorEnd) || iterator.equals(iteratorEnd)) {
+			String dateString = df_new.format(iterator);		
+			
+			HashMap<String, BigDecimal> childHashmap = new HashMap<String, BigDecimal>();
+			parentHashmap.put(dateString, childHashmap);
+			
+			childHashmap.put("income", new BigDecimal(0));
+			childHashmap.put("expense", new BigDecimal(0));
+			childHashmap.put("profit", new BigDecimal(0));
+			
+			iterator = new Date(iterator.getTime() + 24 * 60 * 60 * 1000);
+		}
 
 		for (Transaction t : transactions) { 
 			String dateString = t.getDate();
-			SimpleDateFormat df_old = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
+			
 			try {
 				Date old_format = df_old.parse(dateString);
 				dateString = df_new.format(old_format);
@@ -180,18 +244,8 @@ public class ViewTransactionsCommand implements Command {
 				e.printStackTrace();
 			}
 
-			HashMap<String, BigDecimal> childHashmap = null;
-			if (!parentHashmap.containsKey(dateString)) {
-				childHashmap = new HashMap<String, BigDecimal>();
-				childHashmap.put("income", new BigDecimal(0));
-				childHashmap.put("expense", new BigDecimal(0));
-				childHashmap.put("profit", new BigDecimal(0));
-
-				parentHashmap.put(dateString, childHashmap);
-			} else {
-				childHashmap = parentHashmap.get(dateString);
-			}
-
+			HashMap<String, BigDecimal> childHashmap = parentHashmap.get(dateString);	
+			
 			if (!t.isIncome()) {
 				BigDecimal prevExpense = childHashmap.get("expense");
 				childHashmap.put("expense", prevExpense.subtract(t.getAmount()));

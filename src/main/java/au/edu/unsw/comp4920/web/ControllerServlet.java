@@ -50,6 +50,8 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.FORGOTPASSWORD_COMMAND,  	new ForgotPasswordCommand());
 		_commands.put(Constants.RESETPASSWORD_COMMAND, 		new ResetPasswordCommand());
 		_commands.put(Constants.CURRENCYCONVERTER_COMMAND, 	new CurrencyConverterCommand());
+		_commands.put(Constants.ADDGOAL_COMMAND, 			new AddGoalCommand());
+		_commands.put(Constants.VIEWGOALS_COMMAND, 			new ViewGoalsCommand());
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
@@ -71,6 +73,8 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_FORGOTPASSWORD,		Constants.ROUTER + Constants.FORGOTPASSWORD_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_RESETPASSWORD,         Constants.ROUTER + Constants.RESETPASSWORD_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_CURRENCYCONVERTER,     Constants.ROUTER + Constants.CURRENCYCONVERTER_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_ADDGOAL,     			Constants.ROUTER + Constants.ADDGOAL_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_VIEWGOALS,    			Constants.ROUTER + Constants.VIEWGOALS_COMMAND);
 	}
 
 	/*
@@ -132,6 +136,16 @@ public class ControllerServlet extends HttpServlet {
 					dest = Constants.NOTFOUND_COMMAND;
 				}
 			}
+		}
+		
+		if (dest.equals(Constants.CURRENCYCONVERTER_COMMAND)){
+			request.setAttribute(Constants.TOOLS, "active");
+		}
+		else if (dest.equals(Constants.VIEWTRANSACTIONS_COMMAND) || dest.equals(Constants.ADDTRANSACTION_COMMAND)){
+			request.setAttribute(Constants.TRANSACTIONS, "active");
+		}
+		else if (dest.equals(Constants.VIEWGOALS_COMMAND) || dest.equals(Constants.ADDGOAL_COMMAND)){
+			request.setAttribute(Constants.GOALS, "active");
 		}
 		
 		Command cmd = (Command) _commands.get(dest) == null ? (Command) _commands.get(Constants.NOTFOUND_COMMAND) : (Command) _commands.get(dest);

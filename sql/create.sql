@@ -104,10 +104,11 @@ CREATE TABLE recurrence (
 CREATE TABLE goal (
 	id serial,
 	user_id int NOT NULL,
-	recur_id int NOT NULL,
-	end_date varchar NOT NULL,
+	detail varchar NOT NULL,
 	goal_amount NUMERIC NOT NULL,
-	active BOOLEAN NOT NULL,
+	goal_type int NOT NULL,
+	category int NOT NULL,
+	frequency varchar NOT NULL,
 	CONSTRAINT goal_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
@@ -138,7 +139,6 @@ ALTER TABLE user_detail ADD CONSTRAINT user_detail_fk1 FOREIGN KEY (occupation_i
 ALTER TABLE user_detail ADD CONSTRAINT user_detail_fk2 FOREIGN KEY (currency_id) REFERENCES currency(id);
 
 ALTER TABLE goal ADD CONSTRAINT goal_fk0 FOREIGN KEY (user_id) REFERENCES users(id);
-ALTER TABLE goal ADD CONSTRAINT goal_fk1 FOREIGN KEY (recur_id) REFERENCES recurrence(id);
 
 INSERT INTO status (id, name) VALUES (1, 'Inactive');
 INSERT INTO status (id, name) VALUES (2, 'Active');

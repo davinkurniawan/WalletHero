@@ -2,6 +2,7 @@ package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,77 +19,113 @@ import au.edu.unsw.comp4920.objects.Transaction;
 public class AddTransactionCommand implements Command {
 
 	public AddTransactionCommand() {
-		
+
 	}
 
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
-		System.out.println("Inside: AddTransactionCommand"); 
+		System.out.println("Inside: AddTransactionCommand");
 
-		// User has just navigated to the page and has not yet attempted to
-		// enter in a transaction.
-		if (request.getParameterMap().size() == 1) {
-			// NOP
-		} 
-		else if (request.getParameter("amount") != null && request.getParameter("details") != null && request.getParameter("categoryOption") != null) {		
-			String details = request.getParameter("details");
-			String transactionType = request.getParameter("transactionType");
-			BigDecimal value = new BigDecimal(request.getParameter("amount"));
-			int personID = (int) request.getSession().getAttribute(Constants.USERID);
-			
-			String type = request.getParameter("oneOff");
-			int category = Integer.parseInt(request.getParameter("categoryOption"));
+		String action = request.getParameter(Constants.ACTION) == null ? null
+				: request.getParameter(Constants.ACTION).toString();
+		System.out.println("AddTransactionCommand: Action is " + action);
 
-			Boolean isIncome = null;
-			if (transactionType.equals("income")) {
-				isIncome = true;
-			} 
-			else if (transactionType.equals("expense")) {
-				isIncome = false;
-			}
+		if (action != null && action.equalsIgnoreCase("addTransaction")) {
 
-			SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy"); 
+			// User has just navigated to the page and has not yet attempted to
+			// enter in a transaction.
+			if (request.getParameterMap().size() == 1) {
+				// NOP
+			} else if (request.getParameter("amount") != null && request.getParameter("details") != null
+					&& request.getParameter("categoryOption") != null) {
+				String details = request.getParameter("details");
+				String transactionType = request.getParameter("transactionType");
+				BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
+				int userID = (int) request.getSession().getAttribute(Constants.USERID);
+				boolean result = false;
 
-			Transaction t = new Transaction();
-			t.setPersonID(personID);
-			t.setDetail(details);
-			t.setAmount(value);
-			t.setIsIncome(isIncome);
-			t.setDate(df.format(new Date()));
-			t.setCategoryID(category);
+				String type = request.getParameter("oneOff");
+				int category = Integer.parseInt(request.getParameter("categoryOption"));
 
-			// One off expense.
-			if (type.equals("true")) {
-				dao.addTransaction(t);
-			} 
-			else { // Recurring expense.
-				t.setRecurrence(true);
-				int transactionID = dao.addTransaction(t);
+				String startingDate = (request.getParameter("from_date") != null) ? request.getParameter("from_date")
+						: "";
+				SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
+				Date date = null;
 
-				String recurrenceFreq = request.getParameter("recurrenceFreq");
-				String paymentPeriod = request.getParameter("paymentPeriod");
-				int recurrenceNumber;
-
-				if (paymentPeriod.equals("indefinite")) {
-					recurrenceNumber = -1;
+				if (startingDate.equals("")) {
+					date = new Date();
 				} else {
-					recurrenceNumber = new Integer(request.getParameter("numberPayments"));
+					try {
+						date = df.parse(startingDate);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 				}
 
-				Recurrence r = new Recurrence();
-				r.setTransactionID(transactionID);
-				r.setRecurrenceFreq(recurrenceFreq);
-				r.setRecurrenceNumber(recurrenceNumber);
+				Boolean isIncome = null;
+				if (transactionType.equals("income")) {
+					isIncome = true;
+				} else if (transactionType.equals("expense")) {
+					isIncome = false;
+				}
 
-				dao.addRecurring(r);
+				Transaction t = new Transaction();
+				t.setUserID(userID);
+				t.setDetail(details);
+				t.setAmount(value);
+				t.setIsIncome(isIncome);
+
+				try {
+					t.setDate(df.format(date));
+				} catch (NullPointerException e) {
+					response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=no");
+					return;
+				}
+
+				t.setCategoryID(category);
+
+				// One off expense.
+				if (type.equals("true")) {
+					int tID = dao.addTransaction(t);
+
+					if (tID == -1) {
+						result = false;
+					} else {
+						result = true;
+					}
+				} else { // Recurring expense.
+					t.setRecurrence(true);
+					int transactionID = dao.addTransaction(t);
+
+					String recurrenceFreq = request.getParameter("recurrenceFreq");
+					String paymentPeriod = request.getParameter("paymentPeriod");
+					int recurrenceNumber;
+
+					if (paymentPeriod.equals("indefinite")) {
+						recurrenceNumber = -1;
+					} else {
+						recurrenceNumber = new Integer(request.getParameter("numberPayments"));
+					}
+
+					Recurrence r = new Recurrence();
+					r.setTransactionID(transactionID);
+					r.setRecurrenceFreq(recurrenceFreq);
+					r.setRecurrenceNumber(recurrenceNumber);
+
+					result = dao.addRecurring(r);
+				}
+
+				if (result) {
+					response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=yes");
+				} else {
+					response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=no");
+				}
+
+				return;
+			} else {
+				System.out.println("AddTransactionCommand: Failed as something was null.");
+				request.setAttribute(Constants.ERROR, 1);
+				request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 			}
-			
-			response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=yes");
-			return;
-		}
-		else {
-			System.out.println("AddTransactionCommand: Failed as something was null.");			
-			request.setAttribute(Constants.ERROR, 1);
-			request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher("/addtransaction.jsp");

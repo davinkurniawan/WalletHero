@@ -10,9 +10,9 @@ public interface CommonDAO {
 	public boolean createDefaultUserDetails(int userID);
 	
 	public boolean disableUser(int userID);
-	public boolean deleteUser(int userID);
+	public boolean deleteUser(int userID); // Roll back on Sign Up Failure
 	public boolean deleteAllUserData(int userID);
-	public boolean deleteUserCompletely(int userID);
+	public boolean deleteUserCompletely(int userID); // Delete completely
 
 	public User getUserDetails(String username);
 	public User getUser(String userinfo, String password);
@@ -24,26 +24,35 @@ public interface CommonDAO {
 
 	public Preference getUserPreference(int uid);
 	public Preference getUserPreference(String sid);
-	
 	public boolean updatePreference(Preference p);
 	
 	public int addTransaction(Transaction t);
-	public boolean addRecurring(Recurrence r);	
-	public List<Transaction> getTransactionsByDate(int personID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
+	public boolean addRecurring(Recurrence r);
+	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
+	public List<Transaction> getAllTransactions(int userID);
+	public Transaction getTransaction(int transactionID);
+	public boolean updateUserTransaction(Transaction t);
+	public boolean deleteUserTransaction(int transactionID);
+	public boolean deleteRecurrence(int transactionID);
 	
-	public void createSession(Session session);
-	public Session getSession(String sessionId);
-	public Session getUserSession(String userId, String sessionId);
-	public void deleteSession(String sessionId);
+	public boolean createSession(Session session);
+	public Session getSession(String sessionID);
+	public Session getUserSession(String userID, String sessionID);
+	public boolean deleteSession(String sessionID);
+	public boolean deleteAllSession(int userID);
 	
 	public String getToken(User u);
-	public void setToken(User u, String token);
-	public void setStatus(User u, int Status);
+	public boolean setToken(User u, String token);
+	public boolean setStatus(User u, int Status);
 	
-	public void setPassword(User u, String hashedPassword);
+	public boolean setPassword(User u, String hashedPassword);
 	public String getSalt(String userinfo);
 	
 	public List<Category> getAllCategories();
 	public List<Currency> getAllCurrencies();
 	public List<Occupation> getAllOccupations();
+	
+	public boolean addGoal(Goal g);
+	public List<Goal> getAllGoals(int userID);
+	public boolean deleteUserGoal(int goalID);
 }

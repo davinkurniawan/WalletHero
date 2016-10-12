@@ -83,7 +83,7 @@
 							</c:forEach>
 						</select>
 					</div>
-
+					
 					<input type=submit value="Confirm" class="btn btn-primary" />
 				</form>
 			</div>
@@ -111,6 +111,7 @@
 									<th>Date</th>
 									<th>Category</th>
 									<th>Type</th>
+									<th>Actions</th>
 								</tr>
 								<c:forEach items="${requestScope.transactionList}" var="t" varStatus="myIndex">
 									<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
@@ -123,6 +124,28 @@
 										<td><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
 										<td><c:out value="${t.getCategoryName()}"></c:out></td>
 										<td><c:out value="${t.getTransactionType()}"></c:out></td>
+										<td>
+											<div class="form-group">
+												<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return false">
+													<input type="hidden" name="action" value="editTransaction"/>
+													<c:choose>
+														<c:when test="${t.isIncome() }">
+															<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalIncome">Edit</button>
+														</c:when>
+														<c:otherwise>
+															<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalExpense">Edit</button>
+														</c:otherwise>
+													</c:choose>
+												</form>
+											</div>
+											<div class="form-group">
+												<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return confirm('Are you sure you want to delete Transaction #' + ${requestScope.transactionList.size() - myIndex.index} + '?');">
+													<input type="hidden" name="transactionID" value="${t.transactionID }"/>
+													<input type="hidden" name="action" value="deleteTransaction"/> 
+													<input type=submit value="Delete" class="btn btn-danger" />
+												</form>
+											</div>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -140,6 +163,81 @@
 				</div>
 			</c:otherwise>
 		</c:choose>
+		
+		<!-- Modal -->
+	    <div class="modal fade" id="myModalExpense" role="dialog">
+	      <div class="modal-dialog">
+	    
+	        <!-- Modal content-->
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal">&times;</button>
+	            <h4 class="modal-title">Edit Transaction #...</h4>
+	          </div>
+	          <div class="modal-body">
+
+	            <div class="form-group" id="div-details" name="div-details">
+					<label>Details <label style="color: red">*</label></label> <input
+						type="text" class="form-control" id="details"
+						name="details" placeholder="Details..."
+						value="${param['details']}" />
+				</div>
+				
+				<div class="form-group" id="div-amount" name="div-amount">
+					<label>Amount <label style="color: red">*</label></label> 
+					<div class="input-group">
+						<span class="input-group-addon">$</span>
+						<input type="number" class="form-control" id="amount"
+							name="amount" placeholder="Amount..."
+							value="${param['amount']}" 
+							step="0.01" min="0.00"/>
+					</div>
+				</div>
+				
+				<div class="form-group" id="div-category" name="div-category">
+						<label>Category <label style="color: red">*</label></label> <br />
+						<select id="categoryOption" name="categoryOption" class="form-control">
+							<option value="" selected>Please Select</option>
+							<c:forEach items="${category}" var="c">
+								<c:if test="${ c.getCategoryID() != 1 && c.getCategoryID() != 2 }">
+									<!--<c:choose>
+										<c:when test="${param['category'] == c.getCategoryID()}">
+											<option value="${c.getCategoryID()}" selected>${c.getCategory()}</option>
+										</c:when>
+										<c:otherwise>-->
+											<option value="${c.getCategoryID()}">${c.getCategory()}</option>
+										<!--</c:otherwise>
+									</c:choose>-->
+								</c:if>
+							</c:forEach>
+						</select>
+					</div>
+				
+	          </div>
+	          <div class="modal-footer">
+	            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	    
+	    <div class="modal fade" id="myModalIncome" role="dialog">
+	      <div class="modal-dialog">
+	    
+	        <!-- Modal content-->
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal">&times;</button>
+	            <h4 class="modal-title">Edit Transaction #...</h4>
+	          </div>
+	          <div class="modal-body">
+	          	
+	          	
+	          
+	          </div>
+	        </div>
+	      </div>
+	    </div>
 		
 		<%@ include file="footer.jsp"%>
 	</div>

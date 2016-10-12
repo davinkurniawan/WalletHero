@@ -273,6 +273,9 @@
 			        form.submit();
 			    }, 1000);
 			}
+			else {
+				event.preventDefault();
+			}
 		}); 
 	</script>
 </body>
