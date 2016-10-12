@@ -48,6 +48,10 @@ public class ViewGoalsCommand implements Command {
 				from = getMonthStart();
 				to = getMonthEnd();
 			}
+			else {
+				from = getWeekStart();
+				to = getWeekEnd();
+			}
 
 			if (g.isExpenseRestrictionGoal()) {
 				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, false, true,

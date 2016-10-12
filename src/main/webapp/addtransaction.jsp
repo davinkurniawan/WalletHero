@@ -17,7 +17,7 @@
 	<%@ include file="signedinnavbar.jsp"%>
 
 	<div class="container marketing">
-		<h2>Add a Transaction</h2>
+		<h2>Add a new Transaction</h2>
 
 		<c:choose>
 			<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}">

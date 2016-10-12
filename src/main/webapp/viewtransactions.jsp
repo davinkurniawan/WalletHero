@@ -18,8 +18,7 @@
 </head>
 <body>
 	<%@ include file="signedinnavbar.jsp"%>
-
-
+	
 	<div class="container marketing">
 		<h2>${requestScope.transactionRange}</h2>
 

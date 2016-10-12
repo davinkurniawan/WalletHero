@@ -17,7 +17,7 @@
 	<%@ include file="signedinnavbar.jsp"%>
 
 	<div class="container marketing">
-		<h2>Add a New Goal</h2>
+		<h2>Add a new Goal</h2>
 		
 		 <c:choose>
 		 	<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
@@ -39,9 +39,7 @@
 
 		<hr class="featurette-divider">
 
-		<h5 style="color:Red" name="error_message" id="error_message">
-
-      	</h5>
+		<h5 style="color: Red" name="error_message" id="error_message"></h5>
 
 		<div class="row featurette">
 			<div class="col-md-6">
