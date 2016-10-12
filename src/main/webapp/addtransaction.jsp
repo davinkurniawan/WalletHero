@@ -4,14 +4,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<title>${applicationScope['WEB_NAME']}- Add a Transaction</title>
-
-<%@ include file="bootstrapHeader.jsp"%>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<title>${applicationScope['WEB_NAME']} - Add a Transaction</title>
+	
+	<%@ include file="bootstrapHeader.jsp"%>
 </head>
 <body>
 	<%@ include file="signedinnavbar.jsp"%>
@@ -20,14 +20,12 @@
 		<h2>Add a Transaction</h2>
 
 		<c:choose>
-			<c:when
-				test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}">
+			<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}">
 				<div class="alert alert-success">
 					<strong>Transaction Successfully Added!</strong>
 				</div>
 			</c:when>
-			<c:when
-				test="${param['success'] != null && param['success'].equalsIgnoreCase('no')}">
+			<c:when test="${param['success'] != null && param['success'].equalsIgnoreCase('no')}">
 				<div class="alert alert-danger">
 					<strong>Transaction Failed to be Added!</strong>
 				</div>
@@ -45,8 +43,7 @@
 
 		<div class="row featurette">
 			<div class="col-md-6">
-				<h3 class="featurette-heading">Please enter your transaction
-					details:</h3>
+				<h3 class="featurette-heading">Please enter your transaction details:</h3>
 
 				<form action="${applicationScope['ROUTER_ADDTRANSACTION']}"
 					method="POST" onSubmit="return validator_add_transaction(this)">
