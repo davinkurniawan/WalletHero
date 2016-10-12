@@ -106,7 +106,23 @@
 			    </div>
 			    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 			      <div class="panel-body">
-			        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+			      		This feature is only available when you are logged in.
+						<br/><br/>
+						Navigate to the add transactions page by clicking on Transaction on the navigation bar and selecting 'Add Transaction' in the drop down menu.
+						<br/><br/>
+						The Add Transaction page has the form that you need to complete in order to add a transaction. Here is a breakdown of the information.
+						<br/><br/>
+						<strong>Details:</strong> Information that you supply regarding that transaction. It can be as simple as Grocery Shopping or Drinks with Friends. This will be used to describe what the transaction was in the view transaction page.
+						<br/><br/>
+						<strong>Amount:</strong> The amount of money that was involved in this transaction.
+						<br/><br/>
+						<strong>Transaction Date/Recurrence Starting Date:</strong> The date of when this transaction occured. By default it would be the current date of when you created the transaction. However, it could easily be changed. This is also the date in which the recurrence will start if you choose to mark this transaction as recurring.
+						<br/><br/>
+						<strong>Transaction Type:</strong> You can select either Income or Expense for the type. Your budget will be subtracted by the amount if Expense is selected and added if Income was selected
+						<br/><br/>
+						<strong>Category:</strong> This classifies your transaction so that it could be filtered in the view transaction page. Think of it as a tag for your transaction.
+						<br/><br/>
+						<strong>Payment Type:</strong> One-off is the default option and you should select it if this transaction will not occur on a regular basis. Otherwise select on recurring to let wallethero automatically add the same transaction in the frequency you choose for the period of time you specify.
 			      </div>
 			    </div>
 			  </div>
@@ -120,7 +136,36 @@
 			    </div>
 			    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
 			      <div class="panel-body">
-			        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+			      
+						This feature is only available when you are logged in.
+						<br/><br/>
+						Navigate to the view transactions page by clicking on Transaction on the navigation bar and selecting 'View Transactions' in the drop down menu.
+						<br/><br/>
+						The View Transactions page is the accumulation of all the transactions that were added to your account. By default it would show the transaction for the last week.
+						<br/><br/>
+						This page can be separated into three main parts:
+						<br/><br/>
+						<strong>Filter</strong>
+						<br/>
+						<u>From and To Date:</u>
+						Specify the period of time to view your transactions. Note that it will not work if the from date is after the to date. 
+						<br/>
+						<u>Show Income:</u>
+						If checked this will let you view transactions that were typed as income
+						<br/>
+						<u>Show Expense:</u>
+						If checked this will let you view transactions that were typed as expense
+						<br/>
+						<u>Category:</u>
+						Choose the categories of transaction you want to view. By default all categories are included.
+						<br/><br/>
+						<strong>Graph</strong>
+						<br/>
+						The graph shows the visual graph of all your expenses and income in the time period you have selected.
+						<br/><br/>
+						<strong>Table</strong>
+						<br/>
+						The table is a breakdown of each transaction, giving the full information of every transaction in the selected time period. It is possible to edit the details or delete the transaction from this table.
 			      </div>
 			    </div>
 			  </div>
@@ -128,7 +173,7 @@
 			    <div class="panel-heading" role="tab" id="headingThree">
 			      <h4 class="panel-title">
 			        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-			          How you can set up goals
+			          Everything you need to know about goals
 			        </a>
 			      </h4>
 			    </div>
@@ -149,7 +194,10 @@
 			    </div>
 			    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
 			      <div class="panel-body">
-			        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+						Wallet hero supports currency conversion from a select number of supported currencies. This is a tool you can access from the 'Tool' header in navigation bar and selecting "Currency Conversion" in the drop down menu.
+						<br/><br/>
+						Select the currency from which you want to convert and the currency you want to convert to and fill in the from amount. Any value filled in the to amount will be ignored. By clicking the convert button, the conversion will occur from real time exchange rate and the results will be given in the to amount.
+									      
 			      </div>
 			    </div>
 			  </div>
