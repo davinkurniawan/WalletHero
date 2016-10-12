@@ -203,7 +203,7 @@
 				form.amount.focus();
 				return false;
 			}
-			else if (categoryOption == 'Please Select'){
+			else if (document.getElementById('limitExpenses').checked && categoryOption == 'Please Select'){
 				document.getElementById("error_message").innerHTML = "Please choose the Category!";
 				document.getElementById("div-details").className = "form-group";
 				document.getElementById("div-amount").className = "form-group";
