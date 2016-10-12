@@ -454,6 +454,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				query.append(" AND is_income = 'f'");
 			}
 
+			query.append(" ORDER BY date DESC, t.id DESC");
 			query.append(";");
 
 			PreparedStatement stmt = conn.prepareStatement(query.toString());
@@ -652,7 +653,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM transaction WHERE user_id = ?;");
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM transaction WHERE user_id = ? ORDER BY date DESC, id DESC;");
 
 			stmt.setInt(1, userID);
 			ResultSet rs = stmt.executeQuery();
@@ -696,7 +697,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM transaction WHERE id = ?");
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM transaction WHERE id = ?;");
 
 			stmt.setInt(1, transactionID);
 

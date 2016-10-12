@@ -1,6 +1,8 @@
 package au.edu.unsw.comp4920.objects;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Basic transaction implementation, no support for recurring incomes and
@@ -105,8 +107,23 @@ public class Transaction {
 	}
 
 	public int compareTo(Transaction t) {
-		//return this.getDate().compareTo(t.getDate());
-		return (this.getTransactionID() < t.getTransactionID()) ? -1 : 1; // Order by Insertion rather than date.
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if (sdf.parse(this.getDate()).before(sdf.parse(t.getDate()))){
+				return -1;
+			}
+			else if (sdf.parse(this.getDate()).equals(sdf.parse(t.getDate()))){
+				return (this.getTransactionID() < t.getTransactionID()) ? -1 : 1; // Order by Insertion rather than date.
+			}
+			else{
+				return 1;
+			}
+		} 
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return 1;
 	}
 
 	public int getCategoryID() {
