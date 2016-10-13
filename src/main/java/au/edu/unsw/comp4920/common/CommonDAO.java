@@ -28,7 +28,7 @@ public interface CommonDAO {
 	
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);
-	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
+	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID, String userPrefferedCurrency);
 	public List<Transaction> getAllTransactions(int userID);
 	public Transaction getTransaction(int transactionID);
 	public boolean updateUserTransaction(Transaction t);

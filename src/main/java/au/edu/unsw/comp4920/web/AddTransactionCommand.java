@@ -5,14 +5,18 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
+import au.edu.unsw.comp4920.objects.Currency;
+import au.edu.unsw.comp4920.objects.Preference;
 import au.edu.unsw.comp4920.objects.Recurrence;
 import au.edu.unsw.comp4920.objects.Transaction;
 
@@ -28,7 +32,13 @@ public class AddTransactionCommand implements Command {
 		String action = request.getParameter(Constants.ACTION) == null ? null
 				: request.getParameter(Constants.ACTION).toString();
 		System.out.println("AddTransactionCommand: Action is " + action);
-
+		
+		HttpSession session = request.getSession(true);		
+		String sid = session.getAttribute(Constants.SID).toString();
+		
+		session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+		session.setAttribute(Constants.PREFERENCE, dao.getUserPreference(sid).getCurrency());
+		
 		if (action != null && action.equalsIgnoreCase("addTransaction")) {
 
 			// User has just navigated to the page and has not yet attempted to
@@ -40,6 +50,8 @@ public class AddTransactionCommand implements Command {
 				String details = request.getParameter("details");
 				String transactionType = request.getParameter("transactionType");
 				BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
+				String currency = request.getParameter("currency");
+				
 				int userID = (int) request.getSession().getAttribute(Constants.USERID);
 				boolean result = false;
 
@@ -73,6 +85,7 @@ public class AddTransactionCommand implements Command {
 				t.setDetail(details);
 				t.setAmount(value);
 				t.setIsIncome(isIncome);
+				t.setCurrency(currency);
 
 				try {
 					t.setDate(df.format(date));

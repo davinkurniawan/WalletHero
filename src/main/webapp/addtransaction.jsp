@@ -54,6 +54,23 @@
 							placeholder="Details..." value="${param['details']}" />
 					</div>
 
+					<div class="form-group" id="div-currency" name="div-currency">
+				  		<label>Currency<label style="color:red">*</label></label>
+				  		<br/>
+						<select id="currency" name="currency" class="form-control">		
+							<c:forEach var="cur" items="${currency}">			
+								<c:choose>
+									<c:when test="${preference.getShortName() == cur.getShortName()}">
+										<option value="${cur.getShortName()}" selected>${cur.getLongName()} - ${cur.getShortName()}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${cur.getShortName()}">${cur.getLongName()} - ${cur.getShortName()}</option>
+									</c:otherwise>
+								</c:choose>	
+							</c:forEach>
+						</select> 
+					</div>
+
 					<div class="form-group" id="div-amount" name="div-amount">
 						<label>Amount <label style="color: red">*</label></label>
 						<div class="input-group">
