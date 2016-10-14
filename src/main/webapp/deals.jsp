@@ -58,13 +58,13 @@
 									<td align="center">
 										<div class="container_deal">
 											<center>
-												<a href="${i.url}"><img src="${i.image_url}"
+												<a target="_blank" href="${i.url}"><img src="${i.image_url}"
 													onerror="this.src='images/not_available.png'" height="200"
 													width="300" /></a>
 											</center>
 										</div>
 									</td>
-									<td align="center"><a href="${i.url}">${i.title}</a></td>
+									<td align="center"><a target="_blank" href="${i.url}">${i.title}</a></td>
 									<td align="center">${i.value}</td>
 									<td align="center">${i.discount_amount}</td>
 									<td align="center">${i.price}</td>
