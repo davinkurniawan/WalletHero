@@ -52,10 +52,13 @@ public class ViewGoalsCommand implements Command {
 				from = getWeekStart();
 				to = getWeekEnd();
 			}
+			
+			String sid = session.getAttribute(Constants.SID).toString();
+			String userPrefferedCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
 
 			if (g.isExpenseRestrictionGoal()) {
 				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, false, true,
-						g.getCategory());
+						g.getCategory(), userPrefferedCurrency);
 
 				BigDecimal amount = sumExpenses(transactions);
 				g.setCurrentAmount(amount);
@@ -66,12 +69,12 @@ public class ViewGoalsCommand implements Command {
 							+ (g.getGoalAmount().subtract(g.getCurrentAmount()) + " more and not exceed your limit."));
 				} else {
 					g.setStatusString("You have exceed your " + g.getGoalPeriod() + " spending limit for " + g.getCategoryString()
-							+ ". You have exceed your limit by $" + (g.getCurrentAmount().subtract(g.getGoalAmount()))
+							+ " by $" + (g.getCurrentAmount().subtract(g.getGoalAmount()))
 							+ ".");
 				}
 
 			} else if (g.isSavingGoal()) {
-				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, true, true, -1);
+				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, true, true, -1, userPrefferedCurrency);
 
 				BigDecimal amount = getBalance(transactions);
 				g.setCurrentAmount(amount);
@@ -81,7 +84,7 @@ public class ViewGoalsCommand implements Command {
 							+ g.getCurrentAmount() + " of the target $" + g.getGoalAmount() + ".");
 				} else {
 					g.setStatusString("You have not currently met your " + g.getGoalPeriod() + " saving goal. You have saved $" + g.getCurrentAmount()
-							+ " of the target $" + g.getGoalAmount() + ". You need to save $"
+							+ " of the target $" + g.getGoalAmount() + ", thus you need to save $"
 							+ (g.getGoalAmount().subtract(g.getCurrentAmount()) + " more."));
 				}
 

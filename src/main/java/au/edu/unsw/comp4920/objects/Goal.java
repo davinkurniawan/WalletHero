@@ -133,7 +133,24 @@ public class Goal {
 	public String getCategoryString() {
 		return this.categoryString;
 	}
-
+	
+	public String getFrequencyString() {
+		// http://stackoverflow.com/a/11464979
+		if (this.goalPeriod != null) {
+			return Character.toUpperCase(this.goalPeriod.charAt(0)) + this.goalPeriod.substring(1);	
+		} else {
+			return null;
+		}
+	}
+	
+	public String getGoalTypeString() {
+		if (this.type == Goal.EXPENSE_RESTRICTION_GOAL) {
+			return "Expense limit";
+		} else {
+			return "Savings";
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail

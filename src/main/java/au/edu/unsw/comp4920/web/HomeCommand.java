@@ -54,7 +54,8 @@ public class HomeCommand implements Command {
 		from = new Date(from.getTime() - 24 * 60 * 60 * 1000 * 6);
 		to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 		
-		List<Transaction> transactions = dao.getTransactionsByDate(user.getUserID(), from, to, viewIncomes, viewExpenses, categoryID);
+		String userPrefferedCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
+		List<Transaction> transactions = dao.getTransactionsByDate(user.getUserID(), from, to, viewIncomes, viewExpenses, categoryID, userPrefferedCurrency);
 		
 		request.setAttribute("fromDate", dfDate.format(from));
 

@@ -26,10 +26,9 @@
 					<tbody>
 						<tr>
 							<th>Goal #</th>
+							<th>Goal Type</th>
 							<th>Details</th>
 							<th>Frequency</th>
-							<th>Goal Amount</th>
-							<th>Current Amount</th>
 							<th>Category</th>
 							<th>Status</th>
 						</tr>
@@ -37,10 +36,9 @@
 						<c:forEach items="${requestScope.goalList}" var="g">
 							<tr>
 								<td><c:out value="${g.goalID}"></c:out></td>
+								<td><c:out value="${g.getGoalTypeString()}"></c:out></td>
 								<td><c:out value="${g.detail}"></c:out></td>
-								<td><c:out value="${g.goalPeriod.toUpperCase()}"></c:out></td>
-								<td>$<c:out value="${g.goalAmount}"></c:out></td>
-								<td>$<c:out value="${g.currentAmount}"></c:out></td>
+								<td><c:out value="${g.getFrequencyString()}"></c:out></td>
 								<td><c:out value="${g.categoryString}"></c:out></td>
 								<td><c:out value="${g.statusString}"></c:out></td>
 							</tr>
