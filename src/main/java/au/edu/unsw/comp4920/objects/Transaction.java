@@ -149,7 +149,7 @@ public class Transaction {
 	public String toString() {
 		return "Transaction [transactionID=" + transactionID + ", userID=" + userID + ", recurrence=" + recurrence
 				+ ", date=" + date + ", detail=" + detail + ", amount=" + amount + ", categoryID=" + categoryID
-				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + "]";
+				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + ", currency=" + currency + "]";
 	}
 
 	public void setCurrency(String currency) {

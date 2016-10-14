@@ -22,29 +22,36 @@
 
 		<div class="row featurette">
 			<div class="col-md-12">
-				<table class="table table-bordered" style="table-layout: auto">
-					<tbody>
-						<tr>
-							<th>Goal #</th>
-							<th>Goal Type</th>
-							<th>Details</th>
-							<th>Frequency</th>
-							<th>Category</th>
-							<th>Status</th>
-						</tr>
-		
-						<c:forEach items="${requestScope.goalList}" var="g">
-							<tr>
-								<td><c:out value="${g.goalID}"></c:out></td>
-								<td><c:out value="${g.getGoalTypeString()}"></c:out></td>
-								<td><c:out value="${g.detail}"></c:out></td>
-								<td><c:out value="${g.getFrequencyString()}"></c:out></td>
-								<td><c:out value="${g.categoryString}"></c:out></td>
-								<td><c:out value="${g.statusString}"></c:out></td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+				<c:choose>
+					<c:when test="${requestScope.goalList.size() == 0 }">
+						<h2 class="featurette-heading">No Goals Found.</h2>
+					</c:when>
+					<c:otherwise>
+						<table class="table table-bordered" style="table-layout: auto">
+							<tbody>
+								<tr>
+									<th>Goal #</th>
+									<th>Goal Type</th>
+									<th>Details</th>
+									<th>Frequency</th>
+									<th>Category</th>
+									<th>Status</th>
+								</tr>
+				
+								<c:forEach items="${requestScope.goalList}" var="g">
+									<tr>
+										<td><c:out value="${g.goalID}"></c:out></td>
+										<td><c:out value="${g.getGoalTypeString()}"></c:out></td>
+										<td><c:out value="${g.detail}"></c:out></td>
+										<td><c:out value="${g.getFrequencyString()}"></c:out></td>
+										<td><c:out value="${g.categoryString}"></c:out></td>
+										<td><c:out value="${g.statusString}"></c:out></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 

@@ -157,7 +157,7 @@
 					<hr class="featurette-divider">
 	
 					<div class="col-md-12">
-						<h2 class="featurette-heading">No Transaction Found.</h2>
+						<h2 class="featurette-heading">No Transactions Found.</h2>
 					</div>
 				</div>
 			</c:otherwise>
