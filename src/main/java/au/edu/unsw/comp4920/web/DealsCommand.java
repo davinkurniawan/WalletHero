@@ -65,14 +65,14 @@ public class DealsCommand implements Command {
 		
 		int starting_page = 1;
 		int ending_page = 9;
-		
+		List<DealsCategory> categories = new ArrayList<DealsCategory>();
 		HttpSession session = request.getSession(true);
 		if (session.getAttribute("categories") == null) {
 			// get categories of deals to select from
 			JSONObject categories_json = sendAPIRequest(Constants.API_URL + "/categories");
 			JSONArray categories_array = categories_json.getJSONArray("categories");
 			ObjectMapper mapper = new ObjectMapper();
-			List<DealsCategory> categories = new ArrayList<DealsCategory>();
+			
 			for (int i = 0; i < categories_array.length(); ++i) {
 				String category = categories_array.getJSONObject(i).getJSONObject("category").toString();
 				DealsCategory c = mapper.readValue(category, DealsCategory.class);
@@ -80,8 +80,22 @@ public class DealsCommand implements Command {
 			}
 			session.setAttribute("categories", categories);
 		}
+		String req = Constants.API_URL + "/deals" + "?page=" + req_page;
 		
-		JSONObject deals_json = sendAPIRequest(Constants.API_URL + "/deals" + "?page=" + req_page);
+		if (request.getParameterValues("category") != null) {
+			req += "&category_slugs=";
+			for (String s : request.getParameterValues("category")) {
+				req += s;
+				req += ",";
+			}
+		} 
+		
+		if (request.getParameter("query") != null) {
+			System.out.println("query is " + request.getParameter("query"));
+			req += "&query=";
+			req += request.getParameter("query").replaceAll(" ", "+");
+		}
+		JSONObject deals_json = sendAPIRequest(req);
 		if (!deals_json.isNull("error")) {
 			request.setAttribute(Constants.ERROR, 1);
 			request.setAttribute(Constants.ERRORMSG, "Sorry, page does not exist!");

@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <title>${applicationScope['WEB_NAME']}-Deals</title>
 <%@ include file="bootstrapHeader.jsp"%>
@@ -17,21 +17,23 @@
 
 	<div class="container marketing">
 		<h2>Latest Deals</h2>
-
 		<hr class="featurette-divider">
+
 		<form action="${applicationScope['ROUTER_DEALS']}" method="GET">
+			<label>Search</label>
 			<input type="hidden" name="operation" value="deals" />
-			<label>Category</label><br />
+			<input type="text" name='query' class="form-control" placeholder="Search for..."> 
+			<br> <label>Category</label>
 			<div class="form-group checkbox" id="div-category">
 				<c:forEach items="${categories}" var="c">
-					<c:choose>
-						<c:when test="${param['category'] == c.getSlug()}">
-							<c:set var="checked" scope="request" value="checked"></c:set>
-						</c:when>
-						<c:otherwise>
-							<c:set var="checked" scope="request" value=""></c:set>
-						</c:otherwise>
-					</c:choose>
+					<c:set var="checked" scope="request" value=""></c:set>
+					<c:forEach items="${paramValues.category}" var="i">
+						<c:choose>
+							<c:when test="${i == c.slug}">
+								<c:set var="checked" scope="request" value="checked"></c:set>
+							</c:when>
+						</c:choose>
+					</c:forEach>
 					<label><input type="checkbox" name="category"
 						id="categoryBox" value="${c.slug}" ${checked}> ${c.name}</label>
 				</c:forEach>
@@ -69,14 +71,24 @@
 								</tr>
 							</c:forEach>
 						</table>
+						<c:forEach items="${paramValues.category}" var="i">
+							<c:choose>
+								<c:when test="${i} == ${c.slug}">
+									<c:set var="checked" scope="request" value="checked"></c:set>
+								</c:when>
+								<c:otherwise>
+									<c:set var="checked" scope="request" value=""></c:set>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 						<ul class="pagination">
-							<li><a href="${applicationScope['ROUTER_DEALS']}&page=1">&lt;&lt;</a>
+							<li><a href="${applicationScope['ROUTER_DEALS']}&page=1&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&lt;&lt;</a>
 								<c:forEach var="p" begin="${starting_page}" end="${ending_page}">
 									<li><a
-										href="${applicationScope['ROUTER_DEALS']}&page=${p}">${p}</a>
+										href="${applicationScope['ROUTER_DEALS']}&page=${p}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">${p}</a>
 								</c:forEach>
 							<li><a
-								href="${applicationScope['ROUTER_DEALS']}&page=${max_page}">&gt;&gt;</a>
+								href="${applicationScope['ROUTER_DEALS']}&page=${max_page}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&gt;&gt;</a>
 						</ul>
 					</c:when>
 					<c:otherwise>
