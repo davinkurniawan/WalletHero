@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -667,12 +668,14 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				continue;
 			} else if (currencyHashmap.containsKey(userPrefferedCurrency + transactionCurrency)) {
 				BigDecimal exchangeRate = currencyHashmap.get(userPrefferedCurrency + transactionCurrency);
-				t.setAmount(t.getAmount().multiply(exchangeRate));
+				t.setAmount(t.getAmount().divide(exchangeRate, 2, RoundingMode.HALF_UP));
+				t.setCurrency(userPrefferedCurrency);
 			} else {
 				currencyHashmap.put(userPrefferedCurrency + transactionCurrency,
 						this.getCurrencyExchangeRate(userPrefferedCurrency + transactionCurrency));
 				BigDecimal exchangeRate = currencyHashmap.get(userPrefferedCurrency + transactionCurrency);
-				t.setAmount(t.getAmount().multiply(exchangeRate));
+				t.setAmount(t.getAmount().divide(exchangeRate, 2, RoundingMode.HALF_UP));
+				t.setCurrency(userPrefferedCurrency);
 			}
 		}
 		
@@ -713,6 +716,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				e.printStackTrace();
 			}
 		}		
+		
+		System.out.println("Rate for " + string + ": " + rate);
 		
 		return rate;
 	}

@@ -119,7 +119,7 @@
 										<td style="display:none;"><c:out value="${t.transactionID}"></c:out></td>
 										<td><c:out value="${requestScope.transactionList.size() - myIndex.index}"></c:out></td>
 										<td><c:out value="${t.detail}"></c:out></td>
-										<td>$<c:out value="${t.amount}"></c:out></td>
+										<td><c:out value="${t.currency} "></c:out><c:out value="${t.amount}"></c:out></td>
 										<td><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
 										<td><c:out value="${t.getCategoryName()}"></c:out></td>
 										<td><c:out value="${t.getTransactionType()}"></c:out></td>
