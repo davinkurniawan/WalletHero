@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
-import au.edu.unsw.comp4920.objects.Currency;
-import au.edu.unsw.comp4920.objects.Preference;
 import au.edu.unsw.comp4920.objects.Recurrence;
 import au.edu.unsw.comp4920.objects.Transaction;
 
