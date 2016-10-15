@@ -363,16 +363,18 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			String query = "UPDATE user_detail " + "SET currency_id = ?, age = ?, gender = ?, occupation_id = ? "
+			String query = "UPDATE user_detail " + "SET currency_id = ?, age = ?, gender = ?, occupation_id = ?, deals=? "
 					+ "WHERE id = ? AND user_id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(query);
 
-			stmt.setInt(1, p.getCurrencyID());
-			stmt.setInt(2, p.getAge());
-			stmt.setString(3, p.getGender());
-			stmt.setInt(4, p.getOccupationID());
-			stmt.setInt(5, p.getPreferenceID());
-			stmt.setInt(6, p.getUserID());
+			int index = 1;
+			stmt.setInt(index++, p.getCurrencyID());
+			stmt.setInt(index++, p.getAge());
+			stmt.setString(index++, p.getGender());
+			stmt.setInt(index++, p.getOccupationID());
+			stmt.setString(index++, p.getDeals());
+			stmt.setInt(index++, p.getPreferenceID());
+			stmt.setInt(index++, p.getUserID());
 
 			int n = stmt.executeUpdate();
 

@@ -193,6 +193,40 @@
 	        </div>
 	        
 	        <hr class="featurette-divider">
+	        
+	       	<div class="row featurette">
+	        	<div class="col-md-6">
+					<form name="update_deals" action="${applicationScope['ROUTER_PROFILE']}" method="POST">
+						<br> <label>Preferred deals</label>
+						<div class="form-group checkbox" id="div-category">
+							<table>
+							<% int count = 0; %>
+							<c:forEach items="${categories}" var="c">
+								<% if (count % 8 == 0) out.println ("<tr>"); %>
+								<!-- <% out.println(count); %> -->
+								<c:set var="checked" scope="request" value=""></c:set>
+								<td style="width:1000px;">
+								<c:forEach items="${category}" var="i">
+									<c:choose>
+										<c:when test="${i == c.slug}">
+											<c:set var="checked" scope="request" value="checked"></c:set>
+										</c:when>
+									</c:choose>
+								</c:forEach>
+								<label><input type="checkbox" name="category"
+									id="categoryBox" value="${c.slug}" ${checked}> ${c.name}</label>
+								</td>
+								<%  count++;%>
+							</c:forEach>
+							</table>
+				          	<input type="hidden" name="action" value="update_deals"/>	
+							<button type="submit" class="btn btn-primary">Update</button>	
+						</div>
+					</form>
+	      		</div>
+	      	</div>
+	        
+	        <hr class="featurette-divider">
 	      
 	       	<div class="row featurette">
 	        	<div class="col-md-6">
@@ -381,6 +415,26 @@
 	       		}
 	       	}
 	       	else if (form == document.forms["update_preferences"]) {
+	       		
+	       		if (validator_update_preference(this)) {
+	       			document.getElementById("loadertext").innerHTML = 'Updating Your Preferences...';
+	       			
+	       			document.getElementById('div-loading').style.display = 'block';	
+			 		document.getElementById('div-content').style.display = 'none';
+			 		document.getElementById('div-footer').style.display = 'none';
+			 		document.getElementById("error_message").innerHTML = '';
+			 		
+		       		event.preventDefault();
+		       		
+		       		setTimeout( function () { 
+				        form.submit();
+				    }, 1000);
+		       	}
+	       		else {
+	       			event.preventDefault();
+	       		}
+	       	}
+	       	else if (form == document.forms["update_deals"]) {
 	       		
 	       		if (validator_update_preference(this)) {
 	       			document.getElementById("loadertext").innerHTML = 'Updating Your Preferences...';

@@ -52,6 +52,7 @@ CREATE TABLE user_detail (
 	age int,
 	gender char,
 	occupation_id int,
+	deals varchar,
 	CONSTRAINT user_detail_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
