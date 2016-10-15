@@ -30,8 +30,12 @@ public class ViewGoalsCommand implements Command {
 		HttpSession session = request.getSession();
 		int personID = Integer.parseInt(session.getAttribute(Constants.USERID).toString());
 
+		if (request.getParameter("action") != null) {
+			dao.deleteUserGoal(Integer.parseInt(request.getParameter("goalID")), personID);
+		}
+		
 		List<Goal> goals = dao.getAllGoals(personID);
-
+		
 		for (Goal g : goals) {
 			if (g.getCategoryString() == null) {
 				g.setCategoryString("All");
@@ -47,8 +51,10 @@ public class ViewGoalsCommand implements Command {
 			} else if (g.getGoalPeriod().equals("monthly")) {
 				from = getMonthStart();
 				to = getMonthEnd();
-			}
-			else {
+			} else if (g.getGoalPeriod().equals("yearly")) {
+				from = getYearStart();
+				to = getYearEnd();
+			} else {
 				from = getWeekStart();
 				to = getWeekEnd();
 			}
@@ -62,32 +68,11 @@ public class ViewGoalsCommand implements Command {
 
 				BigDecimal amount = sumExpenses(transactions);
 				g.setCurrentAmount(amount);
-
-				if (g.getCurrentAmount().compareTo(g.getGoalAmount()) <= 0) {
-					g.setStatusString("Congratulations you are currently under your " + g.getGoalPeriod() + " spending limit for "
-							+ g.getCategoryString() + ". You can spend $"
-							+ (g.getGoalAmount().subtract(g.getCurrentAmount()) + " more and not exceed your limit."));
-				} else {
-					g.setStatusString("You have exceed your " + g.getGoalPeriod() + " spending limit for " + g.getCategoryString()
-							+ " by $" + (g.getCurrentAmount().subtract(g.getGoalAmount()))
-							+ ".");
-				}
-
 			} else if (g.isSavingGoal()) {
 				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, true, true, -1, userPrefferedCurrency);
 
 				BigDecimal amount = getBalance(transactions);
 				g.setCurrentAmount(amount);
-
-				if (g.getCurrentAmount().compareTo(g.getGoalAmount()) >= 0) {
-					g.setStatusString("Congratulations you are currently meeting your " + g.getGoalPeriod() + " saving goal. You have saved $"
-							+ g.getCurrentAmount() + " of the target $" + g.getGoalAmount() + ".");
-				} else {
-					g.setStatusString("You have not currently met your " + g.getGoalPeriod() + " saving goal. You have saved $" + g.getCurrentAmount()
-							+ " of the target $" + g.getGoalAmount() + ", thus you need to save $"
-							+ (g.getGoalAmount().subtract(g.getCurrentAmount()) + " more."));
-				}
-
 			}
 
 		}
@@ -177,5 +162,36 @@ public class ViewGoalsCommand implements Command {
 		Date d = c.getTime();
 		return new Date(d.getTime());
 	}
+	
+	private Date getYearStart() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 1);
+		c.set(Calendar.MONTH, Calendar.JANUARY);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getYearEnd() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 31);
+		c.set(Calendar.MONTH, Calendar.DECEMBER);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+	
 
 }

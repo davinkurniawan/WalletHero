@@ -1520,7 +1520,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 
 			for (Goal g : goals) {
-				result = this.deleteUserGoal(g.getGoalID());
+				result = this.deleteUserGoal(g.getGoalID(), userID);
 			}
 
 			count++;
@@ -1602,7 +1602,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public boolean deleteUserGoal(int goalID){
+	public boolean deleteUserGoal(int goalID, int userID){
 		boolean result = true;
 		Connection conn = null;
 
@@ -1610,9 +1610,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("DELETE FROM goal WHERE id = ?;");
+			PreparedStatement stmt = conn.prepareStatement("DELETE FROM goal WHERE id = ? AND user_id = ?;");
 
 			stmt.setInt(1, goalID);
+			stmt.setInt(2, userID);
 			int n = stmt.executeUpdate();
 
 			if (n != 1) {

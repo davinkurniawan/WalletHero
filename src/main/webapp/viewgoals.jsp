@@ -10,6 +10,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	
 	<title>${applicationScope['WEB_NAME']} - Goals Overview</title>
+	<script src="js/progressbar.min.js"></script>
 	<%@ include file="bootstrapHeader.jsp"%>
 </head>
 <body>
@@ -36,6 +37,7 @@
 									<th>Frequency</th>
 									<th>Category</th>
 									<th>Status</th>
+									<th>Actions</th>
 								</tr>
 				
 								<c:forEach items="${requestScope.goalList}" var="g">
@@ -45,7 +47,96 @@
 										<td><c:out value="${g.detail}"></c:out></td>
 										<td><c:out value="${g.getFrequencyString()}"></c:out></td>
 										<td><c:out value="${g.categoryString}"></c:out></td>
-										<td><c:out value="${g.statusString}"></c:out></td>
+										<td><div id="bar${g.goalID}"></div></td>
+										<td>
+											<div class="form-group">
+												<form action="${applicationScope['ROUTER_VIEWGOALS']}" method="POST" onSubmit="return confirm('Are you sure you want to delete Goal #' + ${g.goalID} + '?');">
+													<input type="hidden" name="goalID" value="${g.goalID}"/>
+													<input type="hidden" name="action" value="deleteGoal"/> 
+													<input style="min-width:100px" type=submit value="Delete" class="btn btn-danger" />
+												</form>
+											</div>
+										</td>
+										
+										<script>
+										<c:if test="${g.getType() == 1}">
+											var bar = new ProgressBar.Line(bar${g.goalID}, {
+											  strokeWidth: 3,
+											  easing: 'easeInOut',
+											  duration: 1400,
+											  color: '#FFEA82',
+											  trailColor: '#eee',
+											  trailWidth: 3,
+											  svgStyle: {width: '100%', height: '100%'},
+											  text: {
+											    style: {
+											      color: '#999',
+											      position: 'relative',
+											      right: '0',
+											      top: '0',
+											      padding: 0,
+											      margin: 0,
+											      transform: null
+											    },
+											    autoStyleContainer: false
+											  },
+											  from: {color: '#e75757'},
+											  to: {color: '#79ea86'},
+											  
+											  step: (state, bar) => {
+
+											    bar.setText('You have saved <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getGoalPeriod()} savings goal.');
+											    bar.path.setAttribute('stroke', state.color);
+											  }
+											});
+										
+											var amount = ${g.getCurrentAmount()} / ${g.getGoalAmount()};
+											
+											if (amount > 1) {
+												amount = 1;
+											} else if (amount < 0) {
+												amount = 0;
+											}
+											
+											bar.animate(amount);
+
+										</c:if>
+										
+										<c:if test="${g.getType() == 2}">
+										var bar = new ProgressBar.Line(bar${g.goalID}, {
+										  strokeWidth: 3,
+										  easing: 'easeInOut',
+										  duration: 1400,
+										  color: '#FFEA82',
+										  trailColor: '#eee',
+										  trailWidth: 3,
+										  svgStyle: {width: '100%', height: '100%'},
+										  text: {
+										    style: {
+										      color: '#999',
+										      position: 'relative',
+										      right: '0',
+										      top: '0',
+										      padding: 0,
+										      margin: 0,
+										      transform: null
+										    },
+										    autoStyleContainer: false
+										  },
+										  from: {color: '#79ea86'},
+										  to: {color: '#e75757'},
+										  
+										  step: (state, bar) => {
+											bar.setText('You have spent <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getGoalPeriod()} limit on <b>${g.categoryString}</b>.');
+										    bar.path.setAttribute('stroke', state.color);
+										  }
+										});
+									
+										bar.animate(Math.min(1, ${g.getCurrentAmount()} / ${g.getGoalAmount()}));
+										
+									</c:if>
+										</script>
+										
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -57,5 +148,7 @@
 
 		<%@ include file="footer.jsp"%>
 	</div>
+	
+	
 </body>
 </html>

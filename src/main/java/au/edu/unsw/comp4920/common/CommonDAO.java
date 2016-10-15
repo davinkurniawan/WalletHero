@@ -54,5 +54,5 @@ public interface CommonDAO {
 	
 	public boolean addGoal(Goal g);
 	public List<Goal> getAllGoals(int userID);
-	public boolean deleteUserGoal(int goalID);
+	public boolean deleteUserGoal(int goalID, int userID);
 }
