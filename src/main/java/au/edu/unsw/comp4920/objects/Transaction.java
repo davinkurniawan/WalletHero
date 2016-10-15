@@ -21,6 +21,7 @@ public class Transaction {
 	private int categoryID;
 	private String categoryName;
 	private boolean isIncome;
+	private String currency;
 
 	public Transaction() {
 		super();
@@ -101,7 +102,7 @@ public class Transaction {
 	public void setRecurrence(boolean recurrence) {
 		this.recurrence = recurrence;
 	}
-	
+
 	public int getRecurrence() {
 		return (this.recurrence) ? 1 : -1;
 	}
@@ -109,20 +110,22 @@ public class Transaction {
 	public int compareTo(Transaction t) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			if (sdf.parse(this.getDate()).before(sdf.parse(t.getDate()))){
+			if (sdf.parse(this.getDate()).before(sdf.parse(t.getDate()))) {
 				return -1;
-			}
-			else if (sdf.parse(this.getDate()).equals(sdf.parse(t.getDate()))){
-				return (this.getTransactionID() < t.getTransactionID()) ? -1 : 1; // Order by Insertion rather than date.
-			}
-			else{
+			} else if (sdf.parse(this.getDate()).equals(sdf.parse(t.getDate()))) {
+				return (this.getTransactionID() < t.getTransactionID()) ? -1 : 1; // Order
+																					// by
+																					// Insertion
+																					// rather
+																					// than
+																					// date.
+			} else {
 				return 1;
 			}
-		} 
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		return 1;
 	}
 
@@ -141,11 +144,19 @@ public class Transaction {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Transaction [transactionID=" + transactionID + ", userID=" + userID + ", recurrence=" + recurrence
 				+ ", date=" + date + ", detail=" + detail + ", amount=" + amount + ", categoryID=" + categoryID
-				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + "]";
+				+ ", categoryName=" + categoryName + ", isIncome=" + isIncome + ", currency=" + currency + "]";
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public String getCurrency() {
+		return this.currency;
 	}
 }

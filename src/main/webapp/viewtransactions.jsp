@@ -18,8 +18,7 @@
 </head>
 <body>
 	<%@ include file="signedinnavbar.jsp"%>
-
-
+	
 	<div class="container marketing">
 		<h2>${requestScope.transactionRange}</h2>
 
@@ -120,7 +119,7 @@
 										<td style="display:none;"><c:out value="${t.transactionID}"></c:out></td>
 										<td><c:out value="${requestScope.transactionList.size() - myIndex.index}"></c:out></td>
 										<td><c:out value="${t.detail}"></c:out></td>
-										<td>$<c:out value="${t.amount}"></c:out></td>
+										<td><c:out value="${t.currency} "></c:out><c:out value="${t.amount}"></c:out></td>
 										<td><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
 										<td><c:out value="${t.getCategoryName()}"></c:out></td>
 										<td><c:out value="${t.getTransactionType()}"></c:out></td>
@@ -158,7 +157,7 @@
 					<hr class="featurette-divider">
 	
 					<div class="col-md-12">
-						<h2 class="featurette-heading">No Transaction Found.</h2>
+						<h2 class="featurette-heading">No Transactions Found.</h2>
 					</div>
 				</div>
 			</c:otherwise>

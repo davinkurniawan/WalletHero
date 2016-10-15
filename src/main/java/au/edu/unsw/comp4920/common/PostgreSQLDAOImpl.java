@@ -3,7 +3,11 @@ package au.edu.unsw.comp4920.common;
 import au.edu.unsw.comp4920.objects.*;
 import au.edu.unsw.comp4920.exception.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +19,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONObject;
 
 import au.edu.unsw.comp4920.common.DBConnectionFactory;
 
@@ -396,7 +408,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 
 			PreparedStatement stmt = conn.prepareStatement(
-					"INSERT INTO transaction (user_id, date, detail, amount, is_income, recur_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+					"INSERT INTO transaction (user_id, date, detail, amount, is_income, recur_id, category_id, currency_short_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
 
 			stmt.setInt(1, t.getUserID());
 			stmt.setString(2, t.getDate());
@@ -405,6 +417,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			stmt.setBoolean(5, t.isIncome());
 			stmt.setInt(6, t.getRecurrence());
 			stmt.setInt(7, t.getCategoryID());
+			stmt.setString(8, t.getCurrency());
 
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
@@ -439,7 +452,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			StringBuilder query = new StringBuilder();
 			query.append(
-					"SELECT t.id, user_id, date::DATE, detail, amount, is_income, recur_id, c.name FROM transaction t "
+					"SELECT t.id, user_id, date::DATE, detail, amount, is_income, recur_id, currency_short_name, c.name FROM transaction t "
 							+ "LEFT JOIN category c ON c.id = t.category_id " + "WHERE user_id = ?");
 
 			if (categoryID != -1) {
@@ -471,6 +484,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				t.setAmount(rs.getBigDecimal("amount"));
 				t.setIsIncome(rs.getBoolean("is_income"));
 				t.setCategoryName(rs.getString("name"));
+				t.setCurrency(rs.getString("currency_short_name"));
 
 				int isReccurence = rs.getInt("recur_id");
 
@@ -537,7 +551,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			StringBuilder query = new StringBuilder();
 			query.append(
-					"SELECT transaction_id, type, reccur_num, t.date::DATE, t.detail, t.amount, t.is_income, c.name "
+					"SELECT transaction_id, type, reccur_num, t.date::DATE, t.detail, t.amount, t.is_income, t.currency_short_name, c.name "
 							+ "FROM recurrence r " + "LEFT JOIN transaction t ON t.id = r.transaction_id "
 							+ "LEFT JOIN category c ON c.id = t.category_id " + "WHERE t.user_id = " + userID);
 
@@ -568,6 +582,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				String reccurenceFreq = rs.getString("type");
 				int numberPayments = rs.getInt("reccur_num");
 				String categoryName = rs.getString("name");
+				String currency = rs.getString("currency_short_name");
 
 				boolean infinitePayments = false;
 
@@ -592,6 +607,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 						t.setAmount(amount);
 						t.setIsIncome(income);
 						t.setCategoryName(categoryName);
+						t.setCurrency(currency);
 
 						transactions.add(t);
 					}
@@ -640,8 +656,70 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 	@Override
 	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes,
-			boolean showExpenses, int categoryID) {
-		return this.getTransactions(userID, from, to, showIncomes, showExpenses, categoryID);
+			boolean showExpenses, int categoryID, String userPrefferedCurrency) {
+			
+		List<Transaction> transactions = this.getTransactions(userID, from, to, showIncomes, showExpenses, categoryID);
+		HashMap<String, BigDecimal> currencyHashmap = new HashMap<String, BigDecimal>();
+
+		for (Transaction t : transactions) {
+			String transactionCurrency = t.getCurrency();
+
+			if (userPrefferedCurrency.equals(transactionCurrency)) {
+				continue;
+			} else if (currencyHashmap.containsKey(userPrefferedCurrency + transactionCurrency)) {
+				BigDecimal exchangeRate = currencyHashmap.get(userPrefferedCurrency + transactionCurrency);
+				t.setAmount(t.getAmount().divide(exchangeRate, 2, RoundingMode.HALF_UP));
+				t.setCurrency(userPrefferedCurrency);
+			} else {
+				currencyHashmap.put(userPrefferedCurrency + transactionCurrency,
+						this.getCurrencyExchangeRate(userPrefferedCurrency + transactionCurrency));
+				BigDecimal exchangeRate = currencyHashmap.get(userPrefferedCurrency + transactionCurrency);
+				t.setAmount(t.getAmount().divide(exchangeRate, 2, RoundingMode.HALF_UP));
+				t.setCurrency(userPrefferedCurrency);
+			}
+		}
+		
+		return transactions;
+	}
+	
+	// URL stuff drawn from DealsCommand.java
+	private BigDecimal getCurrencyExchangeRate(String string) {
+		
+		CloseableHttpClient client = null;
+		BigDecimal rate = null;
+		
+		try {
+			client = HttpClientBuilder.create().build();
+			HttpGet req = new HttpGet("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20%3D%20%22" + string + "%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
+			
+			HttpResponse resp = client.execute(req);
+			HttpEntity entity = resp.getEntity();
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+			StringBuilder sb = new StringBuilder();
+			String line = "";
+			
+			while ((line = br.readLine())!= null) {
+				sb.append(line + "\n");
+			}
+			
+			JSONObject json = new JSONObject(sb.toString());
+			rate = json.getJSONObject("query").getJSONObject("results").getJSONObject("rate").getBigDecimal("Rate");
+			
+		} catch (Exception e) {
+			System.err.println("ViewTransactionsCommand failure when getting currency: ");
+			e.printStackTrace();
+		} finally {
+			try {
+				client.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}		
+		
+		System.out.println("Rate for " + string + ": " + rate);
+		
+		return rate;
 	}
 
 	@Override
