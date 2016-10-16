@@ -9,7 +9,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	
-	<title>${applicationScope['WEB_NAME']} - Add a Transaction</title>
+	<title>${applicationScope['WEB_NAME']} - Add a New Transaction</title>
 	
 	<%@ include file="bootstrapHeader.jsp"%>
 </head>
