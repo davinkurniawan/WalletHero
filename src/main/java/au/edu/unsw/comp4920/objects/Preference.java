@@ -2,6 +2,7 @@ package au.edu.unsw.comp4920.objects;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Preference {
 	private int preferenceID;
@@ -10,6 +11,7 @@ public class Preference {
 	private String gender;
 	private Currency currency;
 	private Occupation occupation;
+	private String deals;
 	
 	public Preference() {
 		super();
@@ -17,7 +19,7 @@ public class Preference {
 		this.occupation = new Occupation();
 	}
 	
-	public Preference(int preferenceID, int userID, int age, String gender, Currency currency, Occupation occupation) {
+	public Preference(int preferenceID, int userID, int age, String gender, Currency currency, Occupation occupation, String deals) {
 		super();	
 		this.preferenceID = preferenceID;
 		this.userID = userID;
@@ -25,6 +27,7 @@ public class Preference {
 		this.gender = gender;
 		this.currency = currency;
 		this.occupation = occupation;
+		this.deals = deals;
 	}
 
 	public Preference(ResultSet rs) throws SQLException {
@@ -41,6 +44,8 @@ public class Preference {
 		occupation = new Occupation();
 		occupation.setOccupationID(rs.getInt("occupation_id"));
 		occupation.setName(rs.getString("name"));
+		
+		deals = rs.getString("deals");
 	}
 	
 	public int getPreferenceID() {
@@ -117,12 +122,53 @@ public class Preference {
 		newP.setCurrency(c);
 		Occupation o = new Occupation(occupation.getOccupationID(), occupation.getName());
 		newP.setOccupation(o);
+		newP.setDeals(deals);;
 		return newP;
 	}
 
+	public String getDeals() {
+		return deals;
+	}
+	
+	public String[] getDealsList() {
+		return deals.split(",");
+	}
+	
+	public ArrayList<String> getDealsArrayList() {
+		String[] thisdeals = deals.split(",");
+		ArrayList<String> result = new ArrayList<String>();
+		
+		for (String d: thisdeals) {
+			if (!d.isEmpty())
+				result.add(d);
+		}
+		
+		return result;
+	}
+
+	public void setDeals(String deals) {
+		this.deals = deals;
+	}
+	
+	public void setDeals(String[] deals) {
+		String results = "";
+		for (int i = 0; i < deals.length; i++) {
+			results += deals[i] + ",";
+		}
+		this.deals = results;
+	}
+	
+	public void setDeals(ArrayList<String> deals) {
+		String results = "";
+		for (int i = 0; i < deals.size(); i++) {
+			results += deals.get(i) + ",";
+		}
+		this.deals = results;
+	}
+	
 	@Override
 	public String toString() {
 		return "Preference [preferenceID=" + preferenceID + ", userID=" + userID + ", age=" + age + ", gender=" + gender + ", currency="
-				+ currency + ", occupation=" + occupation + "]";
+				+ currency + ", occupation=" + occupation + ", deals=" + deals + "]";
 	}
 }

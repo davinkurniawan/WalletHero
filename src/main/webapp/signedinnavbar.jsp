@@ -44,6 +44,7 @@
 
                 <li class="${profile }"><a href="${applicationScope['ROUTER_PROFILE']}">Profile</a></li>
                 <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
+                <li class="${help }"><a href="${applicationScope['ROUTER_HELP']}">Help</a></li>
                 <li class="${signOut }"><a href="${applicationScope['ROUTER_SIGNOUT']}" onclick="return confirm('Are you sure you want to Sign Out?');">Sign Out</a></li>
               </ul>
             </div>

@@ -1,6 +1,8 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
@@ -9,10 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import au.edu.unsw.comp4920.common.Common;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.MailHelper;
+import au.edu.unsw.comp4920.objects.DealsCategory;
 import au.edu.unsw.comp4920.objects.Preference;
 import au.edu.unsw.comp4920.objects.User;
 
@@ -22,15 +30,16 @@ import au.edu.unsw.comp4920.objects.User;
  */
 public class ProfileCommand implements Command {
 	
-	private static enum Commands {PROFILE, PASSWORD, PREFERENCE, DELETE_DATA, DELETE_ACCOUNT};
+	private static enum Commands {PROFILE, PASSWORD, PREFERENCE, DELETE_DATA, DELETE_ACCOUNT, DEALS};
 	
 	private static Commands commands (String s) {
 		if (s == null) return null;
 		if (s.equalsIgnoreCase("update_profile"    )) 	return Commands.PROFILE;
 		if (s.equalsIgnoreCase("update_password"   )) 	return Commands.PASSWORD;
 		if (s.equalsIgnoreCase("update_preferences")) 	return Commands.PREFERENCE;
-		if (s.equalsIgnoreCase("delete_user_data")) 	return Commands.DELETE_DATA;
-		if (s.equalsIgnoreCase("delete_account")) 		return Commands.DELETE_ACCOUNT;
+		if (s.equalsIgnoreCase("delete_user_data"  )) 	return Commands.DELETE_DATA;
+		if (s.equalsIgnoreCase("delete_account"	   )) 	return Commands.DELETE_ACCOUNT;
+		if (s.equalsIgnoreCase("update_deals"	   )) 	return Commands.DEALS;
 
 		return null;
 	}
@@ -335,7 +344,45 @@ public class ProfileCommand implements Command {
 				
 				case DELETE_ACCOUNT:
 					break;
+					
+				case DEALS:
+					List<String> category;
+					String deals = "";
+					
+					for (String s : request.getParameterValues("category")) {
+						deals += s;
+						deals += ",";
+					}
+					
+					if (deals.equals(preference.getDeals())) {
+						category = preference.getDealsArrayList();
+					} else {
+						Preference newP = preference.clone();
+						newP.setDeals(deals);
+						dao.updatePreference(newP);
+						category = newP.getDealsArrayList();
+					}
+					
+					request.setAttribute("category", category);
+					System.out.println(deals.toString());
+					break;
 			}
+		}
+		
+		
+		List<DealsCategory> categories = new ArrayList<DealsCategory>();
+		if (session.getAttribute("categories") == null) {
+			// get categories of deals to select from
+			JSONObject categories_json = DealsCommand.sendAPIRequest(Constants.API_URL + "/categories");
+			JSONArray categories_array = categories_json.getJSONArray("categories");
+			ObjectMapper mapper = new ObjectMapper();
+			
+			for (int i = 0; i < categories_array.length(); ++i) {
+				String category = categories_array.getJSONObject(i).getJSONObject("category").toString();
+				DealsCategory c = mapper.readValue(category, DealsCategory.class);
+				categories.add(c);
+			}
+			session.setAttribute("categories", categories);
 		}
 		
         request.setAttribute(Constants.USER, user);

@@ -22,6 +22,7 @@
                		</ul>
                 </li>
                 <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
+                <li class="${help }"><a href="${applicationScope['ROUTER_HELP']}">Help</a></li>
               </ul>
             </div>
           </div>
