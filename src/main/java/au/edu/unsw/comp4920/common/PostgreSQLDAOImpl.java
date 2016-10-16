@@ -682,15 +682,16 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return transactions;
 	}
 	
-	// URL stuff drawn from DealsCommand.java
-	private BigDecimal getCurrencyExchangeRate(String string) {
-		
+	/**
+	 * Will retrieve exchange rate online, and cache this rate in the database.
+	 */
+	private BigDecimal getCurrencyExchangeRateOnline(String currencyPair) {
 		CloseableHttpClient client = null;
 		BigDecimal rate = null;
 		
 		try {
 			client = HttpClientBuilder.create().build();
-			HttpGet req = new HttpGet("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20%3D%20%22" + string + "%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
+			HttpGet req = new HttpGet("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20%3D%20%22" + currencyPair + "%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
 			
 			HttpResponse resp = client.execute(req);
 			HttpEntity entity = resp.getEntity();
@@ -707,7 +708,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			rate = json.getJSONObject("query").getJSONObject("results").getJSONObject("rate").getBigDecimal("Rate");
 			
 		} catch (Exception e) {
-			System.err.println("ViewTransactionsCommand failure when getting currency: ");
+			System.err.println("getCurrencyExchangeRateOnline failure when getting currency: ");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -715,11 +716,95 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
 		
-		System.out.println("Rate for " + string + ": " + rate);
+		// Cache the exchange rate in the database.
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			Date date = new Date();
+			SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
+			String dateString = df.format(date);
+			
+			PreparedStatement stmt = conn
+					.prepareStatement("INSERT INTO currency_pair (pair, rate, date) VALUES (?, ?, ?);");
+
+			stmt.setString(1, currencyPair);
+			stmt.setBigDecimal(2, rate);
+			stmt.setString(3, dateString);
+			stmt.executeUpdate();
+
+			stmt.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println("getCurrencyExchangeRateOnline: " + e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println("getCurrencyExchangeRateOnline: " + e.getMessage());
+				}
+			}
+		}
+		
+		return rate;	
+	}
+	
+	private BigDecimal getCurrencyExchangeRateDatabase(String currencyPair) {
+		BigDecimal rate = null;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			Date date = new Date();
+			SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
+			String dateString = df.format(date);
+			
+			StringBuilder query = new StringBuilder();
+			query.append(
+					"SELECT rate FROM currency_pair WHERE pair = ? AND date = ?");
+			query.append(";");
+
+			PreparedStatement stmt = conn.prepareStatement(query.toString());
+			
+			stmt.setString(1, currencyPair);
+			stmt.setString(2, dateString);
+			
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				rate = rs.getBigDecimal("rate");
+			}
+
+			stmt.close();
+		} catch (SQLException | ServiceLocatorException e) {
+			System.err.println("getCurrencyExchangeRateDatabase: " + e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					System.err.println("getCurrencyExchangeRateDatabase: " + e.getMessage());
+				}
+			}
+		}
 		
 		return rate;
+	}
+	
+	private BigDecimal getCurrencyExchangeRate(String currencyPair) {
+		BigDecimal rate = getCurrencyExchangeRateDatabase(currencyPair);
+		
+		if (rate != null) {
+			return rate;
+		} else {
+			return getCurrencyExchangeRateOnline(currencyPair);
+		}
 	}
 
 	@Override

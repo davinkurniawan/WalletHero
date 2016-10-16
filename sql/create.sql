@@ -116,12 +116,21 @@ CREATE TABLE goal (
 );
 
 
-
 CREATE TABLE currency (
 	id serial NOT NULL,
 	short_name varchar NOT NULL,
 	long_name varchar NOT NULL,
 	CONSTRAINT currency_pk PRIMARY KEY (id)
+) WITH (
+  OIDS=FALSE
+);
+
+CREATE TABLE currency_pair (
+	id serial NOT NULL,
+	pair varchar NOT NULL,
+	rate NUMERIC NOT NULL,
+	date varchar NOT NULL,
+	CONSTRAINT currency_pair_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
 );
