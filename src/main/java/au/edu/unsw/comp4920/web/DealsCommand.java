@@ -3,9 +3,11 @@ package au.edu.unsw.comp4920.web;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,6 +130,10 @@ public class DealsCommand implements Command {
 			}
 			//req += request.getParameter("query").replaceAll(" ", "+");
 		}
+		if (request.getParameter("order") != null && request.getParameter("order").length() > 0) {
+			req += "&order=" + request.getParameter("order");
+		}
+		System.out.println(req);
 		JSONObject deals_json = sendAPIRequest(req);
 		if (!deals_json.isNull("error")) {
 			request.setAttribute(Constants.ERROR, 1);
@@ -160,7 +166,7 @@ public class DealsCommand implements Command {
 			for (int i = 0; i < array.length(); ++i) {
 				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
 				Deal d = mapper.readValue(deal, Deal.class);
-				deals.add(d);
+				deals.add(d); 
 			}
 			
 			request.setAttribute("deals_list", deals);

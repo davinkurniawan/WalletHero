@@ -23,6 +23,23 @@
 			<label>Search</label>
 			<input type="hidden" name="operation" value="deals" />
 			<input type="text" name='query' class="form-control" placeholder="Search for..."> 
+			<div class="form-group" id="div-order" name="div-order">
+				  		<br><label>Order by</label>
+				  		<br/>
+						<select id="order" name="order" class="form-control">		
+							<option value = "" selected>Select order...</option>
+							<option value="number_sold_desc">Number sold (High to Low)</option>
+							<option value="number_sold">Number sold (Low to High)</option>
+							<option value="value_desc">Original price (High to Low)</option>
+							<option value="value">Original price (Low to High)</option>
+							<option value="price_desc">Final price (High to Low)</option>
+							<option value="price">Final price (Low to High)</option>
+							<option value="expires_at_desc">Expiration date (Descending)</option>
+							<option value="expires_at">Expiration date (Ascending)</option>
+							<option value="updated_at_desc">Newest</option>
+							<option value="updated_at">Oldest</option>
+						</select> 
+					</div>
 			<br> <label>Category</label>
 			<div class="form-group checkbox" id="div-category">
 				<c:forEach items="${categories}" var="c">
@@ -82,13 +99,13 @@
 							</c:choose>
 						</c:forEach>
 						<ul class="pagination">
-							<li><a href="${applicationScope['ROUTER_DEALS']}&page=1&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&lt;&lt;</a>
+							<li><a href="${applicationScope['ROUTER_DEALS']}&page=1&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&lt;&lt;</a>
 								<c:forEach var="p" begin="${starting_page}" end="${ending_page}">
 									<li><a
-										href="${applicationScope['ROUTER_DEALS']}&page=${p}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">${p}</a>
+										href="${applicationScope['ROUTER_DEALS']}&page=${p}&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">${p}</a>
 								</c:forEach>
 							<li><a
-								href="${applicationScope['ROUTER_DEALS']}&page=${max_page}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&gt;&gt;</a>
+								href="${applicationScope['ROUTER_DEALS']}&page=${max_page}&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&gt;&gt;</a>
 						</ul>
 					</c:when>
 					<c:otherwise>
