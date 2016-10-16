@@ -237,7 +237,7 @@ public class ViewTransactionsCommand implements Command {
 		// Setup hash correctly to include all dates in defined period, even if
 		// a transaction did not occur in the period.
 		Date iterator = new Date(from.getTime());
-		Date iteratorEnd = new Date(to.getTime() + 24 * 60 * 60 * 1000);
+		Date iteratorEnd = new Date(to.getTime());
 
 		while (iterator.before(iteratorEnd) || iterator.equals(iteratorEnd)) {
 			String dateString = df_new.format(iterator);

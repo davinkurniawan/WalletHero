@@ -29,7 +29,6 @@ public class AddGoalCommand implements Command {
 		else if (request.getParameter("details") != null && request.getParameter("goalType") != null && request.getParameter("amount") != null && request.getParameter("goalFreq") != null) {		
 			int userID = (int) request.getSession().getAttribute(Constants.USERID);
 			String details = request.getParameter("details");
-			//String transactionType = request.getParameter("goalType");
 
 			BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
 			String goalFreq = request.getParameter("goalFreq");

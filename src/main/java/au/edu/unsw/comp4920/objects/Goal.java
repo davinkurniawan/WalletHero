@@ -14,7 +14,7 @@ public class Goal {
 	private int type;
 	private int category;
 	private String categoryString;
-	private String statusString;
+	private String datePeriodString;
 	private int userID;
 
 	public static int SAVING_GOAL = 1;
@@ -36,7 +36,6 @@ public class Goal {
 		this.type = type;
 		this.category = category;
 		this.categoryString = categoryString;
-		this.statusString = statusString;
 		this.userID = userID;
 	}
 
@@ -122,14 +121,6 @@ public class Goal {
 		this.categoryString = categoryString;
 	}
 
-	public String getStatusString() {
-		return statusString;
-	}
-
-	public void setStatusString(String statusString) {
-		this.statusString = statusString;
-	}
-
 	public String getCategoryString() {
 		return this.categoryString;
 	}
@@ -159,7 +150,15 @@ public class Goal {
 	public String toString() {
 		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
 				+ ", goalAmount=" + goalAmount + ", currentAmount=" + currentAmount + ", type=" + type + ", category="
-				+ category + ", categoryString=" + categoryString + ", statusString=" + statusString + ", userID="
+				+ category + ", categoryString=" + categoryString + ", statusString=" + ", userID="
 				+ userID + "]";
+	}
+
+	public String getDatePeriodString() {
+		return datePeriodString;
+	}
+
+	public void setDatePeriodString(String datePeriodString) {
+		this.datePeriodString = datePeriodString;
 	}
 }

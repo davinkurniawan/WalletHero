@@ -35,6 +35,7 @@
 									<th>Goal Type</th>
 									<th>Details</th>
 									<th>Frequency</th>
+									<th>Period</th>
 									<th>Category</th>
 									<th>Status</th>
 									<th>Actions</th>
@@ -46,6 +47,7 @@
 										<td><c:out value="${g.getGoalTypeString()}"></c:out></td>
 										<td><c:out value="${g.detail}"></c:out></td>
 										<td><c:out value="${g.getFrequencyString()}"></c:out></td>
+										<td><c:out value="${g.getDatePeriodString()}"></c:out></td>
 										<td><c:out value="${g.categoryString}"></c:out></td>
 										<td><div id="bar${g.goalID}"></div></td>
 										<td>

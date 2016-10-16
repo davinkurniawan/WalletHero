@@ -2,6 +2,7 @@ package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -59,9 +60,14 @@ public class ViewGoalsCommand implements Command {
 				to = getWeekEnd();
 			}
 			
+			SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
+			String fromString = df_new.format(from);
+			String toString = df_new.format(to);
+			g.setDatePeriodString(fromString + " - " + toString);
+			
 			String sid = session.getAttribute(Constants.SID).toString();
 			String userPrefferedCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
-
+			
 			if (g.isExpenseRestrictionGoal()) {
 				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, false, true,
 						g.getCategory(), userPrefferedCurrency);
@@ -107,6 +113,7 @@ public class ViewGoalsCommand implements Command {
 	private Date getWeekEnd() {
 		// http://stackoverflow.com/a/12075998
 		Calendar c = Calendar.getInstance();
+		c.setFirstDayOfWeek(Calendar.MONDAY);
 		c.setTime(new Date());
 		c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		c.set(Calendar.HOUR_OF_DAY, 0);
@@ -115,12 +122,13 @@ public class ViewGoalsCommand implements Command {
 		c.set(Calendar.MILLISECOND, 0);
 
 		Date d = c.getTime();
-		return new Date(d.getTime() + 24 * 60 * 60 * 1000 * 7);
+		return new Date(d.getTime());
 	}
 
 	private Date getWeekStart() {
 		// http://stackoverflow.com/a/12075998
 		Calendar c = Calendar.getInstance();
+		c.setFirstDayOfWeek(Calendar.MONDAY);
 		c.setTime(new Date());
 		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 		c.set(Calendar.HOUR_OF_DAY, 0);
