@@ -3,11 +3,9 @@ package au.edu.unsw.comp4920.web;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +45,7 @@ public class DealsCommand implements Command {
 		while ((line = br.readLine()) != null) {
 			sb.append(line + "\n");
 		}
+		
 		return (new JSONObject(sb.toString()));
 	}
 	
@@ -63,18 +62,21 @@ public class DealsCommand implements Command {
 		while ((line = br.readLine()) != null) {
 			sb.append(line + "\n");
 		}
+		
 		return (new JSONObject(sb.toString()));
 	}
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: DealsCommand");
+		
 		if (request.getParameter("category") != null) {
 			for(int i = 0; i < request.getParameterValues("category").length; ++i) {
 				System.out.println(request.getParameterValues("category")[i]);
 			}
 			
 		}
+		
 		int req_page = 1;
 		
 		try {
@@ -88,6 +90,7 @@ public class DealsCommand implements Command {
 		int ending_page = 9;
 		List<DealsCategory> categories = new ArrayList<DealsCategory>();
 		HttpSession session = request.getSession(true);
+		
 		if (session.getAttribute("categories") == null) {
 			// get categories of deals to select from
 			JSONObject categories_json = sendAPIRequest(Constants.API_URL + "/categories");
@@ -101,10 +104,12 @@ public class DealsCommand implements Command {
 			}
 			session.setAttribute("categories", categories);
 		}
+		
 		String req = Constants.API_URL + "/deals" + "?page=" + req_page;
 		
 		if (request.getParameterValues("category") != null) {
 			req += "&category_slugs=";
+			
 			for (String s : request.getParameterValues("category")) {
 				req += s;
 				req += ",";
@@ -115,6 +120,7 @@ public class DealsCommand implements Command {
 			System.out.println("query is " + request.getParameter("query"));
 			req += "&query=";
 			req += request.getParameter("query");
+			
 			try {
 				System.out.println(req.substring(7, Constants.API_URL.length()));
 				System.out.println(req.substring(Constants.API_URL.length(), req.length()));
@@ -124,17 +130,21 @@ public class DealsCommand implements Command {
 				req = url.toString();
 				req = req.replaceFirst("%3F", "?");
 				System.out.println(req);
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
+			} 
+			catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
+			
 			//req += request.getParameter("query").replaceAll(" ", "+");
 		}
+		
 		if (request.getParameter("order") != null && request.getParameter("order").length() > 0) {
 			req += "&order=" + request.getParameter("order");
 		}
+		
 		System.out.println(req);
 		JSONObject deals_json = sendAPIRequest(req);
+		
 		if (!deals_json.isNull("error")) {
 			request.setAttribute(Constants.ERROR, 1);
 			request.setAttribute(Constants.ERRORMSG, "Sorry, page does not exist!");

@@ -2,18 +2,15 @@ package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.MailHelper;
-import au.edu.unsw.comp4920.objects.User;
 
 public class HelpCommand implements Command {
 	
@@ -26,10 +23,8 @@ public class HelpCommand implements Command {
 	}
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao)
-			throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 
-		HttpSession session = request.getSession();
         String actionString = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
         System.out.println("HelpCommand: Action is " + actionString);
 		

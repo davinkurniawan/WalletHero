@@ -141,7 +141,7 @@ CREATE TABLE currency_pair (
 ALTER TABLE users ADD CONSTRAINT users_fk0 FOREIGN KEY (status_id) REFERENCES status(id);
 
 ALTER TABLE transaction ADD CONSTRAINT transaction_fk0 FOREIGN KEY (user_id) REFERENCES users(id);
-ALTER TABLE transaction ADD CONSTRAINT transaction_fk2 FOREIGN KEY (category_id) REFERENCES category(id);
+ALTER TABLE transaction ADD CONSTRAINT transaction_fk1 FOREIGN KEY (category_id) REFERENCES category(id);
 
 ALTER TABLE session ADD CONSTRAINT session_fk0 FOREIGN KEY (user_id) REFERENCES users(id);
 
