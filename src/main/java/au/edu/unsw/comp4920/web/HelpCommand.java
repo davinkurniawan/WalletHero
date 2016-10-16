@@ -7,14 +7,17 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.MailHelper;
+import au.edu.unsw.comp4920.objects.User;
 
 public class HelpCommand implements Command {
 	
 	private static enum Commands {EMAIL };
+	
 	private static Commands commands (String s) {
 		if (s == null) return null;
 		if (s.equalsIgnoreCase("email_help" )) 	return Commands.EMAIL;
@@ -24,10 +27,22 @@ public class HelpCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
+		System.out.println("Inside: HelpCommand");
 
         String actionString = request.getParameter(Constants.ACTION) == null ? null : request.getParameter(Constants.ACTION).toString();
         System.out.println("HelpCommand: Action is " + actionString);
+				
+		HttpSession session = request.getSession();
 		
+        if (session.getAttribute(Constants.SID) != null){
+            String sid = session.getAttribute(Constants.SID).toString();
+        	User user = dao.getUser(sid);
+        	
+        	if (user != null){
+        		request.setAttribute(Constants.EMAIL, user.getEmail());;
+        	}
+        }
+        
 		Commands action = commands(request.getParameter("action"));
 		if (action != null) {
 			switch (action) {
@@ -35,7 +50,7 @@ public class HelpCommand implements Command {
 					String email	= request.getParameter("email");
 					String message 	= request.getParameter("message");
 					sendSupportEmail(email, message, dao);
-					request.setAttribute("success", "yes");;
+					request.setAttribute("success", "yes");
 					break;
 			}
 		}
@@ -43,9 +58,6 @@ public class HelpCommand implements Command {
 		RequestDispatcher rd = request.getRequestDispatcher("/help.jsp");
 		rd.forward(request, response);
 	}
-
-
-
 
 	private void sendSupportEmail(String useremail, String message, CommonDAO dao) {
 		String email = "nataliadjohari@gmail.com";

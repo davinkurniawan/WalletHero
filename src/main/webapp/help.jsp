@@ -9,7 +9,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 		
-	<title>${applicationScope['WEB_NAME']} - About</title>
+	<title>${applicationScope['WEB_NAME']} - Help</title>
 	<%@ include file="bootstrapHeader.jsp" %>
 </head>
 <body>
@@ -27,13 +27,13 @@
 	  <div id="div-loading" name="div-loading">
 	  	<div id="loader" name="loader"></div>
 	  	<center>
-	  		<h3 id="loadertext" name="loadertext">Sending message...</h3>
+	  		<h3 id="loadertext" name="loadertext">Sending Message...</h3>
 	  	</center>
 	  </div>
       
 	  <div class="row featurette" name="div-content" id="div-content">
-        <div class="col-md-6">
-          <h2 class="featurette-heading">Troubleshooting and help</h2>
+        <div class="col-md-12">
+          <h2 class="featurette-heading">Troubleshooting and Help</h2>
           	Find relevant help or step by step guides here
           	<br/>
       		<hr class="featurette-divider">
@@ -189,7 +189,7 @@
 		   	
 		    <c:if test="${success != null && success.equalsIgnoreCase('yes')}" >
 			  <h5 style="color:Green;text-align:center">
-				  Your message was received! Allow us a few days to respond to your message
+				  Your message was received! Allow us a few days to respond to your message.
 			  </h5>
 		    </c:if>
 	        
@@ -197,7 +197,14 @@
 	
 		        <div class="form-group" id="div-email" name="div-email">
 		          <label>Email</label>
-		          <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${param['email']}"/>
+		          <c:choose>
+		          	 <c:when test="${param['email'] == null && requestScope.email != null }">
+		          	 	 <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${requestScope.email}"/>
+		          	 </c:when>
+		         	 <c:otherwise>
+		          	 	 <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="${param['email']}"/>
+		          	 </c:otherwise>
+		          </c:choose>
 		        </div>
 		
 		        <div class="form-group" id="div-message" name="div-message">
@@ -206,7 +213,7 @@
 		        </div>
 	
 	          <input type="hidden" name="action" value="email_help"/> 
-	          <button type="submit" class="btn btn-primary">Submit message</button> 
+	          <button type="submit" class="btn btn-primary">Submit</button> 
 	        </form>
           	
         </div>

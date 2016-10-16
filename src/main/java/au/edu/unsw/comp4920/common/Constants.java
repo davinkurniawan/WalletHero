@@ -44,6 +44,7 @@ public final class Constants {
 	public static final String SEARCH						= "search";
 	public static final String TOKEN						= "token";
 	public static final String USERNAME						= "username";
+	public static final String EMAIL						= "email";
 	public static final String TOOLS						= "tools";
 	public static final String TRANSACTIONS					= "transactions";
 	public static final String GOALS						= "goals";
