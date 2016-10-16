@@ -3,6 +3,11 @@ package au.edu.unsw.comp4920.web;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +37,22 @@ public class DealsCommand implements Command {
 	public static JSONObject sendAPIRequest(String URI) throws IOException {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet req = new HttpGet(URI);
+		req.addHeader("Authorization", Constants.PUBLIC_API_KEY);
+		req.addHeader("Accept", "application/json");
+		HttpResponse resp = client.execute(req);
+		HttpEntity entity = resp.getEntity();
+		BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent())); 
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = br.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+		return (new JSONObject(sb.toString()));
+	}
+	
+	JSONObject sendAPIRequest(URI u) throws IOException {
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet req = new HttpGet(u);
 		req.addHeader("Authorization", Constants.PUBLIC_API_KEY);
 		req.addHeader("Accept", "application/json");
 		HttpResponse resp = client.execute(req);
@@ -93,8 +114,26 @@ public class DealsCommand implements Command {
 		if (request.getParameter("query") != null) {
 			System.out.println("query is " + request.getParameter("query"));
 			req += "&query=";
-			req += request.getParameter("query").replaceAll(" ", "+");
+			req += request.getParameter("query");
+			try {
+				System.out.println(req.substring(7, Constants.API_URL.length()));
+				System.out.println(req.substring(Constants.API_URL.length(), req.length()));
+				URI uri = new URI("http", req.substring(7, Constants.API_URL.length()), req.substring(Constants.API_URL.length(),  req.length()), null);
+				//System.out.println(uri.toString());
+				URL url = uri.toURL();
+				req = url.toString();
+				req = req.replaceFirst("%3F", "?");
+				System.out.println(req);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//req += request.getParameter("query").replaceAll(" ", "+");
 		}
+		if (request.getParameter("order") != null && request.getParameter("order").length() > 0) {
+			req += "&order=" + request.getParameter("order");
+		}
+		System.out.println(req);
 		JSONObject deals_json = sendAPIRequest(req);
 		if (!deals_json.isNull("error")) {
 			request.setAttribute(Constants.ERROR, 1);
@@ -127,7 +166,7 @@ public class DealsCommand implements Command {
 			for (int i = 0; i < array.length(); ++i) {
 				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
 				Deal d = mapper.readValue(deal, Deal.class);
-				deals.add(d);
+				deals.add(d); 
 			}
 			
 			request.setAttribute("deals_list", deals);

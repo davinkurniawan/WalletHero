@@ -12,7 +12,7 @@
 	<title>${applicationScope['WEB_NAME']} - Latest Deals</title>
 <%@ include file="bootstrapHeader.jsp"%>
 </head>
-<body>
+<body onload="myFunction(${param.order})">
 	<%@ include file="signedinnavbar.jsp"%>
 
 	<div class="container marketing">
@@ -22,7 +22,27 @@
 		<form action="${applicationScope['ROUTER_DEALS']}" method="GET">
 			<label>Search</label>
 			<input type="hidden" name="operation" value="deals" />
-			<input type="text" name='query' class="form-control" placeholder="Search for..."> 
+			<c:if test="${not empty param.query}">
+				<c:set var="query" scope="request" value="${param.query}" />
+			</c:if>
+			<input type="text" name='query' class="form-control" placeholder="Search for..." value=${query}> 
+			<div class="form-group" id="div-order" name="div-order">
+				  		<br><label>Order by</label>
+				  		<br/>
+						<select id="order" name="order" class="form-control">		
+							<option id="" value = "" selected>Select order...</option>
+							<option id="number_sold_desc" value="number_sold_desc">Number sold (High to Low)</option>
+							<option id="number_sold" value="number_sold">Number sold (Low to High)</option>
+							<option id="value_desc" value="value_desc">Original price (High to Low)</option>
+							<option id="value" value="value">Original price (Low to High)</option>
+							<option id="price_desc" value="price_desc">Final price (High to Low)</option>
+							<option id="price" value="price">Final price (Low to High)</option>
+							<option id="expires_at_desc" value="expires_at_desc">Expiration date (Descending)</option>
+							<option id="expires_at" value="expires_at">Expiration date (Ascending)</option>
+							<option id="updated_at_desc" value="updated_at_desc">Newest</option>
+							<option id="updated_at" value="updated_at">Oldest</option>
+						</select> 
+					</div>
 			<br> <label>Category</label>
 			<div class="form-group checkbox" id="div-category">
 				<c:forEach items="${categories}" var="c">
@@ -82,13 +102,13 @@
 							</c:choose>
 						</c:forEach>
 						<ul class="pagination">
-							<li><a href="${applicationScope['ROUTER_DEALS']}&page=1&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&lt;&lt;</a>
+							<li><a href="${applicationScope['ROUTER_DEALS']}&page=1&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&lt;&lt;</a>
 								<c:forEach var="p" begin="${starting_page}" end="${ending_page}">
 									<li><a
-										href="${applicationScope['ROUTER_DEALS']}&page=${p}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">${p}</a>
+										href="${applicationScope['ROUTER_DEALS']}&page=${p}&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">${p}</a>
 								</c:forEach>
 							<li><a
-								href="${applicationScope['ROUTER_DEALS']}&page=${max_page}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&gt;&gt;</a>
+								href="${applicationScope['ROUTER_DEALS']}&page=${max_page}&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&gt;&gt;</a>
 						</ul>
 					</c:when>
 					<c:otherwise>
@@ -102,5 +122,11 @@
 
 		<%@ include file="footer.jsp"%>
 	</div>
+	<script>
+	function myFunction(qs) {
+		//window.alert(qs.value);
+		qs.selected = "true";
+	}
+	</script>
 </body>
 </html>
