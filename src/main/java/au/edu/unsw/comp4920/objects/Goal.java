@@ -145,14 +145,6 @@ public class Goal {
 	public int getType() {
 		return this.type;
 	}
-	
-	@Override
-	public String toString() {
-		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
-				+ ", goalAmount=" + goalAmount + ", currentAmount=" + currentAmount + ", type=" + type + ", category="
-				+ category + ", categoryString=" + categoryString + ", statusString=" + ", userID="
-				+ userID + "]";
-	}
 
 	public String getDatePeriodString() {
 		return datePeriodString;
@@ -160,5 +152,13 @@ public class Goal {
 
 	public void setDatePeriodString(String datePeriodString) {
 		this.datePeriodString = datePeriodString;
+	}
+	
+	@Override
+	public String toString() {
+		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
+				+ ", goalAmount=" + goalAmount + ", currentAmount=" + currentAmount + ", type=" + type + ", category="
+				+ category + ", categoryString=" + categoryString + ", statusString=" + ", userID="
+				+ userID + "]";
 	}
 }
