@@ -104,7 +104,16 @@
 						<ul class="pagination">
 							<li><a href="${applicationScope['ROUTER_DEALS']}&page=1&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">&lt;&lt;</a>
 								<c:forEach var="p" begin="${starting_page}" end="${ending_page}">
-									<li><a
+									<c:set var="highlight" scope="request" value=""/>
+									<c:if test="${param.page == p}">
+										<c:set var="highlight" scope="request" value="class = \"active\"" />
+									</c:if>
+									<c:if test="${empty param.page}">
+										<c:if test="${p == 1}">
+											<c:set var="highlight" scope="request" value="class = \"active\"" />
+										</c:if>
+									</c:if>
+									<li ${highlight}><a
 										href="${applicationScope['ROUTER_DEALS']}&page=${p}&order=${param.order}&query=${param.query}<c:forEach items="${paramValues.category}" var="i">&category=${i}</c:forEach>">${p}</a>
 								</c:forEach>
 							<li><a
