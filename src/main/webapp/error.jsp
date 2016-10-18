@@ -8,14 +8,39 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-	
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	
-	<title>${applicationScope['WEB_NAME']} - Page not Found</title>
+		
+	<title>${applicationScope['WEB_NAME']} - Page Not Found</title>
+	<%@ include file="bootstrapHeader.jsp" %>
 </head>
 <body>
-	<h2>You got kicked to this Page? Seriously???</h2>
+	<c:choose>
+		<c:when test="${userID != null}">
+			<%@ include file="signedinnavbar.jsp" %>
+		</c:when>
+		<c:otherwise>
+			<%@ include file="navbar.jsp" %>
+		</c:otherwise>
+	</c:choose>
 	
-	<%@ include file="footer.jsp" %>
+	<div class="container marketing">
+		<center>
+		
+		  <h2>Page Not Found</h2>
+	
+	      <hr class="featurette-divider">
+	
+	      <div class="row featurette">
+	        <div class="col-md-12">
+	          <h3 class="featurette-heading" style="color:Red;">The Page that you are looking for does not exists!</h3>
+	          	<br/>
+	          	<h3 style="color:Green;text-align:center">
+					<a href="./" style="color:Green;text-align:center">Go Back to Home Page</a>
+				</h3>
+	        </div>
+	      </div>
+	   </center>
+
+  	   <%@ include file="footer.jsp" %>
+    </div>
 </body>
 </html>

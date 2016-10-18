@@ -109,6 +109,7 @@
 									<th>Amount</th>
 									<th>Date</th>
 									<th>Category</th>
+									<th>Recurring</th>
 									<th>Type</th>
 									<th>Actions</th>
 								</tr>
@@ -122,6 +123,7 @@
 										<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><c:out value="${t.amount}"></c:out></td>
 										<td name="t_date_${t.transactionID}" id="t_date_${t.transactionID}"><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
 										<td name="t_cat_${t.transactionID}" id="t_cat_${t.transactionID}"><c:out value="${t.getCategoryName()}"></c:out></td>
+										<td><c:out value="${t.getRecurrenceType()}"></c:out></td>
 										<td name="t_type_${t.transactionID}" id="t_type_${t.transactionID}"><c:out value="${t.getTransactionType()}"></c:out></td>
 										<td>
 											<div class="form-group">

@@ -106,6 +106,10 @@ public class Transaction {
 	public int getRecurrence() {
 		return (this.recurrence) ? 1 : -1;
 	}
+	
+	public String getRecurrenceType() {
+		return (this.isRecurrence()) ? "Yes" : "No";
+	}
 
 	public int compareTo(Transaction t) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
