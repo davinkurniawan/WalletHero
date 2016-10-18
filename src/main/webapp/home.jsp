@@ -81,6 +81,30 @@
       	<div class="col-md-12">
       		<h2 class="featurette-heading">Other Contents</h2>
       	</div>
+      	<div class="row">
+      	  <c:choose>
+	      	  <c:when test="${not empty deals_list}">
+				  <c:forEach var="i" items="${deals_list}" begin="0" end="2">
+					  <c:if test="${not empty i}">
+						  <div class="col-sm-6 col-md-4">
+						    <div class="thumbnail" style="height:330px;">
+						      <a target="_blank" href="${i.url}"><img src="${i.image_url}"
+									onerror="this.src='images/not_available.png'" height="200"
+									width="300" /></a>
+						      <div class="caption">
+						        <h3><a target="_blank" href="${i.url}">${i.short_title}</a></h3>
+						        <p>From $${i.value} down to $${i.price}</p>
+						      </div>
+						    </div>
+						  </div>
+					  </c:if>
+				  </c:forEach>
+			  </c:when>
+			  <c:otherwise>
+			  	<h3 align=center>No deals to show!</h3>
+			  </c:otherwise>
+		  </c:choose>
+		</div>
       </div>
 
   	   <%@ include file="footer.jsp" %>

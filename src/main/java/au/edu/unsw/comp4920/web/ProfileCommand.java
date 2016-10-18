@@ -393,6 +393,7 @@ public class ProfileCommand implements Command {
 		
         request.setAttribute(Constants.USER, user);
         request.setAttribute(Constants.PREFERENCE, preference);
+        request.setAttribute("deals_preference", preference.getDealsArrayList());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
 		rd.forward(request, response);
