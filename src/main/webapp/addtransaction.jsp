@@ -83,9 +83,9 @@
 
 					<div class="form-group" id="div-from-date" name="div-from-date">
 						<label>Transaction Date / Recurrence Starting Date<label style="color: red">*</label></label> <input
-							type="text" class="form-control datepicker" id="from_date"
-							name="from_date" placeholder="From Date..."
-							value="${param['from_date']}" />
+							type="text" class="form-control datepicker" id="transaction_date"
+							name="transaction_date" placeholder="From Date..."
+							value="${param['transaction_date']}" />
 					</div>
 
 					<div class="form-group" id="div-transaction-type"
@@ -338,53 +338,22 @@
 		function populateDefaultValues() {
 			var today = new Date();
 
-			$('#from_date').val(
+			$('#transaction_date').val(
 					$.datepicker.formatDate('dd MM yy', today))
-					.datepicker(
-							{
-								dateFormat : 'dd MM yy',
-								onSelect : function(selected) {
-									$("#to_date").datepicker("option",
-											"minDate", selected)
-								},
-								onClose : function() {
-									var newDate = $('#from_date').val();
+					.datepicker({
+						maxDate : 0,
+						dateFormat : 'dd MM yy',
+						onClose : function() {
+							var newDate = $('#transaction_date').val();
 
-									if (newDate == '' || newDate == null)
-										populateDefaultValues();
-								}
-							});
-		}
-
-		function populateGivenValues() {
-			var toDate = $.datepicker
-					.parseDate('dd MM yy', $('#to_date').val());
-			var fromDate = $.datepicker.parseDate('dd MM yy', $('#from_date')
-					.val());
-
-			$('#from_date').val($.datepicker.formatDate('dd MM yy', fromDate))
-					.datepicker(
-							{
-								dateFormat : 'dd MM yy',
-								onSelect : function(selected) {
-									$("#to_date").datepicker("option",
-											"minDate", selected)
-								},
-								onClose : function() {
-									var newDate = $('#from_date').val();
-
-									if (newDate == '' || newDate == null)
-										populateDefaultValues();
-								}
-							});
+							if (newDate == '' || newDate == null)
+								populateDefaultValues();
+						}
+					});
 		}
 
 		$(document).ready(function() {
-			if ($('#from_date').val() == "") {
-				populateDefaultValues();
-			} else {
-				populateGivenValues();
-			}
+			populateDefaultValues();
 		});
 	</script>
 </body>

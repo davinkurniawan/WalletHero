@@ -116,25 +116,19 @@
 									<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
 									
 									<tr class="${t.getTransactionType()}">
-										<td style="display:none;"><c:out value="${t.transactionID}"></c:out></td>
-										<td><c:out value="${requestScope.transactionList.size() - myIndex.index}"></c:out></td>
-										<td><c:out value="${t.detail}"></c:out></td>
-										<td><c:out value="${t.currency} "></c:out><c:out value="${t.amount}"></c:out></td>
-										<td><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
-										<td><c:out value="${t.getCategoryName()}"></c:out></td>
-										<td><c:out value="${t.getTransactionType()}"></c:out></td>
+										<td style="display:none;" name="t_id_${t.transactionID}" id="t_id_${t.transactionID}"><c:out value="${t.transactionID}"></c:out></td>
+										<td name="t_pos_${t.transactionID}" id="t_pos_${t.transactionID}"><c:out value="${requestScope.transactionList.size() - myIndex.index}"></c:out></td>
+										<td name="t_detail_${t.transactionID}" id="t_detail_${t.transactionID}"><c:out value="${t.detail}"></c:out></td>
+										<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><c:out value="${t.amount}"></c:out></td>
+										<td name="t_date_${t.transactionID}" id="t_date_${t.transactionID}"><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
+										<td name="t_cat_${t.transactionID}" id="t_cat_${t.transactionID}"><c:out value="${t.getCategoryName()}"></c:out></td>
+										<td name="t_type_${t.transactionID}" id="t_type_${t.transactionID}"><c:out value="${t.getTransactionType()}"></c:out></td>
 										<td>
 											<div class="form-group">
-												<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return false">
+												<form action="#" method="POST">
+													<input type="hidden" name="transactionID" value="${t.transactionID }"/>
 													<input type="hidden" name="action" value="editTransaction"/>
-													<c:choose>
-														<c:when test="${t.isIncome() }">
-															<button style="min-width:100px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalIncome">Edit</button>
-														</c:when>
-														<c:otherwise>
-															<button style="min-width:100px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalExpense">Edit</button>
-														</c:otherwise>
-													</c:choose>
+													<button style="min-width:100px" type="submit" class="btn btn-warning" data-toggle="modal" data-target="#myModalIncomeExpense">Edit</button>
 												</form>
 											</div>
 											<div class="form-group">
@@ -164,14 +158,14 @@
 		</c:choose>
 		
 		<!-- Modal -->
-	    <div class="modal fade" id="myModalExpense" role="dialog">
+	    <div class="modal fade" id="myModalIncomeExpense" role="dialog">
 	      <div class="modal-dialog">
 	    
 	        <!-- Modal content-->
 	        <div class="modal-content">
 	          <div class="modal-header">
 	            <button type="button" class="close" data-dismiss="modal">&times;</button>
-	            <h4 class="modal-title">Edit Transaction #...</h4>
+	            <h4 class="modal-title" name="title" id="title">Edit Transaction #...</h4>
 	          </div>
 	          <div class="modal-body">
 
@@ -179,7 +173,17 @@
 					<label>Details <label style="color: red">*</label></label> <input
 						type="text" class="form-control" id="details"
 						name="details" placeholder="Details..."
-						value="${param['details']}" />
+						value="" />
+				</div>
+				
+				<div class="form-group" id="div-currency" name="div-currency">
+			  		<label>Currency<label style="color:red">*</label></label>
+			  		<br/>
+					<select id="currency" name="currency" class="form-control">		
+						<c:forEach var="cur" items="${currency}">			
+							<option value="${cur.getShortName()}">${cur.getLongName()} - ${cur.getShortName()}</option>
+						</c:forEach>
+					</select> 
 				</div>
 				
 				<div class="form-group" id="div-amount" name="div-amount">
@@ -188,9 +192,16 @@
 						<span class="input-group-addon">$</span>
 						<input type="number" class="form-control" id="amount"
 							name="amount" placeholder="Amount..."
-							value="${param['amount']}" 
+							value="" 
 							step="0.01" min="0.00"/>
 					</div>
+				</div>
+				
+				<div class="form-group" id="div-from-date" name="div-from-date">
+					<label>Transaction Date / Recurrence Starting Date<label style="color: red">*</label></label> <input
+						type="text" class="form-control datepicker" id="transaction_date"
+						name="transaction_date" placeholder="Transaction Date..."
+						value="${param['transaction_date']}" />
 				</div>
 				
 				<div class="form-group" id="div-category" name="div-category">
@@ -199,40 +210,29 @@
 							<option value="" selected>Please Select</option>
 							<c:forEach items="${category}" var="c">
 								<c:if test="${ c.getCategoryID() != 1 && c.getCategoryID() != 2 }">
-									<!--<c:choose>
-										<c:when test="${param['category'] == c.getCategoryID()}">
-											<option value="${c.getCategoryID()}" selected>${c.getCategory()}</option>
-										</c:when>
-										<c:otherwise>-->
-											<option value="${c.getCategoryID()}">${c.getCategory()}</option>
-										<!--</c:otherwise>
-									</c:choose>-->
+									<option value="${c.getCategoryID()}">${c.getCategory()}</option>
 								</c:if>
 							</c:forEach>
 						</select>
 					</div>
-				
-	          </div>
-	          <div class="modal-footer">
-	            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	          </div>
-	        </div>
-	      </div>
-	    </div>
-	    
-	    <div class="modal fade" id="myModalIncome" role="dialog">
-	      <div class="modal-dialog">
-	    
-	        <!-- Modal content-->
-	        <div class="modal-content">
-	          <div class="modal-header">
-	            <button type="button" class="close" data-dismiss="modal">&times;</button>
-	            <h4 class="modal-title">Edit Transaction #...</h4>
-	          </div>
-	          <div class="modal-body">
-	          	
-	          	
 	          
+		          <div class="form-group" id="div-transaction-type"
+					name="div-transaction-type">
+					<label>Transaction Type <label style="color: red">*</label></label>
+					<div class="radio">
+						<label><input type="radio" name="transactionType"
+							value="income" id="income">Income</label>
+					</div>
+					<div class="radio">
+						<label><input type="radio" name="transactionType"
+							value="expense" id="expense" checked>Expense</label>
+					</div>
+				 </div>
+		       </div>
+	          
+	          <div class="modal-footer">
+	          	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	            <button type="button" class="btn btn-default">Update</button>
 	          </div>
 	        </div>
 	      </div>
@@ -240,6 +240,155 @@
 		
 		<%@ include file="footer.jsp"%>
 	</div>
+	
+	<script type="text/javascript">
+		$("input[type='radio'][name='transactionType']").change(function(){
+				
+		    var selected = $("input[type='radio'][name='transactionType']:checked").val();
+	
+		    if(selected == "income") var opts = [
+		        {name:"Please Select", val:""},
+		        {name:"Business", val:"1"},
+		        {name:"Interest", val:"2"},
+		        {name:"Others", val:"0"}
+		    ];
+	
+		    else var opts = [
+		      	{name:"Please Select", val:""},
+		        {name:"Accounting/Legal", val:"3"},
+		        {name:"Auto", val:"4"},
+		        {name:"Capital Expenditure", val:"5"},
+		        {name:"Education", val:"6"},
+		        {name:"Food/Drink", val:"7"},
+		        {name:"Health", val:"8"},
+		        {name:"Maintenance", val:"9"},
+		        {name:"Office", val:"10"},
+		        {name:"Others", val:"0"},
+		        {name:"Postage", val:"11"},
+		        {name:"Properties", val:"12"},
+		        {name:"Rent", val:"13"},
+		        {name:"Taxes", val:"14"},
+		        {name:"Telephone/Mobile", val:"15"},
+		        {name:"Utilities", val:"16"}
+		    ];
+	
+		    $("#categoryOption").empty();
+	
+		    $.each(opts, function(k,v){
+		        $("#categoryOption").append("<option value='"+v.val+"'>"+v.name+"</option>");
+		    });
+		});
+	</script>
+	
+	<script type="text/javascript">
+		$('form').submit( function(event) {
+	       	var form = this;
+	       		       	
+			if (form.action.value == 'editTransaction'){
+				var opts = [
+					{name:"Business", val:"1"},
+					{name:"Interest", val:"2"},
+					{name:"Others", val:"0"},
+			      	{name:"Please Select", val:""},
+			        {name:"Accounting/Legal", val:"3"},
+			        {name:"Auto", val:"4"},
+			        {name:"Capital Expenditure", val:"5"},
+			        {name:"Education", val:"6"},
+			        {name:"Food/Drink", val:"7"},
+			        {name:"Health", val:"8"},
+			        {name:"Maintenance", val:"9"},
+			        {name:"Office", val:"10"},
+			        {name:"Others", val:"0"},
+			        {name:"Postage", val:"11"},
+			        {name:"Properties", val:"12"},
+			        {name:"Rent", val:"13"},
+			        {name:"Taxes", val:"14"},
+			        {name:"Telephone/Mobile", val:"15"},
+			        {name:"Utilities", val:"16"}
+			   ];
+				        
+				var transactionID = form.transactionID.value;
+				var transactionPos = document.getElementById('t_pos_' + transactionID).innerHTML;
+				var transactionDetail = document.getElementById('t_detail_' + transactionID).innerHTML;
+				var transactionCurrencyAmount = document.getElementById('t_cur_amt_' + transactionID).innerHTML;
+				var transactionDate = document.getElementById('t_date_' + transactionID).innerHTML;
+				var transactionCategory = document.getElementById('t_cat_' + transactionID).innerHTML;
+				var transactionType = document.getElementById('t_type_' + transactionID).innerHTML;
+				
+				var array = transactionCurrencyAmount.split(" ");
+				var currency = array[0];
+				var amount = array[1];
+				var category = '';
+				
+				$.each(opts, function(k,v){
+			        if (v.name === transactionCategory){
+			        	category = v.val;
+			        	return;
+			        }
+			    });
+								
+				document.getElementById('title').innerHTML = 'Edit Transaction #' + transactionPos;
+				document.getElementById('details').value = transactionDetail;
+				document.getElementById('currency').value = currency;
+				document.getElementById('amount').value = amount;
+				document.getElementById('transaction_date').value = transactionDate;
+				
+				if (transactionType == 'Income') {
+					var opts = [
+						{name:"Please Select", val:""},
+					    {name:"Business", val:"1"},
+					    {name:"Interest", val:"2"},
+					    {name:"Others", val:"0"}
+					];
+           	
+					$("#categoryOption").empty();
+					                     	
+            		$.each(opts, function(k,v){
+           		        $("#categoryOption").append("<option value='"+v.val+"'>"+v.name+"</option>");
+           		    });
+            		
+					document.getElementById('income').checked = true;
+					document.getElementById('expense').checked = false;
+				}
+				else {
+					var opts = [
+             			{name:"Please Select", val:""},
+             		    {name:"Accounting/Legal", val:"3"},
+             		   	{name:"Auto", val:"4"},
+             		 	{name:"Capital Expenditure", val:"5"},
+             			{name:"Education", val:"6"},
+             			{name:"Food/Drink", val:"7"},
+             		  	{name:"Health", val:"8"},
+             		  	{name:"Maintenance", val:"9"},
+             		   	{name:"Office", val:"10"},
+             		 	{name:"Others", val:"0"},
+             		   	{name:"Postage", val:"11"},
+             		    {name:"Properties", val:"12"},
+             		    {name:"Rent", val:"13"},
+             		    {name:"Taxes", val:"14"},
+             		    {name:"Telephone/Mobile", val:"15"},
+             		    {name:"Utilities", val:"16"}
+             		];
+					
+					$("#categoryOption").empty();
+                 	
+            		$.each(opts, function(k,v){
+           		        $("#categoryOption").append("<option value='"+v.val+"'>"+v.name+"</option>");
+           		    });
+					
+					document.getElementById('income').checked = false;
+					document.getElementById('expense').checked = true;
+				}
+				
+				document.getElementById('categoryOption').value = category;
+		       	
+			    event.preventDefault();
+			}
+			else {
+				event.preventDefault();
+			}
+		});
+	</script>
 
 	<script type="text/javascript">
 	    function populateDefaultValues() {
@@ -312,6 +461,20 @@
 					 } 
 				});
 	    }
+	    
+	    function populateDefaultValuesTransaction(){
+	    	var today = new Date();
+	    	
+	    	$('#transaction_date').val($.datepicker.formatDate('dd MM yy', today)).datepicker(
+	    		{dateFormat: 'dd MM yy', maxDate : 0,
+					 onClose: function(){
+						 var newDate = $('#transaction_date').val();
+						 
+						 if (newDate == '' || newDate == null)
+							 populateDefaultValues();
+					 } 
+	    		});
+	    }
 	
 		$(document).ready(function() {
 			if ($('#from_date').val() == "" || $('#to_date').val() == ""){
@@ -320,6 +483,8 @@
 			else{
 				populateGivenValues();
 			}
+			
+			populateDefaultValuesTransaction();
 		});
 	</script>
 
@@ -422,8 +587,6 @@
 	        })
 	    });
 	    </c:if>
-	    
     </script>
-
 </body>
 </html>

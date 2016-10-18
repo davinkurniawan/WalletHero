@@ -55,7 +55,7 @@ public class AddTransactionCommand implements Command {
 				String type = request.getParameter("oneOff");
 				int category = Integer.parseInt(request.getParameter("categoryOption"));
 
-				String startingDate = (request.getParameter("from_date") != null) ? request.getParameter("from_date")
+				String startingDate = (request.getParameter("transaction_date") != null) ? request.getParameter("transaction_date")
 						: "";
 				SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
 				Date date = null;
