@@ -343,6 +343,12 @@ public class ProfileCommand implements Command {
 					break;
 				
 				case DELETE_ACCOUNT:
+
+					if (dao.deleteAllUserData(user.getUserID())){
+						//TODO send email
+					}
+					
+					
 					break;
 					
 				case DEALS:

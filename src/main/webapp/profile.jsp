@@ -240,7 +240,7 @@
 	      			</div>
 	
 	          		<div class="form-group" id="div-delete-account" name="div-delete-account">
-		      			<form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete your WalletHero Account?');">
+		      			<form action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete your WalletHero Account? (All of your data would be unrecoverable.)');">
 		          			<input type="hidden" name="action" value="delete_account"/>	
 							<button style="min-width:150px" type="submit" class="btn btn-danger">Delete Account</button>	
 		      			</form>

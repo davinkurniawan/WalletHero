@@ -1732,9 +1732,13 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 	@Override
 	public boolean deleteUserCompletely(int userID) {
-		// boolean result = true;
+		boolean result = true;
+		
+		
+		//TODO TODO TODO
+		
 		// TODO
-		return true;
+		return result;
 	}
 
 	@Override
