@@ -862,7 +862,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM transaction WHERE id = ?;");
+			PreparedStatement stmt = conn.prepareStatement("SELECT t.*, c.name FROM transaction t LEFT JOIN category c ON c.id = t.category_id WHERE t.id = ?;");
 
 			stmt.setInt(1, transactionID);
 
@@ -877,7 +877,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				t.setDetail(rs.getString("detail"));
 				t.setAmount(rs.getBigDecimal("amount"));
 				t.setIsIncome(rs.getBoolean("is_income"));
-
+				t.setCategoryID(rs.getInt("category_id"));
+				t.setCategoryName(rs.getString("name"));
+				t.setCurrency(rs.getString("currency_short_name"));
+				
 				int isReccurence = rs.getInt("recur_id");
 
 				if (isReccurence == -1) {

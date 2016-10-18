@@ -163,78 +163,85 @@
 	    
 	        <!-- Modal content-->
 	        <div class="modal-content">
-	          <div class="modal-header">
-	            <button type="button" class="close" data-dismiss="modal">&times;</button>
-	            <h4 class="modal-title" name="title" id="title">Edit Transaction #...</h4>
-	          </div>
-	          <div class="modal-body">
+	        
+			<form action="${applicationScope['ROUTER_VIEWTRANSACTIONS']}" method="POST" onSubmit="return confirm('Are you sure you want to edit this Transaction?');">
+	        
+	       		<input type="hidden" id="transactionID" name="transactionID"/>
+				<input type="hidden" name="action" value="editTransactionReal"/> 
 
-	            <div class="form-group" id="div-details" name="div-details">
-					<label>Details <label style="color: red">*</label></label> <input
-						type="text" class="form-control" id="details"
-						name="details" placeholder="Details..."
-						value="" />
-				</div>
-				
-				<div class="form-group" id="div-currency" name="div-currency">
-			  		<label>Currency<label style="color:red">*</label></label>
-			  		<br/>
-					<select id="currency" name="currency" class="form-control">		
-						<c:forEach var="cur" items="${currency}">			
-							<option value="${cur.getShortName()}">${cur.getLongName()} - ${cur.getShortName()}</option>
-						</c:forEach>
-					</select> 
-				</div>
-				
-				<div class="form-group" id="div-amount" name="div-amount">
-					<label>Amount <label style="color: red">*</label></label> 
-					<div class="input-group">
-						<span class="input-group-addon">$</span>
-						<input type="number" class="form-control" id="amount"
-							name="amount" placeholder="Amount..."
-							value="" 
-							step="0.01" min="0.00"/>
+		          <div class="modal-header">
+		            <button type="button" class="close" data-dismiss="modal">&times;</button>
+		            <h4 class="modal-title" name="title" id="title">Edit Transaction #...</h4>
+		          </div>
+		          <div class="modal-body">
+	
+		            <div class="form-group" id="div-details" name="div-details">
+						<label>Details <label style="color: red">*</label></label> <input
+							type="text" class="form-control" id="details"
+							name="details" placeholder="Details..."
+							value="" />
 					</div>
-				</div>
-				
-				<div class="form-group" id="div-from-date" name="div-from-date">
-					<label>Transaction Date / Recurrence Starting Date<label style="color: red">*</label></label> <input
-						type="text" class="form-control datepicker" id="transaction_date"
-						name="transaction_date" placeholder="Transaction Date..."
-						value="${param['transaction_date']}" />
-				</div>
-				
-				<div class="form-group" id="div-category" name="div-category">
-						<label>Category <label style="color: red">*</label></label> <br />
-						<select id="categoryOption" name="categoryOption" class="form-control">
-							<option value="" selected>Please Select</option>
-							<c:forEach items="${category}" var="c">
-								<c:if test="${ c.getCategoryID() != 1 && c.getCategoryID() != 2 }">
-									<option value="${c.getCategoryID()}">${c.getCategory()}</option>
-								</c:if>
+					
+					<div class="form-group" id="div-currency" name="div-currency">
+				  		<label>Currency<label style="color:red">*</label></label>
+				  		<br/>
+						<select id="currency" name="currency" class="form-control">		
+							<c:forEach var="cur" items="${currency}">			
+								<option value="${cur.getShortName()}">${cur.getLongName()} - ${cur.getShortName()}</option>
 							</c:forEach>
-						</select>
+						</select> 
 					</div>
-	          
-		          <div class="form-group" id="div-transaction-type"
-					name="div-transaction-type">
-					<label>Transaction Type <label style="color: red">*</label></label>
-					<div class="radio">
-						<label><input type="radio" name="transactionType"
-							value="income" id="income">Income</label>
+					
+					<div class="form-group" id="div-amount" name="div-amount">
+						<label>Amount <label style="color: red">*</label></label> 
+						<div class="input-group">
+							<span class="input-group-addon">$</span>
+							<input type="number" class="form-control" id="amount"
+								name="amount" placeholder="Amount..."
+								value="" 
+								step="0.01" min="0.00"/>
+						</div>
 					</div>
-					<div class="radio">
-						<label><input type="radio" name="transactionType"
-							value="expense" id="expense" checked>Expense</label>
+					
+					<div class="form-group" id="div-from-date" name="div-from-date">
+						<label>Transaction Date / Recurrence Starting Date<label style="color: red">*</label></label> <input
+							type="text" class="form-control datepicker" id="transaction_date"
+							name="transaction_date" placeholder="Transaction Date..."
+							value="${param['transaction_date']}" />
 					</div>
-				 </div>
-		       </div>
-	          
-	          <div class="modal-footer">
-	          	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	            <button type="button" class="btn btn-default">Update</button>
-	          </div>
-	        </div>
+					
+					<div class="form-group" id="div-category" name="div-category">
+							<label>Category <label style="color: red">*</label></label> <br />
+							<select id="categoryOption" name="categoryOption" class="form-control">
+								<option value="" selected>Please Select</option>
+								<c:forEach items="${category}" var="c">
+									<c:if test="${ c.getCategoryID() != 1 && c.getCategoryID() != 2 }">
+										<option value="${c.getCategoryID()}">${c.getCategory()}</option>
+									</c:if>
+								</c:forEach>
+							</select>
+						</div>
+		          
+			          <div class="form-group" id="div-transaction-type"
+						name="div-transaction-type">
+						<label>Transaction Type <label style="color: red">*</label></label>
+						<div class="radio">
+							<label><input type="radio" name="transactionType"
+								value="income" id="income">Income</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="transactionType"
+								value="expense" id="expense" checked>Expense</label>
+						</div>
+					 </div>
+			       </div>
+		          
+		          <div class="modal-footer">
+		          	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		            <button type="submit" class="btn btn-default">Update</button>
+		          </div>
+		       </form>
+		  	</div>
 	      </div>
 	    </div>
 		
@@ -326,7 +333,8 @@
 			        	return;
 			        }
 			    });
-								
+				
+				document.getElementById('transactionID').value = transactionID;
 				document.getElementById('title').innerHTML = 'Edit Transaction #' + transactionPos;
 				document.getElementById('details').value = transactionDetail;
 				document.getElementById('currency').value = currency;
@@ -383,6 +391,11 @@
 				document.getElementById('categoryOption').value = category;
 		       	
 			    event.preventDefault();
+			}
+			else if (form.action.value == 'editTransactionReal') {
+				setTimeout( function () { 
+			        form.submit();
+			    }, 100);
 			}
 			else {
 				event.preventDefault();

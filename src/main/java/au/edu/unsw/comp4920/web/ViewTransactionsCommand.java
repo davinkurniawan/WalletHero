@@ -55,28 +55,30 @@ public class ViewTransactionsCommand implements Command {
 											+ transactionID);
 						}
 					}
-				} else if (action != null && action.equalsIgnoreCase("editTransaction")) {
+				} else if (action != null && action.equalsIgnoreCase("editTransactionReal")) {
 					Transaction t_new = t;
-					// Recurrence
-					// TODO
+					System.err.println("Old Object = " + t.toString());
 
-					boolean result = dao.updateUserTransaction(t_new);
-
-					if (result) {
-						System.out.println(
-								"ViewTransactionsCommand: Successfully updated transaction ID: " + transactionID);
-					}
-
-					if (t.isRecurrence()) {
-						// result = dao.deleteRecurrence(transactionID);
-						// TODO
+					if (request.getParameter("details") != null){
+						String detail = request.getParameter("details");
+						String currency = request.getParameter("currency");
+						
+						t_new.setDetail(detail);
+						t_new.setCurrency(currency);
+						
+						System.err.println("New Object = " + t_new.toString());
+						
+						/*boolean result = dao.updateUserTransaction(t_new);
 
 						if (result) {
-							System.out.println(
-									"ViewTransactionsCommand: Successfully updated recurrence with transaction ID: "
-											+ transactionID);
-						}
+							System.out.println("ViewTransactionsCommand: Successfully updated transaction ID: " + transactionID);
+						}*/
 					}
+					else{
+						//TODO
+					}
+
+					// Recurrence is not supported in edit transaction.
 				}
 			}
 		}
