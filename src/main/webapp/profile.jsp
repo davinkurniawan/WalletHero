@@ -209,8 +209,6 @@
 						            <col class="col-md-2">
 						        </colgroup>
 						        <tbody>
-							
-							
 									<% int count = 0; %>
 									<c:forEach items="${categories}" var="c">
 										<% if (count % 5 == 0) out.println ("<tr>"); %>
