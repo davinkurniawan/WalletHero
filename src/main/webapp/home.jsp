@@ -79,7 +79,7 @@
       
       <div class="row featurette">
       	<div class="col-md-12">
-      		<h2 class="featurette-heading">Other Contents</h2>
+      		<h2 class="featurette-heading">Recommended For You</h2>
       	</div>
       	<div class="row">
       	  <c:choose>
