@@ -1829,13 +1829,19 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			String query = "UPDATE transaction SET date = ?, detail = ?, amount = ? WHERE category_id = ?;";
+			//"INSERT INTO transaction (date, detail, amount, is_income, recur_id, category_id, currency_short_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+
+			
+			String query = "UPDATE transaction SET date = ?, detail = ?, amount = ?, is_income = ?, category_id = ?, currency_short_name = ? WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(query);
 
 			stmt.setString(1, t.getDate());
 			stmt.setString(2, t.getDetail());
 			stmt.setBigDecimal(3, t.getAmount());
-			stmt.setInt(4, t.getCategoryID());
+			stmt.setBoolean(4, t.isIncome());
+			stmt.setInt(5, t.getCategoryID());
+			stmt.setString(6, t.getCurrency());
+			stmt.setInt(7, t.getTransactionID());
 
 			int n = stmt.executeUpdate();
 

@@ -172,6 +172,7 @@
 		          <div class="modal-header">
 		            <button type="button" class="close" data-dismiss="modal">&times;</button>
 		            <h4 class="modal-title" name="title" id="title">Edit Transaction #...</h4>
+		            <h5 style="color: Red" name="error_message" id="error_message"></h5>
 		          </div>
 		          <div class="modal-body">
 	
@@ -288,6 +289,56 @@
 	</script>
 	
 	<script type="text/javascript">
+		function isNumeric(n) {
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+	
+		function validator_add_transaction(form) {
+			var details = form.details.value.trim();
+			var amount = form.amount.value.trim();
+	
+			var e = document.getElementById("categoryOption");
+			var categoryOption = e.options[e.selectedIndex].text;
+		
+			amount = amount.replace(" ", "");
+	
+			if (details.length == 0) {
+				document.getElementById("error_message").innerHTML = "Please enter the Transaction Detail!";
+				document.getElementById("div-details").className = "form-group has-error";
+				document.getElementById("div-amount").className = "form-group";
+				document.getElementById("div-category").className = "form-group";
+	
+				form.details.focus();
+				return false;
+			} else if (amount.length == 0) {
+				document.getElementById("error_message").innerHTML = "Please enter the Transaction Amount!";
+				document.getElementById("div-details").className = "form-group";
+				document.getElementById("div-amount").className = "form-group has-error";
+				document.getElementById("div-category").className = "form-group";
+	
+				form.amount.focus();
+				return false;
+			} else if (!isNumeric(amount)) {
+				document.getElementById("error_message").innerHTML = "Please enter a valid Amount!";
+				document.getElementById("div-details").className = "form-group";
+				document.getElementById("div-amount").className = "form-group has-error";
+				document.getElementById("div-category").className = "form-group";
+	
+				form.amount.focus();
+				return false;
+			} else if (categoryOption == 'Please Select') {
+				document.getElementById("error_message").innerHTML = "Please choose the Category!";
+				document.getElementById("div-details").className = "form-group";
+				document.getElementById("div-amount").className = "form-group";
+				document.getElementById("div-category").className = "form-group has-error";
+	
+				form.categoryOption.focus();
+				return false;
+			}
+	
+			return true;
+		};
+	
 		$('form').submit( function(event) {
 	       	var form = this;
 	       		       	
@@ -393,12 +444,20 @@
 			    event.preventDefault();
 			}
 			else if (form.action.value == 'editTransactionReal') {
-				setTimeout( function () { 
-			        form.submit();
-			    }, 100);
+				event.preventDefault();
+				
+				if (validator_add_transaction(this)){
+					setTimeout( function () { 
+				        form.submit();
+				    }, 100);
+				}
 			}
 			else {
 				event.preventDefault();
+				
+				setTimeout( function () { 
+			        form.submit();
+			    }, 100);
 			}
 		});
 	</script>

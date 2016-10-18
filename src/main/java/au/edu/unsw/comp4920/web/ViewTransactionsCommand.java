@@ -59,20 +59,61 @@ public class ViewTransactionsCommand implements Command {
 					Transaction t_new = t;
 					System.err.println("Old Object = " + t.toString());
 
-					if (request.getParameter("details") != null){
-						String detail = request.getParameter("details");
+					if (request.getParameter("details") != null && request.getParameter("transactionType") != null
+							&& request.getParameter("amount") != null && request.getParameter("currency") != null
+							&& request.getParameter("categoryOption") != null && request.getParameter("transaction_date") != null){
+						String details = request.getParameter("details");
+						String transactionType = request.getParameter("transactionType");
+						BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
 						String currency = request.getParameter("currency");
+						int category = Integer.parseInt(request.getParameter("categoryOption"));
+
+						String startingDate = (request.getParameter("transaction_date") != null) ? request.getParameter("transaction_date") : "";
+						SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
+						Date date = null;
+
+						if (startingDate.equals("")) {
+							date = new Date();
+						} 
+						else {
+							try {
+								date = df.parse(startingDate);
+							} 
+							catch (ParseException e) {
+								e.printStackTrace();
+							}
+						}
+
+						Boolean isIncome = false;
+						if (transactionType.equals("income")) {
+							isIncome = true;
+						} 
+						else if (transactionType.equals("expense")) {
+							isIncome = false;
+						}
 						
-						t_new.setDetail(detail);
+						t_new.setDetail(details);
+						t_new.setAmount(value);
+						t_new.setIsIncome(isIncome);
 						t_new.setCurrency(currency);
+						t.setCategoryID(category);
+
+						try {
+							t.setDate(df.format(date));
+						} 
+						catch (NullPointerException e) {
+							response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=no");
+							return;
+						}
+
 						
 						System.err.println("New Object = " + t_new.toString());
 						
-						/*boolean result = dao.updateUserTransaction(t_new);
+						boolean result = dao.updateUserTransaction(t_new);
 
 						if (result) {
 							System.out.println("ViewTransactionsCommand: Successfully updated transaction ID: " + transactionID);
-						}*/
+						}
 					}
 					else{
 						//TODO
