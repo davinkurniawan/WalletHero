@@ -354,15 +354,18 @@ public class ProfileCommand implements Command {
 				case DEALS:
 					List<String> category;
 					String deals = "";
+					
 					if (request.getParameterValues("category") != null) {
 						for (String s : request.getParameterValues("category")) {
 							deals += s;
 							deals += ",";
 						}
 					}
+					
 					if (deals.equals(preference.getDeals())) {
 						category = preference.getDealsArrayList();
-					} else {
+					} 
+					else {
 						Preference newP = preference.clone();
 						newP.setDeals(deals);
 						dao.updatePreference(newP);
@@ -382,7 +385,7 @@ public class ProfileCommand implements Command {
 		
 		List<DealsCategory> categories = new ArrayList<DealsCategory>();
 		if (session.getAttribute("categories") == null) {
-			// get categories of deals to select from
+			// Get categories of deals to select from.
 			JSONObject categories_json = DealsCommand.sendAPIRequest(Constants.API_URL + "/categories");
 			JSONArray categories_array = categories_json.getJSONArray("categories");
 			ObjectMapper mapper = new ObjectMapper();
@@ -392,9 +395,14 @@ public class ProfileCommand implements Command {
 				DealsCategory c = mapper.readValue(category, DealsCategory.class);
 				categories.add(c);
 			}
+			
 			session.setAttribute("categories", categories);
 		}
 		
+		// There might be an update to the database.
+		user = dao.getUser(sid);
+		preference = dao.getUserPreference(sid);
+				
         request.setAttribute(Constants.USER, user);
         request.setAttribute(Constants.PREFERENCE, preference);
         request.setAttribute("deals_preference", preference.getDealsArrayList());

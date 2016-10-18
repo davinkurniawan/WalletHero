@@ -120,7 +120,7 @@
 										<td style="display:none;" name="t_id_${t.transactionID}" id="t_id_${t.transactionID}"><c:out value="${t.transactionID}"></c:out></td>
 										<td name="t_pos_${t.transactionID}" id="t_pos_${t.transactionID}"><c:out value="${requestScope.transactionList.size() - myIndex.index}"></c:out></td>
 										<td name="t_detail_${t.transactionID}" id="t_detail_${t.transactionID}"><c:out value="${t.detail}"></c:out></td>
-										<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><c:out value="${t.amount}"></c:out></td>
+										<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><fmt:formatNumber value="${t.amount}" minFractionDigits="2" maxFractionDigits="2"/></td>
 										<td name="t_date_${t.transactionID}" id="t_date_${t.transactionID}"><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
 										<td name="t_cat_${t.transactionID}" id="t_cat_${t.transactionID}"><c:out value="${t.getCategoryName()}"></c:out></td>
 										<td><c:out value="${t.getRecurrenceType()}"></c:out></td>
@@ -378,6 +378,8 @@
 				var array = transactionCurrencyAmount.split(" ");
 				var currency = array[0];
 				var amount = array[1];
+				amount = amount.replace(",", "");
+				amount = amount.replace(",", "");
 				var category = '';
 				
 				$.each(opts, function(k,v){

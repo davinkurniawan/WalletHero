@@ -196,8 +196,9 @@
 	        
 	       	<div class="row featurette">
 	        	<div class="col-md-12">
+	        		 <h3 class="featurette-heading">Update Your Preferred Deals</h3>
+	        	
 					<form name="update_deals" action="${applicationScope['ROUTER_PROFILE']}" method="POST">
-						<br> <label>Preferred deals</label>
 						<div class="form-group checkbox" id="div-category">
 							<table class="table table-striped">
 						        <colgroup>
@@ -446,23 +447,18 @@
 	       	}
 	       	else if (form == document.forms["update_deals"]) {
 	       		
-	       		if (validator_update_preference(this)) {
-	       			document.getElementById("loadertext").innerHTML = 'Updating Your Preferences...';
-	       			
-	       			document.getElementById('div-loading').style.display = 'block';	
-			 		document.getElementById('div-content').style.display = 'none';
-			 		document.getElementById('div-footer').style.display = 'none';
-			 		document.getElementById("error_message").innerHTML = '';
-			 		
-		       		event.preventDefault();
-		       		
-		       		setTimeout( function () { 
-				        form.submit();
-				    }, 1000);
-		       	}
-	       		else {
-	       			event.preventDefault();
-	       		}
+       			document.getElementById("loadertext").innerHTML = 'Updating Your Deals...';
+       			
+       			document.getElementById('div-loading').style.display = 'block';	
+		 		document.getElementById('div-content').style.display = 'none';
+		 		document.getElementById('div-footer').style.display = 'none';
+		 		document.getElementById("error_message").innerHTML = '';
+		 		
+	       		event.preventDefault();
+	       		
+	       		setTimeout( function () { 
+			        form.submit();
+			    }, 1000);
 	       	}
 	       	else {
 	       		event.preventDefault();

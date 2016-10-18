@@ -131,16 +131,23 @@ public class Preference {
 	}
 	
 	public String[] getDealsList() {
+		if (deals == null || deals.length() == 0){
+			return new String[0];
+		}
+		
 		return deals.split(",");
 	}
 	
 	public ArrayList<String> getDealsArrayList() {
-		String[] thisdeals = deals.split(",");
 		ArrayList<String> result = new ArrayList<String>();
-		
-		for (String d: thisdeals) {
-			if (!d.isEmpty())
-				result.add(d);
+
+		if (deals != null && deals.length() != 0){
+			String[] thisdeals = deals.split(",");
+			
+			for (String d: thisdeals) {
+				if (!d.isEmpty())
+					result.add(d);
+			}
 		}
 		
 		return result;

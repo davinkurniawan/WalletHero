@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -93,7 +94,7 @@
 									width="300" /></a>
 						      <div class="caption">
 						        <h3><a target="_blank" href="${i.url}">${i.short_title}</a></h3>
-						        <p>From $${i.value} down to $${i.price}</p>
+						        <p>From $<fmt:formatNumber value="${i.value}" minFractionDigits="2" maxFractionDigits="2"/> down to <b>$<fmt:formatNumber value="${i.price}" minFractionDigits="2" maxFractionDigits="2"/></b></p>
 						      </div>
 						    </div>
 						  </div>
