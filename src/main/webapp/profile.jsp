@@ -195,29 +195,41 @@
 	        <hr class="featurette-divider">
 	        
 	       	<div class="row featurette">
-	        	<div class="col-md-6">
+	        	<div class="col-md-12">
 					<form name="update_deals" action="${applicationScope['ROUTER_PROFILE']}" method="POST">
 						<br> <label>Preferred deals</label>
 						<div class="form-group checkbox" id="div-category">
-							<table>
-							<% int count = 0; %>
-							<c:forEach items="${categories}" var="c">
-								<% if (count % 8 == 0) out.println ("<tr>"); %>
-								<!-- <% out.println(count); %> -->
-								<c:set var="checked" scope="request" value=""></c:set>
-								<td style="width:1000px;">
-								<c:forEach items="${category}" var="i">
-									<c:choose>
-										<c:when test="${i == c.slug}">
-											<c:set var="checked" scope="request" value="checked"></c:set>
-										</c:when>
-									</c:choose>
-								</c:forEach>
-								<label><input type="checkbox" name="category"
-									id="categoryBox" value="${c.slug}" ${checked}> ${c.name}</label>
-								</td>
-								<%  count++;%>
-							</c:forEach>
+							<table class="table table-striped">
+						        <colgroup>
+						            <col class="col-md-2">
+						            <col class="col-md-2">
+						            <col class="col-md-2">
+						            <col class="col-md-2">
+						            <col class="col-md-2">
+						            <col class="col-md-2">
+						        </colgroup>
+						        <tbody>
+							
+							
+									<% int count = 0; %>
+									<c:forEach items="${categories}" var="c">
+										<% if (count % 5 == 0) out.println ("<tr>"); %>
+										<!-- <% out.println(count); %> -->
+										<c:set var="checked" scope="request" value=""></c:set>
+										<td style="width:20%">
+										<c:forEach items="${category}" var="i">
+											<c:choose>
+												<c:when test="${i == c.slug}">
+													<c:set var="checked" scope="request" value="checked"></c:set>
+												</c:when>
+											</c:choose>
+										</c:forEach>
+										<label><input type="checkbox" name="category"
+											id="categoryBox" value="${c.slug}" ${checked}> ${c.name}</label>
+										</td>
+										<%  count++;%>
+									</c:forEach>
+								</tbody>
 							</table>
 				          	<input type="hidden" name="action" value="update_deals"/>	
 							<button type="submit" class="btn btn-primary">Update</button>	
