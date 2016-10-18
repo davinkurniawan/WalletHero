@@ -215,7 +215,7 @@
 										<!-- <% out.println(count); %> -->
 										<c:set var="checked" scope="request" value=""></c:set>
 										<td style="width:20%">
-										<c:forEach items="${category}" var="i">
+										<c:forEach items="${deals_preference}" var="i">
 											<c:choose>
 												<c:when test="${i == c.slug}">
 													<c:set var="checked" scope="request" value="checked"></c:set>

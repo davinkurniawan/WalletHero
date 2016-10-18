@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
+import au.edu.unsw.comp4920.objects.Deal;
+import au.edu.unsw.comp4920.objects.Preference;
 import au.edu.unsw.comp4920.objects.Session;
 import au.edu.unsw.comp4920.objects.Transaction;
 import au.edu.unsw.comp4920.objects.User;
@@ -86,7 +94,36 @@ public class HomeCommand implements Command {
 			request.setAttribute("graphTypeExpense", graphType);
 		}
 		
+		Preference p = dao.getUserPreference(user.getUserID());
+		String req = Constants.API_URL + "/deals" + "?page=1";
+		String[] categories = p.getDealsList();
+		if (categories.length > 0) {
+			for (String s : categories) {
+				req += "&category_slugs=";
+				req += s;
+			}
+		}
 		
+		JSONObject deals_json = DealsCommand.sendAPIRequest(req);
+		
+		if (!deals_json.isNull("error")) {
+			request.setAttribute(Constants.ERROR, 1);
+			request.setAttribute(Constants.ERRORMSG, "Sorry, page does not exist!");
+		} 
+		else {
+			JSONObject json_query = deals_json.getJSONObject("query");
+			JSONArray array = deals_json.getJSONArray("deals");
+			ObjectMapper mapper = new ObjectMapper();
+			ArrayList<Deal> deals = new ArrayList<Deal>();
+			
+			for (int i = 0; i < array.length(); ++i) {
+				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
+				Deal d = mapper.readValue(deal, Deal.class);
+				deals.add(d); 
+			}
+			
+			request.setAttribute("deals_list", deals);
+		}
 		// Get Last Accessed
 		DateFormat df = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
 		

@@ -354,19 +354,23 @@ public class ProfileCommand implements Command {
 				case DEALS:
 					List<String> category;
 					String deals = "";
-					
-					for (String s : request.getParameterValues("category")) {
-						deals += s;
-						deals += ",";
+					if (request.getParameterValues("category") != null) {
+						for (String s : request.getParameterValues("category")) {
+							deals += s;
+							deals += ",";
+						}
 					}
-					
 					if (deals.equals(preference.getDeals())) {
 						category = preference.getDealsArrayList();
 					} else {
 						Preference newP = preference.clone();
 						newP.setDeals(deals);
 						dao.updatePreference(newP);
-						category = newP.getDealsArrayList();
+						if (request.getParameterValues("category") != null) {
+							category = newP.getDealsArrayList();
+						} else {
+							category = new ArrayList<String>();
+						}
 					}
 					
 					request.setAttribute("category", category);
@@ -393,6 +397,7 @@ public class ProfileCommand implements Command {
 		
         request.setAttribute(Constants.USER, user);
         request.setAttribute(Constants.PREFERENCE, preference);
+        request.setAttribute("deals_preference", preference.getDealsArrayList());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
 		rd.forward(request, response);
