@@ -87,7 +87,16 @@
           			PostgreSQL
           		</li>
           		<li>
+          			Spring Framework
+          		</li>
+          		<li>
           			HighChart.js
+          		</li>
+          		<li>
+          			Exporting.js
+          		</li>
+          		<li>
+          			Progressbar.js
           		</li>
           		<li style="color:red">
           			List here...
