@@ -108,7 +108,7 @@ public class Transaction {
 	}
 	
 	public String getRecurrenceType() {
-		return (this.isRecurrence()) ? "Yes" : "No";
+		return (this.getRecurrence() == 1) ? "Yes" : "No";
 	}
 
 	public int compareTo(Transaction t) {

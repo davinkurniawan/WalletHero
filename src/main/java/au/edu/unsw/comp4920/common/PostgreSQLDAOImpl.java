@@ -613,6 +613,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 						t.setIsIncome(income);
 						t.setCategoryName(categoryName);
 						t.setCurrency(currency);
+						t.setRecurrence(true);
 
 						transactions.add(t);
 					}

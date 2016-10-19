@@ -34,8 +34,11 @@
         		<c:when test="${ totalBudget < 0 }">
         			<p><b>Total Budget:</b> ${preferredCurrency} <label style="color:red"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></p>       	
         		</c:when>
-        		<c:otherwise>
+        		<c:when test="${ totalBudget > 0 }">
         			<p><b>Total Budget:</b> ${preferredCurrency} <label style="color:green"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></p>       	
+        		</c:when>
+        		<c:otherwise>
+        			<p><b>Total Budget:</b> ${preferredCurrency} <fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></p>       	
         		</c:otherwise>
         	</c:choose>
         	<p><b>Total Expense:</b> ${preferredCurrency} <fmt:formatNumber value="${totalExpense}" minFractionDigits="2" maxFractionDigits="2"/></p>
