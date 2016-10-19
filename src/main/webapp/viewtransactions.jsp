@@ -21,6 +21,19 @@
 	
 	<div class="container marketing">
 		<h2>${requestScope.transactionRange}</h2>
+		
+		<c:choose>
+			<c:when test="${errorMessage != null && errorFlg == 1}">
+				<div class="alert alert-danger">
+					<strong>Error!</strong> ${errorMessage}.
+				</div>
+			</c:when>
+			<c:when test="${errorMessage != null && errorFlg == 0}">
+				<div class="alert alert-success">
+					<strong>${errorMessage}.</strong>
+				</div>
+			</c:when>
+		</c:choose>
 
 		<hr class="featurette-divider">
 

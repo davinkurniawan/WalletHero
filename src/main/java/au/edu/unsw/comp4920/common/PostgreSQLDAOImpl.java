@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -1748,7 +1749,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		// Delete User.
 		result = this.deleteUser(userID);
 				
-		// TODO
 		return result;
 	}
 
@@ -1916,5 +1916,16 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public double getCurrentBudget() {
+		//TODO get the first date stored in the database.
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		System.out.println(sdf.format(new Date(0L)));
+		
+		return 0.0;
 	}
 }

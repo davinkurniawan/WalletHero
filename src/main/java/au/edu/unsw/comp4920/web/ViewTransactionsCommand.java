@@ -42,17 +42,26 @@ public class ViewTransactionsCommand implements Command {
 					boolean result = dao.deleteUserTransaction(transactionID);
 
 					if (result) {
-						System.out.println(
-								"ViewTransactionsCommand: Successfully deleted transaction ID: " + transactionID);
+						System.out.println("ViewTransactionsCommand: Successfully deleted transaction ID: " + transactionID);
+					}
+					else{
+						System.out.println("ViewTransactionsComand: Failed to delete the transaction.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Failed to Delete Your Transaction!");
 					}
 
 					if (t.isRecurrence()) {
 						result = dao.deleteRecurrence(transactionID);
 
 						if (result) {
-							System.out.println(
-									"ViewTransactionsCommand: Successfully deleted recurrence with transaction ID: "
-											+ transactionID);
+							System.out.println("ViewTransactionsCommand: Successfully deleted recurrence with transaction ID: " + transactionID);
+							request.setAttribute(Constants.ERROR, 0);
+							request.setAttribute(Constants.ERRORMSG, "Your Transaction has been delete!");
+						}
+						else{
+							System.out.println("ViewTransactionsComand: Failed to delete the transaction.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Failed to Delete Your Transaction!");
 						}
 					}
 				} else if (action != null && action.equalsIgnoreCase("editTransactionReal")) {
@@ -113,10 +122,19 @@ public class ViewTransactionsCommand implements Command {
 
 						if (result) {
 							System.out.println("ViewTransactionsCommand: Successfully updated transaction ID: " + transactionID);
+							request.setAttribute(Constants.ERROR, 0);
+							request.setAttribute(Constants.ERRORMSG, "Your Transaction has been updated!");
+						}
+						else{
+							System.out.println("ViewTransactionsComand: Failed to update the transaction.");
+							request.setAttribute(Constants.ERROR, 1);
+							request.setAttribute(Constants.ERRORMSG, "Failed to Update Your Transaction!");
 						}
 					}
 					else{
-						//TODO
+						System.out.println("ViewTransactionsComand: Failed as something was null.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 					}
 
 					// Recurrence is not supported in edit transaction.

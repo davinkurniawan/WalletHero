@@ -48,6 +48,8 @@ public class HomeCommand implements Command {
 		User user = dao.getUser(sid);
 		Session sess = dao.getSession(sid);
 		
+		//TODO
+		dao.getCurrentBudget();
 		
 		// Get Last 7 Days Transactions
 		
