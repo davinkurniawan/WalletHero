@@ -30,7 +30,7 @@ import au.edu.unsw.comp4920.objects.User;
  */
 public class ProfileCommand implements Command {
 	
-	private static enum Commands {PROFILE, PASSWORD, PREFERENCE, DELETE_DATA, DELETE_ACCOUNT, DEALS};
+	private static enum Commands {PROFILE, PASSWORD, PREFERENCE, DELETE_DATA, DISABLE_ACCOUNT, DELETE_ACCOUNT, DEALS};
 	
 	private static Commands commands (String s) {
 		if (s == null) return null;
@@ -38,6 +38,7 @@ public class ProfileCommand implements Command {
 		if (s.equalsIgnoreCase("update_password"   )) 	return Commands.PASSWORD;
 		if (s.equalsIgnoreCase("update_preferences")) 	return Commands.PREFERENCE;
 		if (s.equalsIgnoreCase("delete_user_data"  )) 	return Commands.DELETE_DATA;
+		if (s.equalsIgnoreCase("disable_account"	   )) 	return Commands.DISABLE_ACCOUNT;
 		if (s.equalsIgnoreCase("delete_account"	   )) 	return Commands.DELETE_ACCOUNT;
 		if (s.equalsIgnoreCase("update_deals"	   )) 	return Commands.DEALS;
 
@@ -341,6 +342,26 @@ public class ProfileCommand implements Command {
 					}
 					
 					break;
+					
+				case DISABLE_ACCOUNT:
+					
+					if (dao.disableUser(user.getUsername()) && dao.deleteAllSession(user.getUserID())){
+						this.sendDisableEmail(user.getEmail(), user, dao);
+						
+						request.setAttribute(Constants.ERROR, 2);
+						request.setAttribute(Constants.ERRORMSG, "Your account has been successfully disabled!");
+						
+						RequestDispatcher rd = request.getRequestDispatcher("/signin.jsp");
+						rd.forward(request, response);
+						return;
+					}
+					else{
+						System.err.println("ProfileCommand: Failed to disable user's account.");
+						request.setAttribute(Constants.ERROR, 1);
+						request.setAttribute(Constants.ERRORMSG, "Failed to Disable your Account!");
+					}
+					
+					break;
 				
 				case DELETE_ACCOUNT:
 
@@ -430,7 +451,7 @@ public class ProfileCommand implements Command {
 		// Send email here 
 		String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
 		content += "You recently requested to update your email for your WalletHero account. ";
-		content += "You must follow this link to upadte your email:";
+		content += "You must follow this link to update your email:";
 		content += "<br/><br/>";
 		content += Constants.SERVER + Constants.ROUTER + Constants.EMAILUPDATE_COMMAND;
 		content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
@@ -444,6 +465,31 @@ public class ProfileCommand implements Command {
 		
 		MailHelper mh = new MailHelper();
 		mh.sendEmail(email, "WalletHero - Email Update", content);
+	}
+	
+	private void sendDisableEmail(String email, User user, CommonDAO dao) {		
+		String token = UUID.randomUUID().toString();
+		dao.setToken(user, token);
+		System.out.println("Token: " + token);
+		
+		System.out.println("sending email to " + email);
+		
+		// Send email here 
+		String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
+		content += "You recently requested to disable your WalletHero account. ";
+		content += "If you want to re-enable your WalletHero Account again, please click the following link:";
+		content += "<br/><br/>";
+		content += Constants.SERVER + Constants.ROUTER + Constants.REENABLE_ACCOUNT_COMMAND;
+		content += "&username" + "=" + user.getUsername() + "&token"+ "=" + token;
+		content += "<br/><br/>";
+		content += "Have fun, and don't hesitate to contact us with your feedback.";
+		content += "<br/><br/>";
+		content += "WalletHero Team";
+		content += "<br/><br/>";
+		content += Constants.SERVER;
+		
+		MailHelper mh = new MailHelper();
+		mh.sendEmail(email, "WalletHero - Account Disabled", content);
 	}
 	
 	private void sendDeleteAccount(String email, User user) {

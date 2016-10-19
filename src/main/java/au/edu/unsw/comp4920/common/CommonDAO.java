@@ -11,7 +11,7 @@ public interface CommonDAO {
 	public boolean createUser(User u);
 	public boolean createDefaultUserDetails(int userID);
 	
-	public boolean disableUser(int userID);
+	public boolean disableUser(String username);
 	public boolean deleteUser(int userID); // Roll back on Sign Up Failure
 	public boolean deleteAllUserData(int userID);
 	public boolean deleteUserCompletely(int userID); // Delete completely
@@ -47,7 +47,7 @@ public interface CommonDAO {
 	
 	public String getToken(User u);
 	public boolean setToken(User u, String token);
-	public boolean setStatus(User u, int Status);
+	public boolean setStatus(String username, int Status);
 	
 	public boolean setPassword(User u, String hashedPassword);
 	public String getSalt(String userinfo);

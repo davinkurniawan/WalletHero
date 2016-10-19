@@ -53,6 +53,7 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.ADDGOAL_COMMAND, 			new AddGoalCommand());
 		_commands.put(Constants.VIEWGOALS_COMMAND, 			new ViewGoalsCommand());
 		_commands.put(Constants.HELP_COMMAND, 				new HelpCommand());
+		_commands.put(Constants.REENABLE_ACCOUNT_COMMAND, 	new ReEnableAccountCommand());
 
 		// Global Attributes to be accessed by JSP Files
 		ServletContext servletContext = getServletContext();
@@ -77,6 +78,7 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_ADDGOAL,     			Constants.ROUTER + Constants.ADDGOAL_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VIEWGOALS,    			Constants.ROUTER + Constants.VIEWGOALS_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_HELP,	    			Constants.ROUTER + Constants.HELP_COMMAND);
+        servletContext.setAttribute(Constants.ROUTER_REENABLE_ACCOUNT,	    Constants.ROUTER + Constants.REENABLE_ACCOUNT_COMMAND);
 	}
 
 	/*
@@ -109,7 +111,8 @@ public class ControllerServlet extends HttpServlet {
 							dest.equals(Constants.HELP_COMMAND) 			||
 							dest.equals(Constants.FORGOTPASSWORD_COMMAND)	||
 							dest.equals(Constants.RESETPASSWORD_COMMAND)	||
-							dest.equals(Constants.CURRENCYCONVERTER_COMMAND)) 
+							dest.equals(Constants.CURRENCYCONVERTER_COMMAND)||
+							dest.equals(Constants.REENABLE_ACCOUNT_COMMAND)) 
 							
 							? dest : Constants.SIGNIN_COMMAND;
 				}

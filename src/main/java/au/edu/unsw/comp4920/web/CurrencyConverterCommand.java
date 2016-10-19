@@ -14,6 +14,10 @@ import au.edu.unsw.comp4920.objects.Preference;
 
 public class CurrencyConverterCommand implements Command {
 	
+	public CurrencyConverterCommand(){
+		
+	}
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: CurrencyConverterCommand");

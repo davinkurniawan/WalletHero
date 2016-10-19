@@ -1134,7 +1134,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public boolean setStatus(User u, int status) {
+	public boolean setStatus(String username, int status) {
 		System.out.println("Inside setStatus: Now setting status.");
 		boolean result = true;
 		Connection conn = null;
@@ -1145,7 +1145,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			PreparedStatement stmt = conn.prepareStatement("UPDATE users SET status_id = ? WHERE username = ?;");
 			stmt.setInt(1, status);
-			stmt.setString(2, u.getUsername());
+			stmt.setString(2, username);
 
 			int n = stmt.executeUpdate();
 
@@ -1589,9 +1589,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public boolean disableUser(int userID) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean disableUser(String username) {
+		return this.setStatus(username, 3); // 3 is the status for disabled.
 	}
 
 	@Override

@@ -469,7 +469,7 @@
 	       	}
 	       	else if (form == document.forms["delete_user_data"]) {
 	       		
-	       		if (confirm('Are you sure you delete all of your data (Transactions and Goals)?')){
+	       		if (confirm('Are you sure you want to delete all of your data (Transactions and Goals)?')){
 					document.getElementById("loadertext").innerHTML = 'Deleting All of Your Data...';
 	       			
 	       			document.getElementById('div-loading').style.display = 'block';	
@@ -489,7 +489,7 @@
 	       	}       	
 			else if (form == document.forms["disable_account"]) {
 	       		
-	       		if (confirm('Are you sure you disable your Account? (You will not be able to logged in until you re-enabled your Account using the link sent to your email.)')){
+	       		if (confirm('Are you sure you want to disable your Account? (You will not be able to sign in until you re-enabled your Account using the link sent to your email.')){
 					document.getElementById("loadertext").innerHTML = 'Disabling Your Account...';
 	       			
 	       			document.getElementById('div-loading').style.display = 'block';	
@@ -500,7 +500,7 @@
 		       		event.preventDefault();
 		       		
 		       		setTimeout( function () { 
-				        //form.submit();
+				        form.submit();
 				    }, 1000);
 	       		}
 	       		else{
@@ -508,7 +508,7 @@
 	       		}
 	       	}
 			else if (form == document.forms["delete_account"]) {  		
-				if (confirm('Are you sure you delete your WalletHero Account? (All of your data would be unrecoverable.)')){
+				if (confirm('Are you sure you want to delete your WalletHero Account? (All of your data would be unrecoverable.)')){
 					document.getElementById("loadertext").innerHTML = 'Deleting Your WalletHero Account...';
 	       			
 	       			document.getElementById('div-loading').style.display = 'block';	

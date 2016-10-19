@@ -10,20 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.common.MailHelper;
-import au.edu.unsw.comp4920.objects.*;
+import au.edu.unsw.comp4920.objects.User;
 
-/**
- * @author Timothy
- *
- */
-public class EmailValidationCommand implements Command {
+public class ReEnableAccountCommand implements Command {
 
-	public EmailValidationCommand() {
+	public ReEnableAccountCommand(){
 		
 	}
 	
-	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException{
-		System.out.println("Inside: EmailValidationCommand");
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
+		System.out.println("Inside: ReEnableAccountCommand");
 		
 		String input_token = request.getParameter(Constants.TOKEN);
 		String username = request.getParameter(Constants.USERNAME);
@@ -32,34 +29,34 @@ public class EmailValidationCommand implements Command {
 			User user = dao.getUserDetails(username);
 			
 			if (user == null) {
-				System.err.println("EmailValidationCommand: User not found in database");
+				System.err.println("ReEnableAccountCommand: User not found in database");
 				
 				request.setAttribute(Constants.ERROR, 1);
 				request.setAttribute(Constants.ERRORMSG, "Invalid User Account!");
 			}
 			else{
 				String user_token = user.getToken();
-				
+			
 				if (user.getStatusID() == 2){
-					System.err.println("EmailValidationCommand: Invalid Status ID");
+					System.err.println("ReEnableAccountCommand: Invalid Status ID");
 					
 					request.setAttribute(Constants.ERROR, 0);
 					request.setAttribute(Constants.ERRORMSG, "Your Account has already been Activated!");
 				}
-				else if (user.getStatusID() == 3){
-					System.err.println("EmailValidationCommand: Invalid Status ID");
+				else if (user.getStatusID() == 1){
+					System.err.println("ReEnableAccountCommand: Invalid Status ID");
 					
 					request.setAttribute(Constants.ERROR, 0);
-					request.setAttribute(Constants.ERRORMSG, "Your Account is Disabled!");
+					request.setAttribute(Constants.ERRORMSG, "Your Account is not Activated yet!");
 				}
-				else if (user.getStatusID() == 1 && user_token.equals(input_token)) {
+				else if (user.getStatusID() == 3 && user_token.equals(input_token)) {
 					dao.setStatus(user.getUsername(), 2);
 					dao.setToken(user, "");
 					
 					System.out.println("sending email to " + user.getEmail());
 					
 					String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
-					content += "You have successfully activated your WalletHero account.";
+					content += "You have successfully re-enabled your WalletHero account.";
 					content += "<br/><br/>";
 					content += "Have fun, and don't hesitate to contact us with your feedback.";
 					content += "<br/><br/>";
@@ -68,27 +65,25 @@ public class EmailValidationCommand implements Command {
 					content += Constants.SERVER;
 					
 					MailHelper mh = new MailHelper();
-					mh.sendEmail(user.getEmail(), "WalletHero - Successful Account Activation", content);
+					mh.sendEmail(user.getEmail(), "WalletHero - Successful Re-Enabling Your Account", content);
 					
 					request.setAttribute(Constants.ERROR, 0);
-					request.setAttribute(Constants.ERRORMSG, "Your Email has been Validated!");
+					request.setAttribute(Constants.ERRORMSG, "Your Account has been Re-Enabled!");
 				} 
-				else {
-					System.err.println("EmailValidationCommand: Invalid token");
-					
+				else {					
 					request.setAttribute(Constants.ERROR, 1);
-					request.setAttribute(Constants.ERRORMSG, "Invalid Token!");
+					request.setAttribute(Constants.ERRORMSG, "Invalid User Account Status!");
 				}
 			}
 		}
 		else{
-			System.err.println("EmailValidationCommand: Invalid input");
+			System.err.println("ReEnableAccountCommand: Invalid input");
 
 			request.setAttribute(Constants.ERROR, 1);
 			request.setAttribute(Constants.ERRORMSG, "Missing Required Information!");
 		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/emailvalidation.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/reenableaccount.jsp");
 		rd.forward(request, response);
-	}	
+	}
 }

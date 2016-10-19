@@ -35,7 +35,7 @@
       </c:if>
     </h5>
     
-    <h5 style="color:Green">
+    <h5 style="color:Green"  name="error_message_2" id="error_message_2">
       <c:if test="${errorMessage != null && errorFlg == 2}">
         ${errorMessage}
       </c:if>
@@ -121,6 +121,7 @@
 		 		document.getElementById('div-content').style.display = 'none';
 		 		document.getElementById('div-footer').style.display = 'none';
 		 		document.getElementById("error_message").innerHTML = '';
+		 		document.getElementById("error_message_2").innerHTML = '';
 	
 			    event.preventDefault();
 			    

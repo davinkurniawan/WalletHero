@@ -18,6 +18,10 @@ public class HelpCommand implements Command {
 	
 	private static enum Commands {EMAIL };
 	
+	public HelpCommand(){
+		
+	}
+	
 	private static Commands commands (String s) {
 		if (s == null) return null;
 		if (s.equalsIgnoreCase("email_help" )) 	return Commands.EMAIL;

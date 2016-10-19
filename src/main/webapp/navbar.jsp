@@ -10,7 +10,7 @@
               </button>
               <a class="navbar-brand" href="${applicationScope['ROUTER_PUBLIC']}"><b>WalletHero</b></a>
             </div>
-            <div class="navbar-collapse collapse">
+            <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
                 <li class="${public_home }" ><a href="${applicationScope['ROUTER_PUBLIC']}">Home</a></li>
                 <li class="${signIn }"><a href="${applicationScope['ROUTER_SIGNIN']}">Sign In</a></li>

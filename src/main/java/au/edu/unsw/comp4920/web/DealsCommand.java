@@ -32,6 +32,10 @@ import au.edu.unsw.comp4920.objects.DealsCategory;
 
 public class DealsCommand implements Command {
 	
+	public DealsCommand(){
+		
+	}
+	
 	public static JSONObject sendAPIRequest(String URI) throws IOException {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet req = new HttpGet(URI);

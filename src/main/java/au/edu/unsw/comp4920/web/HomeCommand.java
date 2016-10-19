@@ -112,7 +112,6 @@ public class HomeCommand implements Command {
 			request.setAttribute(Constants.ERRORMSG, "Sorry, page does not exist!");
 		} 
 		else {
-			JSONObject json_query = deals_json.getJSONObject("query");
 			JSONArray array = deals_json.getJSONArray("deals");
 			ObjectMapper mapper = new ObjectMapper();
 			ArrayList<Deal> deals = new ArrayList<Deal>();
@@ -141,7 +140,6 @@ public class HomeCommand implements Command {
 		}
 
 		
-		//TODO
 		Map<String, BigDecimal> latestSpending = dao.getCurrentBudget(user.getUserID(), userPreferredCurrency);
 		request.setAttribute(Constants.TOTAL_INCOME, latestSpending.get("totalIncome"));
 		request.setAttribute(Constants.TOTAL_EXPENSE, latestSpending.get("totalExpense"));

@@ -34,6 +34,7 @@ public final class Constants {
 	
 	public static final String FORGOTPASSWORD_COMMAND   	= "forgotPassword";
 	public static final String RESETPASSWORD_COMMAND		= "resetPassword";
+	public static final String REENABLE_ACCOUNT_COMMAND		= "reenableAccount";
 	
 	// Request Parameters
 	public static final String ACTION 						= "action";
@@ -96,6 +97,7 @@ public final class Constants {
 	public static final String ROUTER_ADDGOAL				= "ROUTER_ADDGOAL";
 	public static final String ROUTER_VIEWGOALS				= "ROUTER_VIEWGOALS";
 	public static final String ROUTER_HELP					= "ROUTER_HELP";
+	public static final String ROUTER_REENABLE_ACCOUNT		= "ROUTER_REENABLE_ACCOUNT";
 
 	// Status
 	public static enum Status {INACTIVE, ACTIVE, DISABLED};

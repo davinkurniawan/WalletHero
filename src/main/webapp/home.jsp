@@ -32,17 +32,17 @@
         	<h3 class="featurette-heading">Summary</h3>
         	<c:choose>
         		<c:when test="${ totalBudget < 0 }">
-        			<p><b>Total Budget:</b> ${preferredCurrency} <label style="color:red"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></p>       	
+        			<h4><b>Total Budget:</b> ${preferredCurrency} <label style="color:red"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
         		</c:when>
         		<c:when test="${ totalBudget > 0 }">
-        			<p><b>Total Budget:</b> ${preferredCurrency} <label style="color:green"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></p>       	
+        			<h4><b>Total Budget:</b> ${preferredCurrency} <label style="color:green"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
         		</c:when>
         		<c:otherwise>
-        			<p><b>Total Budget:</b> ${preferredCurrency} <fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></p>       	
+        			<h4><b>Total Budget:</b> ${preferredCurrency} <fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></h4>       	
         		</c:otherwise>
         	</c:choose>
-        	<p><b>Total Expense:</b> ${preferredCurrency} <fmt:formatNumber value="${totalExpense}" minFractionDigits="2" maxFractionDigits="2"/></p>
-        	<p><b>Total Income:</b> ${preferredCurrency} <fmt:formatNumber value="${totalIncome}" minFractionDigits="2" maxFractionDigits="2"/></p>
+        	<h4><b>Total Expense:</b> ${preferredCurrency} <fmt:formatNumber value="${totalExpense}" minFractionDigits="2" maxFractionDigits="2"/></h4>
+        	<h4><b>Total Income:</b> ${preferredCurrency} <fmt:formatNumber value="${totalIncome}" minFractionDigits="2" maxFractionDigits="2"/></h4>
 	  	</div>
 	  </div>
       
