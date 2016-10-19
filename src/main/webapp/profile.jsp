@@ -249,7 +249,14 @@
 							<button style="min-width:150px" type="submit" class="btn btn-danger">Delete All User Data</button>	
 		      			</form>
 	      			</div>
-	
+					
+					<div class="form-group" id="div-disable-account" name="div-disable-account">
+		      			<form name="disable_account" action="${applicationScope['ROUTER_PROFILE']}" method="POST">
+		          			<input type="hidden" name="action" value="disable_account"/>	
+							<button style="min-width:150px" type="submit" class="btn btn-warning">Disable Account</button>	
+		      			</form>
+	      			</div>
+					
 	          		<div class="form-group" id="div-delete-account" name="div-delete-account">
 		      			<form name="delete_account" action="${applicationScope['ROUTER_PROFILE']}" method="POST">
 		          			<input type="hidden" name="action" value="delete_account"/>	
@@ -474,6 +481,26 @@
 		       		
 		       		setTimeout( function () { 
 				        form.submit();
+				    }, 1000);
+	       		}
+	       		else{
+	       			event.preventDefault();
+	       		}
+	       	}       	
+			else if (form == document.forms["disable_account"]) {
+	       		
+	       		if (confirm('Are you sure you disable your Account? (You will not be able to logged in until you re-enabled your Account using the link sent to your email.)')){
+					document.getElementById("loadertext").innerHTML = 'Disabling Your Account...';
+	       			
+	       			document.getElementById('div-loading').style.display = 'block';	
+			 		document.getElementById('div-content').style.display = 'none';
+			 		document.getElementById('div-footer').style.display = 'none';
+			 		document.getElementById("error_message").innerHTML = '';
+			 		
+		       		event.preventDefault();
+		       		
+		       		setTimeout( function () { 
+				        //form.submit();
 				    }, 1000);
 	       		}
 	       		else{
