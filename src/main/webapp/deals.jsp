@@ -243,7 +243,7 @@
 					</c:otherwise>
 				</c:choose>
 			</div>
-		</div>
+	
 
 		<%@ include file="footer.jsp"%>
 	</div>
