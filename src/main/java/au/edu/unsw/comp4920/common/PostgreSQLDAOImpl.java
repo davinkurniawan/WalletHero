@@ -355,6 +355,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return p;
 	}
 
+	@Override
 	public boolean updatePreference(Preference p) {
 		boolean result = true;
 		Connection conn = null;
@@ -634,7 +635,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return transactions;
 	}
-
+	
+	@Override
 	public List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses,
 			int categoryID) {
 		ArrayList<Transaction> masterTransactionList = new ArrayList<Transaction>();
@@ -1734,9 +1736,18 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	public boolean deleteUserCompletely(int userID) {
 		boolean result = true;
 		
+		// Delete all of the User's Data.
+		result = this.deleteAllUserData(userID);
 		
-		//TODO TODO TODO
+		// Delete All Session.
+		result = this.deleteAllSession(userID);
 		
+		// Delete User's Details.
+		result = this.deleteUserDetails(userID);
+		
+		// Delete User.
+		result = this.deleteUser(userID);
+				
 		// TODO
 		return result;
 	}
@@ -1787,6 +1798,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return result;
 	}
 	
+	@Override
 	public boolean deleteAllSession(int userID) {
 		boolean result = true;
 		Connection conn = null;
@@ -1832,9 +1844,6 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-
-			//"INSERT INTO transaction (date, detail, amount, is_income, recur_id, category_id, currency_short_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
-
 			
 			String query = "UPDATE transaction SET date = ?, detail = ?, amount = ?, is_income = ?, category_id = ?, currency_short_name = ? WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(query);
@@ -1868,6 +1877,44 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 		}
 
+		return result;
+	}
+	
+	@Override
+	public boolean deleteUserDetails(int userID) {
+		boolean result = true;
+		Connection conn = null;
+
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("DELETE FROM user_detail WHERE user_id = ?;");
+
+			stmt.setInt(1, userID);
+			int n = stmt.executeUpdate();
+
+			if (n < 0) {
+				throw new DataSourceException("Did not delete all of the user's details!");
+			}
+			
+			stmt.close();
+		} 
+		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+			result = false;
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} catch (SQLException e) {
+					result = false;
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+		
 		return result;
 	}
 }

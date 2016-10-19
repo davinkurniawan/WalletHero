@@ -15,6 +15,8 @@ public interface CommonDAO {
 	public boolean deleteUserCompletely(int userID); // Delete completely
 
 	public User getUserDetails(String username);
+	public boolean deleteUserDetails(int userID);
+	
 	public User getUser(String userinfo, String password);
 	public User getUser(String sid);
 	public User getUser(String userinfo, String firstName, String lastName);
@@ -29,6 +31,7 @@ public interface CommonDAO {
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);
 	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID, String userPrefferedCurrency);
+	public List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
 	public List<Transaction> getAllTransactions(int userID);
 	public Transaction getTransaction(int transactionID);
 	public boolean updateUserTransaction(Transaction t);

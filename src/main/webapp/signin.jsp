@@ -30,7 +30,13 @@
 	</div>
 
     <h5 style="color:Red" name="error_message" id="error_message">
-      <c:if test="${errorMessage != null}">
+      <c:if test="${errorMessage != null && ${errorFlg == 1}">
+        ${errorMessage}
+      </c:if>
+    </h5>
+    
+    <h5 style="color:Green">
+      <c:if test="${errorMessage != null && ${errorFlg == 2}">
         ${errorMessage}
       </c:if>
     </h5>

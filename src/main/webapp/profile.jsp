@@ -460,6 +460,46 @@
 			        form.submit();
 			    }, 1000);
 	       	}
+	       	else if (form == document.forms["delete_user_data"]) {
+	       		
+	       		if (validator_update_profile(this)) {
+					document.getElementById("loadertext").innerHTML = 'Deleting All of Your Data...';
+	       			
+	       			document.getElementById('div-loading').style.display = 'block';	
+			 		document.getElementById('div-content').style.display = 'none';
+			 		document.getElementById('div-footer').style.display = 'none';
+			 		document.getElementById("error_message").innerHTML = '';
+			 		
+		       		event.preventDefault();
+		       		
+		       		setTimeout( function () { 
+				        form.submit();
+				    }, 1000);
+		       	}
+	       		else {
+	       			event.preventDefault();
+	       		}
+	       	}
+			else if (form == document.forms["delete_account"]) {
+	       		
+	       		if (validator_update_profile(this)) {
+					document.getElementById("loadertext").innerHTML = 'Deleting Your WalletHero Account...';
+	       			
+	       			document.getElementById('div-loading').style.display = 'block';	
+			 		document.getElementById('div-content').style.display = 'none';
+			 		document.getElementById('div-footer').style.display = 'none';
+			 		document.getElementById("error_message").innerHTML = '';
+			 		
+		       		event.preventDefault();
+		       		
+		       		setTimeout( function () { 
+				        form.submit();
+				    }, 1000);
+		       	}
+	       		else {
+	       			event.preventDefault();
+	       		}
+	       	}
 	       	else {
 	       		event.preventDefault();
 	       	}

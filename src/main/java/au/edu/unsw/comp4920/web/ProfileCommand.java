@@ -344,10 +344,18 @@ public class ProfileCommand implements Command {
 				
 				case DELETE_ACCOUNT:
 
-					if (dao.deleteAllUserData(user.getUserID())){
-						//TODO send email
+					if (dao.deleteUserCompletely(user.getUserID())){
+						this.sendDeleteAccount(user.getEmail(), user);
+						
+						request.setAttribute(Constants.ERROR, 2);
+						request.setAttribute(Constants.ERRORMSG, "Your account has been successfully deleted!");
+						
+						RequestDispatcher rd = request.getRequestDispatcher("/signin.jsp");
+						rd.forward(request, response);
 					}
-					
+					else{
+						System.err.println("ProfileCommand: Failed to delete user's account.");
+					}
 					
 					break;
 					
@@ -428,6 +436,27 @@ public class ProfileCommand implements Command {
 		content += "&email" + "=" + email;
 		content += "<br/><br/>";
 		content += "Have fun, and don't hesitate to contact us with your feedback.";
+		content += "<br/><br/>";
+		content += "WalletHero Team";
+		content += "<br/><br/>";
+		content += Constants.SERVER;
+		
+		MailHelper mh = new MailHelper();
+		mh.sendEmail(email, "WalletHero - Email Update", content);
+	}
+	
+	private void sendDeleteAccount(String email, User user) {
+		System.out.println("sending email to " + email);
+		
+		// Send email here 
+		String content = "Hi " + user.getFirstName() + "," + "<br/><br/>";
+		content += "You recently decide to delete your WalletHero account. ";
+		content += "<br/><br/>";
+		content += "This is a notification email to tell you that your account has been deleted from WalletHero.";
+		content += "<br/>";
+		content += "At this point, all of your data is not recoverable. Thank you for using WalletHero.";
+		content += "<br/><br/>";
+		content += "Have fun, and don't hesitate to contact us if you have any questions.";
 		content += "<br/><br/>";
 		content += "WalletHero Team";
 		content += "<br/><br/>";
