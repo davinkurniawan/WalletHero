@@ -14,7 +14,7 @@
 </head>
 <body onload="myFunction(${param.order})">
 	<%@ include file="signedinnavbar.jsp"%>
-
+	
 	<div class="container marketing">
 		<h2>Latest Deals</h2>
 		<hr class="featurette-divider">
@@ -175,16 +175,9 @@
 			<div style="min-height: 777px;">
 				<c:choose>
 					<c:when test="${empty errormsg}">
-						<table style="width: 100%" cellpadding="10" align="center">
-							<tr>
-								<th align="center">Image</th>
-								<th align="center">Title</th>
-								<th align="center">From</th>
-								<th align="center">Discount</th>
-								<th align="center">Price</th>
-							</tr>
+						<table class="table table-hover" id="table_link">
 							<c:forEach var="i" items="${deals_list}">
-								<tr height="230">
+								<tr height="230"> <!-- class="clickable-row" data-href="${i.url}"-->
 									<td align="center">
 										<div class="container_deal">
 											<center>
@@ -195,10 +188,13 @@
 											</center>
 										</div>
 									</td>
-									<td align="center"><a target="_blank" href="${i.url}">${i.title}</a></td>
-									<td align="center">${i.value}</td>
-									<td align="center">${i.discount_amount}</td>
-									<td align="center">${i.price}</td>
+									<td align="left"><b style="font-size: 18px;"><a target="_blank" href="${i.url}">${i.title}</a></font></b> <font style="color:#6b6b6b;">- ${i.provider_name}</font>
+										<br/><br/><b style="font-size: 17px; color: #cf0c0c;">USD ${i.price}</b> <s style="color:#6b6b6b;">${i.value}</s>
+										<br/><br/>
+										<div id="fine_print">
+										${i.fine_print}
+										</div>
+									</td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -256,6 +252,18 @@
 		//window.alert(qs.value);
 		qs.selected = "true";
 	}
+	</script>
+	<script>
+	jQuery(document).ready(function($) {
+	    $(".clickable-row").click(function() {
+	        window.open($(this).data("href"), '_blank');
+	    });
+	});
+	</script>
+	<script>
+	$(document).ready(function(){
+		  $('#fine_print a').attr('target', '_blank');
+		});
 	</script>
 </body>
 </html>
