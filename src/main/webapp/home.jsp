@@ -84,7 +84,7 @@
 				</div>
 				<div class="col-md-12">
 					<div class="pull-right">
-						<p><a href="${applicationScope['ROUTER_DEALS']}">See More...</a></p>
+						<p><a href="${applicationScope['ROUTER_DEALS']}<c:forEach var="i" items="${categories}">&category=${i}</c:forEach>">See More...</a></p>
 					</div>
 					<div class="clearfix"></div>
 				</div>

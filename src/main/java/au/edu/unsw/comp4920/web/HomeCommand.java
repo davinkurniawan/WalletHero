@@ -103,6 +103,7 @@ public class HomeCommand implements Command {
 				req += s;
 			}
 		}
+		request.setAttribute("categories", categories);
 		
 		JSONObject deals_json = DealsCommand.sendAPIRequest(req);
 		
