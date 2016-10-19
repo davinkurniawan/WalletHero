@@ -443,7 +443,7 @@ public class ProfileCommand implements Command {
 		content += Constants.SERVER;
 		
 		MailHelper mh = new MailHelper();
-		mh.sendEmail(email, "WalletHero - Account Deleted", content);
+		mh.sendEmail(email, "WalletHero - Email Update", content);
 	}
 	
 	private void sendDeleteAccount(String email, User user) {
@@ -464,6 +464,6 @@ public class ProfileCommand implements Command {
 		content += Constants.SERVER;
 		
 		MailHelper mh = new MailHelper();
-		mh.sendEmail(email, "WalletHero - Email Update", content);
+		mh.sendEmail(email, "WalletHero - Account Deleted", content);
 	}
 }

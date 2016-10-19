@@ -41,9 +41,9 @@
 									<th>Actions</th>
 								</tr>
 				
-								<c:forEach items="${requestScope.goalList}" var="g">
+								<c:forEach items="${requestScope.goalList}" var="g" varStatus="myIndex">
 									<tr>
-										<td><c:out value="${g.goalID}"></c:out></td>
+										<td><c:out value="${myIndex.index + 1}"></c:out></td>
 										<td><c:out value="${g.getGoalTypeString()}"></c:out></td>
 										<td><c:out value="${g.detail}"></c:out></td>
 										<td><c:out value="${g.getFrequencyString()}"></c:out></td>

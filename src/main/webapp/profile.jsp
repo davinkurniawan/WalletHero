@@ -244,14 +244,14 @@
 	          		<h3 class="featurette-heading">Others</h3>
 	          
 	          		<div class="form-group" id="div-delete-data" name="div-delete-data">
-		          		<form name="delete_user_data" action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete all of your data (Transactions and Goals)?');">
+		          		<form name="delete_user_data" action="${applicationScope['ROUTER_PROFILE']}" method="POST">
 		          			<input type="hidden" name="action" value="delete_user_data"/>	
 							<button style="min-width:150px" type="submit" class="btn btn-danger">Delete All User Data</button>	
 		      			</form>
 	      			</div>
 	
 	          		<div class="form-group" id="div-delete-account" name="div-delete-account">
-		      			<form name="delete_account" action="${applicationScope['ROUTER_PROFILE']}" method="POST" onSubmit="return confirm('Are you sure you delete your WalletHero Account? (All of your data would be unrecoverable.)');">
+		      			<form name="delete_account" action="${applicationScope['ROUTER_PROFILE']}" method="POST">
 		          			<input type="hidden" name="action" value="delete_account"/>	
 							<button style="min-width:150px" type="submit" class="btn btn-danger">Delete Account</button>	
 		      			</form>
@@ -461,32 +461,43 @@
 			    }, 1000);
 	       	}
 	       	else if (form == document.forms["delete_user_data"]) {
-				document.getElementById("loadertext").innerHTML = 'Deleting All of Your Data...';
-       			
-       			document.getElementById('div-loading').style.display = 'block';	
-		 		document.getElementById('div-content').style.display = 'none';
-		 		document.getElementById('div-footer').style.display = 'none';
-		 		document.getElementById("error_message").innerHTML = '';
-		 		
-	       		event.preventDefault();
 	       		
-	       		setTimeout( function () { 
-			        form.submit();
-			    }, 1000);
+	       		if (confirm('Are you sure you delete all of your data (Transactions and Goals)?')){
+					document.getElementById("loadertext").innerHTML = 'Deleting All of Your Data...';
+	       			
+	       			document.getElementById('div-loading').style.display = 'block';	
+			 		document.getElementById('div-content').style.display = 'none';
+			 		document.getElementById('div-footer').style.display = 'none';
+			 		document.getElementById("error_message").innerHTML = '';
+			 		
+		       		event.preventDefault();
+		       		
+		       		setTimeout( function () { 
+				        form.submit();
+				    }, 1000);
+	       		}
+	       		else{
+	       			event.preventDefault();
+	       		}
 	       	}
 			else if (form == document.forms["delete_account"]) {  		
-				document.getElementById("loadertext").innerHTML = 'Deleting Your WalletHero Account...';
-       			
-       			document.getElementById('div-loading').style.display = 'block';	
-		 		document.getElementById('div-content').style.display = 'none';
-		 		document.getElementById('div-footer').style.display = 'none';
-		 		document.getElementById("error_message").innerHTML = '';
-		 		
-	       		event.preventDefault();
-	       		
-	       		setTimeout( function () { 
-			        form.submit();
-			    }, 1000);
+				if (confirm('Are you sure you delete your WalletHero Account? (All of your data would be unrecoverable.)')){
+					document.getElementById("loadertext").innerHTML = 'Deleting Your WalletHero Account...';
+	       			
+	       			document.getElementById('div-loading').style.display = 'block';	
+			 		document.getElementById('div-content').style.display = 'none';
+			 		document.getElementById('div-footer').style.display = 'none';
+			 		document.getElementById("error_message").innerHTML = '';
+			 		
+		       		event.preventDefault();
+		       		
+		       		setTimeout( function () { 
+				        form.submit();
+				    }, 1000);
+				}
+				else{
+					event.preventDefault();
+				}
 	       	}
 	       	else {
 	       		event.preventDefault();
