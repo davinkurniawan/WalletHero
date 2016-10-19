@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -637,8 +638,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return transactions;
 	}
 	
-	@Override
-	public List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses,
+	private List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses,
 			int categoryID) {
 		ArrayList<Transaction> masterTransactionList = new ArrayList<Transaction>();
 		ArrayList<Transaction> oneOffTransactionList = this.getOneOffTransactions(userID, from, to, showIncomes,
@@ -1919,13 +1919,46 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 	
 	@Override
-	public double getCurrentBudget() {
-		//TODO get the first date stored in the database.
+	public Map<String, BigDecimal> getCurrentBudget(int userID, String userPreferredCurrency) {
+		BigDecimal totalBudget = new BigDecimal(0.0);
+		BigDecimal totalExpense = new BigDecimal(0.0);
+		BigDecimal totalIncome = new BigDecimal(0.0);
+		
+		Map<String, BigDecimal> result = new HashMap<String, BigDecimal>();
+		
+		Date epochTime = new Date(0L);
+		Date currentTime = new Date();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-		System.out.println(sdf.format(new Date(0L)));
 		
-		return 0.0;
+		System.err.println("Epoch Time: " + sdf.format(epochTime));
+		System.err.println("Current Time: " + sdf.format(currentTime));
+		
+		//List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes,
+		// boolean showExpenses, int categoryID, String userPrefferedCurrency) 
+		List<Transaction> allTransactions = this.getTransactionsByDate(userID, epochTime, currentTime, true, true, -1, userPreferredCurrency);
+
+		for (Transaction t : allTransactions){
+			
+			if (t.isIncome()) {
+				System.err.println("Income Amount: " + userPreferredCurrency + " " + t.getAmount());
+				totalBudget = totalBudget.add(t.getAmount());
+				totalIncome = totalIncome.add(t.getAmount());
+			}
+			else if (!t.isIncome()) {
+				System.err.println("Expense Amount: " + userPreferredCurrency + " " + t.getAmount());
+				totalBudget = totalBudget.subtract(t.getAmount());
+				totalExpense = totalExpense.add(t.getAmount());
+			}
+		}
+		
+		result.put("totalIncome", totalIncome);
+		result.put("totalExpense", totalExpense);
+		result.put("totalBudget", totalBudget);
+		
+		System.err.println("Total Current Budget to Date: " + userPreferredCurrency + " " + totalBudget);
+				
+		return result;
 	}
 }

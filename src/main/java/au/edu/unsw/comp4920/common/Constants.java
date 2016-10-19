@@ -48,7 +48,11 @@ public final class Constants {
 	public static final String TOOLS						= "tools";
 	public static final String TRANSACTIONS					= "transactions";
 	public static final String GOALS						= "goals";
-	public static final String LASTACCESSED					= "lastaccessed";
+	public static final String LASTACCESSED					= "lastAccessed";
+	public static final String TOTAL_INCOME					= "totalIncome";
+	public static final String TOTAL_EXPENSE				= "totalExpense";
+	public static final String TOTAL_BUDGET					= "totalBudget";
+	public static final String PREFERRED_CURRENCY			= "preferredCurrency";
 
 	// Session Parameters
 	public static final String USERID	 					= "userID";

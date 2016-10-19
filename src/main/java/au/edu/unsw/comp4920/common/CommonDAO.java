@@ -1,7 +1,9 @@
 package au.edu.unsw.comp4920.common;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import au.edu.unsw.comp4920.objects.*;
 
@@ -31,7 +33,6 @@ public interface CommonDAO {
 	public int addTransaction(Transaction t);
 	public boolean addRecurring(Recurrence r);
 	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID, String userPrefferedCurrency);
-	public List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses, int categoryID);
 	public List<Transaction> getAllTransactions(int userID);
 	public Transaction getTransaction(int transactionID);
 	public boolean updateUserTransaction(Transaction t);
@@ -59,5 +60,5 @@ public interface CommonDAO {
 	public List<Goal> getAllGoals(int userID);
 	public boolean deleteUserGoal(int goalID, int userID);
 	
-	public double getCurrentBudget();
+	public Map<String, BigDecimal> getCurrentBudget(int userID, String userPreferredCurrency);
 }

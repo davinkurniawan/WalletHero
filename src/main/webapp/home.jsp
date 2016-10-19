@@ -23,24 +23,23 @@
     <div class="container marketing">
 
 	  <h2>Welcome back, ${username}</h2>
-	  <h4>Last Sign In: ${lastaccessed}</h4>
+	  <h4>Last Sign In: ${lastAccessed}</h4>
       
       <hr class="featurette-divider">
       
       <div class="row featurette">
         <div class="col-md-12">
         	<h3 class="featurette-heading">Summary</h3>
-        	
-        	
-			  <!-- <c:choose>
-					<c:when test="${requestScope.graphDataExpense.size() > 0}">
-						<h3 class="featurette-heading">Summary</h3>
-						
-					</c:when>
-					<c:otherwise>
-						<h2 class="featurette-heading">No Summary Details Found.</h2>
-					</c:otherwise>
-			  </c:choose>-->
+        	<c:choose>
+        		<c:when test="${ totalBudget < 0 }">
+        			<h4>Total Budget: ${preferredCurrency} <label style="color:red"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
+        		</c:when>
+        		<c:otherwise>
+        			<h4>Total Budget: ${preferredCurrency} <label style="color:green"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
+        		</c:otherwise>
+        	</c:choose>
+        	<h4>Total Expense: ${preferredCurrency} <fmt:formatNumber value="${totalExpense}" minFractionDigits="2" maxFractionDigits="2"/></h4>
+        	<h4>Total Income: ${preferredCurrency} <fmt:formatNumber value="${totalIncome}" minFractionDigits="2" maxFractionDigits="2"/></h4>
 	  	</div>
 	  </div>
       

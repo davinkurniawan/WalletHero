@@ -53,9 +53,12 @@ public class SignInCommand implements Command {
 					
 					session.setAttribute(Constants.USERID, user.getUserID());
 					session.setAttribute(Constants.SID, session.getId());
-					session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
 					session.setAttribute(Constants.OCCUPATION, dao.getAllOccupations());
 					session.setAttribute(Constants.CATEGORY, dao.getAllCategories());
+					
+					if (session.getAttribute(Constants.CURRENCY) == null){
+						session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+					}
 
 					Session s = new Session();
 					s.setSessionID(session.getId());

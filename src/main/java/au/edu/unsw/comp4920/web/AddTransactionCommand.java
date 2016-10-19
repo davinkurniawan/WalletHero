@@ -33,7 +33,9 @@ public class AddTransactionCommand implements Command {
 		HttpSession session = request.getSession(true);		
 		String sid = session.getAttribute(Constants.SID).toString();
 		
-		session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+		if (session.getAttribute(Constants.CURRENCY) == null){
+			session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+		}
 		session.setAttribute(Constants.PREFERENCE, dao.getUserPreference(sid).getCurrency());
 		
 		if (action != null && action.equalsIgnoreCase("addTransaction")) {

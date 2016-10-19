@@ -19,7 +19,9 @@ public class CurrencyConverterCommand implements Command {
 		System.out.println("Inside: CurrencyConverterCommand");
 		
 		HttpSession session = request.getSession(true);		
-		session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+		if (session.getAttribute(Constants.CURRENCY) == null){
+			session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+		}
 
 		if (session.getAttribute(Constants.SID) != null){
 			String sid = session.getAttribute(Constants.SID).toString();

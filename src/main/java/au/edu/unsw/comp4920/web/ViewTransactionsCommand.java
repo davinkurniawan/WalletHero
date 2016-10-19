@@ -66,7 +66,6 @@ public class ViewTransactionsCommand implements Command {
 					}
 				} else if (action != null && action.equalsIgnoreCase("editTransactionReal")) {
 					Transaction t_new = t;
-					System.err.println("Old Object = " + t.toString());
 
 					if (request.getParameter("details") != null && request.getParameter("transactionType") != null
 							&& request.getParameter("amount") != null && request.getParameter("currency") != null
@@ -114,9 +113,6 @@ public class ViewTransactionsCommand implements Command {
 							response.sendRedirect(Constants.ROUTER + Constants.ADDTRANSACTION_COMMAND + "&success=no");
 							return;
 						}
-
-						
-						System.err.println("New Object = " + t_new.toString());
 						
 						boolean result = dao.updateUserTransaction(t_new);
 

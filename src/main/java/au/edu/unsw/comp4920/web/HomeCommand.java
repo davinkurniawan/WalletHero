@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,10 +48,7 @@ public class HomeCommand implements Command {
 		
 		User user = dao.getUser(sid);
 		Session sess = dao.getSession(sid);
-		
-		//TODO
-		dao.getCurrentBudget();
-		
+				
 		// Get Last 7 Days Transactions
 		
 		boolean viewIncomes = true;
@@ -64,8 +62,8 @@ public class HomeCommand implements Command {
 		from = new Date(from.getTime() - 24 * 60 * 60 * 1000 * 6);
 		to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 		
-		String userPrefferedCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
-		List<Transaction> transactions = dao.getTransactionsByDate(user.getUserID(), from, to, viewIncomes, viewExpenses, categoryID, userPrefferedCurrency);
+		String userPreferredCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
+		List<Transaction> transactions = dao.getTransactionsByDate(user.getUserID(), from, to, viewIncomes, viewExpenses, categoryID, userPreferredCurrency);
 		
 		request.setAttribute("fromDate", dfDate.format(from));
 
@@ -140,7 +138,15 @@ public class HomeCommand implements Command {
 		catch (ParseException e) {
 			e.printStackTrace();
 		}
+
 		
+		//TODO
+		Map<String, BigDecimal> latestSpending = dao.getCurrentBudget(user.getUserID(), userPreferredCurrency);
+		request.setAttribute(Constants.TOTAL_INCOME, latestSpending.get("totalIncome"));
+		request.setAttribute(Constants.TOTAL_EXPENSE, latestSpending.get("totalExpense"));
+		request.setAttribute(Constants.TOTAL_BUDGET, latestSpending.get("totalBudget"));
+		
+		request.setAttribute(Constants.PREFERRED_CURRENCY, userPreferredCurrency);
 		request.setAttribute(Constants.USERNAME, user.getUsername());
 
 		RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
