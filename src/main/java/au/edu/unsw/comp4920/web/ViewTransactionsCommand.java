@@ -185,7 +185,7 @@ public class ViewTransactionsCommand implements Command {
 				to = df.parse(toDate);
 				transactionRange = "Viewing transactions from " + df.format(from) + " to " + df.format(to);
 
-				// TODO: Find proper workaround.
+				// Workaround for Java Date weirdness.
 				to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -201,7 +201,7 @@ public class ViewTransactionsCommand implements Command {
 
 			transactionRange = "Viewing transactions from " + df.format(from) + " to " + df.format(to);
 
-			// TODO: Find proper workaround.
+			// Workaround for Java Date weirdness.
 			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
 		}
 
@@ -220,7 +220,7 @@ public class ViewTransactionsCommand implements Command {
 		request.setAttribute("transactionRange", transactionRange);
 		request.setAttribute("fromDate", df.format(from));
 
-		// TODO: Find proper workaround.
+		// Workaround for Java Date weirdness.
 		to = new Date(to.getTime() - 24 * 60 * 60 * 1000);
 		request.setAttribute("toDate", df.format(to));
 

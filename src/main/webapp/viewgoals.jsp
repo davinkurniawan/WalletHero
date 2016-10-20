@@ -87,7 +87,7 @@
 											  
 											  step: (state, bar) => {
 
-											    bar.setText('You have saved <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getGoalPeriod()} savings goal.');
+											    bar.setText('You have saved <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} savings goal.');
 											    bar.path.setAttribute('stroke', state.color);
 											  }
 											});
@@ -129,7 +129,7 @@
 										  to: {color: '#e75757'},
 										  
 										  step: (state, bar) => {
-											bar.setText('You have spent <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getGoalPeriod()} limit on <b>${g.categoryString}</b>.');
+											bar.setText('You have spent <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} limit on <b>${g.categoryString}</b>.');
 										    bar.path.setAttribute('stroke', state.color);
 										  }
 										});

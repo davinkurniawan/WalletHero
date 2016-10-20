@@ -34,9 +34,9 @@ public class ViewGoalsCommand implements Command {
 		if (request.getParameter("action") != null) {
 			dao.deleteUserGoal(Integer.parseInt(request.getParameter("goalID")), personID);
 		}
-		
+
 		List<Goal> goals = dao.getAllGoals(personID);
-		
+
 		for (Goal g : goals) {
 			if (g.getCategoryString() == null) {
 				g.setCategoryString("All");
@@ -45,7 +45,6 @@ public class ViewGoalsCommand implements Command {
 			Date from = null;
 			Date to = null;
 
-			// TODO: Extend to fortnightly, quarterly, yearly ... etc.
 			if (g.getGoalPeriod().equals("weekly")) {
 				from = getWeekStart();
 				to = getWeekEnd();
@@ -55,19 +54,28 @@ public class ViewGoalsCommand implements Command {
 			} else if (g.getGoalPeriod().equals("yearly")) {
 				from = getYearStart();
 				to = getYearEnd();
-			} else {
+			} else if (g.getGoalPeriod().equals("quarterly")) {
+				from = getQuarterStart();
+				to = getQuarterEnd();
+			} else if (g.getGoalPeriod().equals("fortnightly")) {
 				from = getWeekStart();
+				from = new Date(from.getTime() - 24 * 60 * 60 * 1000 * 7);
 				to = getWeekEnd();
+			} else if (g.getGoalPeriod().equals("half_yearly")) {
+				from = getHalfYearStart();
+				to = getHalfYearEnd();
 			}
-			
+
 			SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
 			String fromString = df_new.format(from);
 			String toString = df_new.format(to);
 			g.setDatePeriodString(fromString + " - " + toString);
-			
+
 			String sid = session.getAttribute(Constants.SID).toString();
 			String userPrefferedCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
-			
+
+			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
+
 			if (g.isExpenseRestrictionGoal()) {
 				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, false, true,
 						g.getCategory(), userPrefferedCurrency);
@@ -75,7 +83,8 @@ public class ViewGoalsCommand implements Command {
 				BigDecimal amount = sumExpenses(transactions);
 				g.setCurrentAmount(amount);
 			} else if (g.isSavingGoal()) {
-				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, true, true, -1, userPrefferedCurrency);
+				List<Transaction> transactions = dao.getTransactionsByDate(personID, from, to, true, true, -1,
+						userPrefferedCurrency);
 
 				BigDecimal amount = getBalance(transactions);
 				g.setCurrentAmount(amount);
@@ -110,12 +119,12 @@ public class ViewGoalsCommand implements Command {
 		return sum;
 	}
 
-	private Date getWeekEnd() {
+	private Date getWeekStart() {
 		// http://stackoverflow.com/a/12075998
 		Calendar c = Calendar.getInstance();
 		c.setFirstDayOfWeek(Calendar.MONDAY);
 		c.setTime(new Date());
-		c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
@@ -125,12 +134,12 @@ public class ViewGoalsCommand implements Command {
 		return new Date(d.getTime());
 	}
 
-	private Date getWeekStart() {
+	private Date getWeekEnd() {
 		// http://stackoverflow.com/a/12075998
 		Calendar c = Calendar.getInstance();
 		c.setFirstDayOfWeek(Calendar.MONDAY);
 		c.setTime(new Date());
-		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
@@ -170,7 +179,7 @@ public class ViewGoalsCommand implements Command {
 		Date d = c.getTime();
 		return new Date(d.getTime());
 	}
-	
+
 	private Date getYearStart() {
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
@@ -200,6 +209,95 @@ public class ViewGoalsCommand implements Command {
 		Date d = c.getTime();
 		return new Date(d.getTime());
 	}
-	
+
+	private Date getQuarterStart() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 1);
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.MARCH)) {
+			c.set(Calendar.MONTH, Calendar.JANUARY);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.APRIL) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.APRIL);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.SEPTEMBER)) {
+			c.set(Calendar.MONTH, Calendar.JULY);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.OCTOBER) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.OCTOBER);
+		}
+
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getQuarterEnd() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.MARCH)) {
+			c.set(Calendar.MONTH, Calendar.MARCH);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.APRIL) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.JUNE);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.SEPTEMBER)) {
+			c.set(Calendar.MONTH, Calendar.SEPTEMBER);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.OCTOBER) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.DECEMBER);
+		}
+
+		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getHalfYearStart() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 1);
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.JANUARY);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.JULY);
+		}
+
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getHalfYearEnd() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.JUNE);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.DECEMBER);
+		}
+
+		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
 
 }

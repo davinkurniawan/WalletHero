@@ -20,10 +20,10 @@ public class Goal {
 	public static int SAVING_GOAL = 1;
 	public static int EXPENSE_RESTRICTION_GOAL = 2;
 
-	public Goal(){
+	public Goal() {
 		super();
 	}
-	
+
 	public Goal(int goalID, int personID, String goalPeriod, String detail, BigDecimal goalAmount,
 			BigDecimal currentAmount, int type, int category, String categoryString, String statusString, int userID) {
 		super();
@@ -124,16 +124,19 @@ public class Goal {
 	public String getCategoryString() {
 		return this.categoryString;
 	}
-	
+
 	public String getFrequencyString() {
 		// http://stackoverflow.com/a/11464979
-		if (this.goalPeriod != null) {
-			return Character.toUpperCase(this.goalPeriod.charAt(0)) + this.goalPeriod.substring(1);	
-		} else {
-			return null;
+
+		String freqString = this.goalPeriod;
+
+		if (freqString.equals("half_yearly")) {
+			freqString = "half yearly";
 		}
+
+		return Character.toUpperCase(freqString.charAt(0)) + freqString.substring(1);
 	}
-	
+
 	public String getGoalTypeString() {
 		if (this.type == Goal.EXPENSE_RESTRICTION_GOAL) {
 			return "Expense limit";
@@ -141,7 +144,7 @@ public class Goal {
 			return "Savings";
 		}
 	}
-	
+
 	public int getType() {
 		return this.type;
 	}
@@ -153,12 +156,11 @@ public class Goal {
 	public void setDatePeriodString(String datePeriodString) {
 		this.datePeriodString = datePeriodString;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
 				+ ", goalAmount=" + goalAmount + ", currentAmount=" + currentAmount + ", type=" + type + ", category="
-				+ category + ", categoryString=" + categoryString + ", statusString=" + ", userID="
-				+ userID + "]";
+				+ category + ", categoryString=" + categoryString + ", statusString=" + ", userID=" + userID + "]";
 	}
 }
