@@ -1,16 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${applicationScope['WEB_NAME']}-LatestDeals</title>
-<%@ include file="bootstrapHeader.jsp"%>
-<link rel="stylesheet" href="css/dropdown-filter.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<title>${applicationScope['WEB_NAME']} - Latest Deals</title>
+	<%@ include file="bootstrapHeader.jsp"%>
+	
+	<link rel="stylesheet" href="css/dropdown-filter.css">
 </head>
 <body onload="myFunction(${param.order})">
 	<%@ include file="signedinnavbar.jsp"%>
@@ -189,7 +192,7 @@
 										</div>
 									</td>
 									<td align="left"><b style="font-size: 18px;"><a target="_blank" href="${i.url}">${i.title}</a></font></b> <font style="color:#6b6b6b;">- ${i.provider_name}</font>
-										<br/><br/><b style="font-size: 17px; color: #cf0c0c;">USD ${i.price}</b> <s style="color:#6b6b6b;">${i.value}</s>
+										<br/><br/><b style="font-size: 17px; color: #cf0c0c;">USD <fmt:formatNumber value="${i.price}" minFractionDigits="2" maxFractionDigits="2"/></b> <s style="color:#6b6b6b;"><fmt:formatNumber value="${i.value}" minFractionDigits="2" maxFractionDigits="2"/></s>
 										<br/><br/>
 										<div id="fine_print">
 										${i.fine_print}
