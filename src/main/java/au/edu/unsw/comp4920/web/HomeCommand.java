@@ -148,6 +148,12 @@ public class HomeCommand implements Command {
 		request.setAttribute(Constants.PREFERRED_CURRENCY, userPreferredCurrency);
 		request.setAttribute(Constants.USERNAME, user.getUsername());
 
+		List<Transaction> incomesList = dao.getTransactionsByDate(user.getUserID(), from, to, false, true, categoryID, userPreferredCurrency);
+		request.setAttribute("incomesList", incomesList);
+		
+		List<Transaction> expensesList = dao.getTransactionsByDate(user.getUserID(), from, to, true, false, categoryID, userPreferredCurrency);
+		request.setAttribute("expensesList", expensesList);
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
 		rd.forward(request, response);
 	}	
