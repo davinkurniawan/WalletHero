@@ -1,0 +1,38 @@
+How to Install
+
+Requirements:
+- Postgres version 9.4.1.210
+- Apache Tomcat 7.0
+
+1.) Turn on Postgres (You can use Postgres App if you are on a mac).
+
+2.) Type in "CREATE USER wallethero WITH SUPERUSER PASSWORD 'w4ll3th3r0';"  to create a user in Postgres.
+
+3.) Type in "CREATE DATABASE postgres" to create a database in Postgres if it doesn't exists.
+
+4.) Copy postgresql-9.4.1210.jre7.jar file to the Desktop from the "src > main > webapp > WEB-INF > lib" folder.
+
+5.) Go to Eclipse’s Preferences and Go to Data Management -> Connectivity -> Driver Definitions.
+
+6.) Click “Add” on the Driver Definition page.
+
+7.) Search for PostgreSQL JDBC Driver where the System Version is 8.x .
+
+8.) Click on JAR List and click “Add Jar/Zip”. Find the Jar file that was placed on the Desktop. Click Open and then Click “OK”. (You might want to remove “postgresql-8.1-404.jdbc2.jar” from the JAR list).
+
+9.) In the Data Source Explorer in Eclipse, Create a new Database Connection with details:
+	Database: database
+	URL: jdbc:postgresql://localhost:5432/postgres
+	User name: wallethero
+	
+10.) You might want to test the connection using 
+
+11.) Run create.sql in sql folder in COMP4920-Project.
+
+12.) Right click on the COMP4920-Project. Do "Run As > Maven Clean"
+
+13.) Right click on the COMP4920-Project. Do "Maven > Update Project"
+
+14.) Right click on the COMP4920-Project. Do "Run As > Maven Install"
+
+15.) You can now run the program as expected by right clicking the project COMP4920-Project "Run As > Run on Server".
