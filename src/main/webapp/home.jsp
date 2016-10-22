@@ -32,17 +32,17 @@
         	<h3 class="featurette-heading">Summary</h3>
         	<c:choose>
         		<c:when test="${ totalBudget < 0 }">
-        			<h4><b>Total Budget:</b> ${preferredCurrency} <label style="color:red"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
+        			<h4><b>Total Profit:</b> ${preferredCurrency} <label style="color:red"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
         		</c:when>
         		<c:when test="${ totalBudget > 0 }">
-        			<h4><b>Total Budget:</b> ${preferredCurrency} <label style="color:green"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
+        			<h4><b>Total Profit:</b> ${preferredCurrency} <label style="color:green"><fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></label></h4>       	
         		</c:when>
         		<c:otherwise>
-        			<h4><b>Total Budget:</b> ${preferredCurrency} <fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></h4>       	
+        			<h4><b>Total Profit:</b> ${preferredCurrency} <fmt:formatNumber value="${totalBudget}" minFractionDigits="2" maxFractionDigits="2"/></h4>       	
         		</c:otherwise>
         	</c:choose>
-        	<h4><b>Total Expense:</b> ${preferredCurrency} <fmt:formatNumber value="${totalExpense}" minFractionDigits="2" maxFractionDigits="2"/></h4>
-        	<h4><b>Total Income:</b> ${preferredCurrency} <fmt:formatNumber value="${totalIncome}" minFractionDigits="2" maxFractionDigits="2"/></h4>
+        	<h4><b>Total Expenses:</b> ${preferredCurrency} <fmt:formatNumber value="${totalExpense}" minFractionDigits="2" maxFractionDigits="2"/></h4>
+        	<h4><b>Total Incomes:</b> ${preferredCurrency} <fmt:formatNumber value="${totalIncome}" minFractionDigits="2" maxFractionDigits="2"/></h4>
 	  	</div>
 	  </div>
       
@@ -52,8 +52,41 @@
         <div class="col-md-12">
 			   <c:choose>
 					<c:when test="${requestScope.graphDataExpense.size() > 0}">
+					
 						<h3 class="featurette-heading">Last 7 Days of Expenses</h3>
 						<div id="graphExpense"></div>
+						
+						<div class="row featurette">
+		
+						<div class="col-md-12">			
+							<table class="table table-bordered" style="table-layout: fixed">
+								<tbody>
+									<tr>
+										<th>Transaction #</th>
+										<th>Details</th>
+										<th>Amount</th>
+										<th>Date</th>
+										<th>Category</th>
+										<th>Recurring</th>
+									</tr>
+									<c:forEach items="${requestScope.incomesList}" var="t" varStatus="myIndex">
+										<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
+										
+										<tr class="${t.getTransactionType()}">
+											<td style="display:none;" name="t_id_${t.transactionID}" id="t_id_${t.transactionID}"><c:out value="${t.transactionID}"></c:out></td>
+											<td name="t_pos_${t.transactionID}" id="t_pos_${t.transactionID}"><c:out value="${requestScope.incomesList.size() - myIndex.index}"></c:out></td>
+											<td name="t_detail_${t.transactionID}" id="t_detail_${t.transactionID}"><c:out value="${t.detail}"></c:out></td>
+											<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><fmt:formatNumber value="${t.amount}" minFractionDigits="2" maxFractionDigits="2"/></td>
+											<td name="t_date_${t.transactionID}" id="t_date_${t.transactionID}"><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
+											<td name="t_cat_${t.transactionID}" id="t_cat_${t.transactionID}"><c:out value="${t.getCategoryName()}"></c:out></td>
+											<td><c:out value="${t.getRecurrenceType()}"></c:out></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				
 					</c:when>
 					<c:otherwise>
 						<h2 class="featurette-heading">No Expenses Found.</h2>
@@ -63,6 +96,8 @@
 		</div>
 
 		<hr class="featurette-divider">
+		
+		<hr class="featurette-divider">
 
 		<div class="row featurette">
 			<div class="col-md-12">
@@ -70,6 +105,38 @@
 					<c:when test="${requestScope.graphDataIncome.size() > 0}">
 						<h3 class="featurette-heading">Last 7 Days of Incomes</h3>
 						<div id="graphIncome"></div>
+						
+						<div class="row featurette">
+		
+						<div class="col-md-12">			
+							<table class="table table-bordered" style="table-layout: fixed">
+								<tbody>
+									<tr>
+										<th>Transaction #</th>
+										<th>Details</th>
+										<th>Amount</th>
+										<th>Date</th>
+										<th>Category</th>
+										<th>Recurring</th>
+									</tr>
+									<c:forEach items="${requestScope.expensesList}" var="t" varStatus="myIndex">
+										<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
+										
+										<tr class="${t.getTransactionType()}">
+											<td style="display:none;" name="t_id_${t.transactionID}" id="t_id_${t.transactionID}"><c:out value="${t.transactionID}"></c:out></td>
+											<td name="t_pos_${t.transactionID}" id="t_pos_${t.transactionID}"><c:out value="${requestScope.expensesList.size() - myIndex.index}"></c:out></td>
+											<td name="t_detail_${t.transactionID}" id="t_detail_${t.transactionID}"><c:out value="${t.detail}"></c:out></td>
+											<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><fmt:formatNumber value="${t.amount}" minFractionDigits="2" maxFractionDigits="2"/></td>
+											<td name="t_date_${t.transactionID}" id="t_date_${t.transactionID}"><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
+											<td name="t_cat_${t.transactionID}" id="t_cat_${t.transactionID}"><c:out value="${t.getCategoryName()}"></c:out></td>
+											<td><c:out value="${t.getRecurrenceType()}"></c:out></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+						
 					</c:when>
 					<c:otherwise>
 						<h2 class="featurette-heading">No Incomes Found.</h2>
