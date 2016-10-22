@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.objects.Deal;
+import au.edu.unsw.comp4920.objects.Goal;
 import au.edu.unsw.comp4920.objects.Preference;
 import au.edu.unsw.comp4920.objects.Session;
 import au.edu.unsw.comp4920.objects.Transaction;
@@ -67,7 +68,7 @@ public class HomeCommand implements Command {
 		
 		request.setAttribute("fromDate", dfDate.format(from));
 
-		// TODO: Find proper workaround.
+		// Workaround for Java Date weirdness.
 		to = new Date(to.getTime() - 24 * 60 * 60 * 1000);
 		request.setAttribute("toDate", dfDate.format(to));
 				
@@ -153,6 +154,9 @@ public class HomeCommand implements Command {
 		
 		List<Transaction> expensesList = dao.getTransactionsByDate(user.getUserID(), from, to, true, false, categoryID, userPreferredCurrency);
 		request.setAttribute("expensesList", expensesList);
+		
+		List<Goal> goals = dao.getAllGoals(user.getUserID(), userPreferredCurrency);
+		request.setAttribute("goalList", goals);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
 		rd.forward(request, response);

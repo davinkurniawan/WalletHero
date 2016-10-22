@@ -286,9 +286,7 @@ public class ProfileCommand implements Command {
 						if (shouldProceed){
 							if (occupation.matches("^[0-9]+$")) {
 								int occupationId = Integer.parseInt(occupation);
-								
-								//TODO add limit occupationID
-								
+																
 								if (occupationId != updatedPreference.getOccupationID()) {
 									updatedPreference.setOccupationID(occupationId);
 									update = true;

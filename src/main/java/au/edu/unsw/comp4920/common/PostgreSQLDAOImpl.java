@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -76,7 +77,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				stmt.setString(6, (u.getMiddleName() != null) ? u.getMiddleName() : "");
 				stmt.setString(7, u.getLastName());
 				stmt.setString(8, u.getToken());
-				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for Disabled
+				stmt.setInt(9, 1); // 1 for Inactive, 2 for Active, 3 for
+									// Disabled
 				stmt.setDouble(10, 0.0); // Default to $0.0
 
 				int n = stmt.executeUpdate();
@@ -371,7 +373,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			String query = "UPDATE user_detail " + "SET currency_id = ?, age = ?, gender = ?, occupation_id = ?, deals=? "
+			String query = "UPDATE user_detail "
+					+ "SET currency_id = ?, age = ?, gender = ?, occupation_id = ?, deals=? "
 					+ "WHERE id = ? AND user_id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(query);
 
@@ -643,7 +646,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return transactions;
 	}
-	
+
 	private List<Transaction> getTransactions(int userID, Date from, Date to, boolean showIncomes, boolean showExpenses,
 			int categoryID) {
 		ArrayList<Transaction> masterTransactionList = new ArrayList<Transaction>();
@@ -668,7 +671,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	@Override
 	public List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes,
 			boolean showExpenses, int categoryID, String userPrefferedCurrency) {
-			
+
 		List<Transaction> transactions = this.getTransactions(userID, from, to, showIncomes, showExpenses, categoryID);
 		HashMap<String, BigDecimal> currencyHashmap = new HashMap<String, BigDecimal>();
 
@@ -689,35 +692,38 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				t.setCurrency(userPrefferedCurrency);
 			}
 		}
-		
+
 		return transactions;
 	}
-	
+
 	/**
 	 * Will retrieve exchange rate online, and cache this rate in the database.
 	 */
 	private BigDecimal getCurrencyExchangeRateOnline(String currencyPair) {
 		CloseableHttpClient client = null;
 		BigDecimal rate = null;
-		
+
 		try {
 			client = HttpClientBuilder.create().build();
-			HttpGet req = new HttpGet("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20%3D%20%22" + currencyPair + "%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
-			
+			HttpGet req = new HttpGet(
+					"https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20%3D%20%22"
+							+ currencyPair
+							+ "%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
+
 			HttpResponse resp = client.execute(req);
 			HttpEntity entity = resp.getEntity();
-			
+
 			BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 			StringBuilder sb = new StringBuilder();
 			String line = "";
-			
-			while ((line = br.readLine())!= null) {
+
+			while ((line = br.readLine()) != null) {
 				sb.append(line + "\n");
 			}
-			
+
 			JSONObject json = new JSONObject(sb.toString());
 			rate = json.getJSONObject("query").getJSONObject("results").getJSONObject("rate").getBigDecimal("Rate");
-			
+
 		} catch (Exception e) {
 			System.err.println("getCurrencyExchangeRateOnline failure when getting currency: ");
 			e.printStackTrace();
@@ -728,7 +734,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				e.printStackTrace();
 			}
 		}
-		
+
 		// Cache the exchange rate in the database.
 		Connection conn = null;
 
@@ -739,7 +745,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			Date date = new Date();
 			SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
 			String dateString = df.format(date);
-			
+
 			PreparedStatement stmt = conn
 					.prepareStatement("INSERT INTO currency_pair (pair, rate, date) VALUES (?, ?, ?);");
 
@@ -760,10 +766,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
-		return rate;	
+
+		return rate;
 	}
-	
+
 	private BigDecimal getCurrencyExchangeRateDatabase(String currencyPair) {
 		BigDecimal rate = null;
 		Connection conn = null;
@@ -775,17 +781,16 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			Date date = new Date();
 			SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
 			String dateString = df.format(date);
-			
+
 			StringBuilder query = new StringBuilder();
-			query.append(
-					"SELECT rate FROM currency_pair WHERE pair = ? AND date = ?");
+			query.append("SELECT rate FROM currency_pair WHERE pair = ? AND date = ?");
 			query.append(";");
 
 			PreparedStatement stmt = conn.prepareStatement(query.toString());
-			
+
 			stmt.setString(1, currencyPair);
 			stmt.setString(2, dateString);
-			
+
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -804,13 +809,13 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return rate;
 	}
-	
+
 	private BigDecimal getCurrencyExchangeRate(String currencyPair) {
 		BigDecimal rate = getCurrencyExchangeRateDatabase(currencyPair);
-		
+
 		if (rate != null) {
 			return rate;
 		} else {
@@ -827,7 +832,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM transaction WHERE user_id = ? ORDER BY date DESC, id DESC;");
+			PreparedStatement stmt = conn
+					.prepareStatement("SELECT * FROM transaction WHERE user_id = ? ORDER BY date DESC, id DESC;");
 
 			stmt.setInt(1, userID);
 			ResultSet rs = stmt.executeQuery();
@@ -871,7 +877,8 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			_factory.open();
 			conn = _factory.getConnection();
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT t.*, c.name FROM transaction t LEFT JOIN category c ON c.id = t.category_id WHERE t.id = ?;");
+			PreparedStatement stmt = conn.prepareStatement(
+					"SELECT t.*, c.name FROM transaction t LEFT JOIN category c ON c.id = t.category_id WHERE t.id = ?;");
 
 			stmt.setInt(1, transactionID);
 
@@ -889,7 +896,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				t.setCategoryID(rs.getInt("category_id"));
 				t.setCategoryName(rs.getString("name"));
 				t.setCurrency(rs.getString("currency_short_name"));
-				
+
 				int isReccurence = rs.getInt("recur_id");
 
 				if (isReccurence == -1) {
@@ -914,9 +921,9 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return t;
 	}
-	
+
 	@Override
-	public List<Goal> getAllGoals(int userID) {
+	public List<Goal> getAllGoals(int userID, String userPrefferedCurrency) {
 		ArrayList<Goal> goalList = new ArrayList<Goal>();
 		Connection conn = null;
 
@@ -968,7 +975,262 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 		}
 
+		for (Goal g : goalList) {
+			if (g.getCategoryString() == null) {
+				g.setCategoryString("All");
+			}
+
+			Date from = null;
+			Date to = null;
+
+			if (g.getGoalPeriod().equals("weekly")) {
+				from = getWeekStart();
+				to = getWeekEnd();
+			} else if (g.getGoalPeriod().equals("monthly")) {
+				from = getMonthStart();
+				to = getMonthEnd();
+			} else if (g.getGoalPeriod().equals("yearly")) {
+				from = getYearStart();
+				to = getYearEnd();
+			} else if (g.getGoalPeriod().equals("quarterly")) {
+				from = getQuarterStart();
+				to = getQuarterEnd();
+			} else if (g.getGoalPeriod().equals("fortnightly")) {
+				from = getWeekStart();
+				from = new Date(from.getTime() - 24 * 60 * 60 * 1000 * 7);
+				to = getWeekEnd();
+			} else if (g.getGoalPeriod().equals("half_yearly")) {
+				from = getHalfYearStart();
+				to = getHalfYearEnd();
+			}
+
+			SimpleDateFormat df_new = new SimpleDateFormat("dd MMMM yyyy");
+			String fromString = df_new.format(from);
+			String toString = df_new.format(to);
+			g.setDatePeriodString(fromString + " - " + toString);
+
+			to = new Date(to.getTime() + 24 * 60 * 60 * 1000);
+
+			if (g.isExpenseRestrictionGoal()) {
+				List<Transaction> transactions = this.getTransactionsByDate(userID, from, to, false, true,
+						g.getCategory(), userPrefferedCurrency);
+
+				BigDecimal amount = sumExpenses(transactions);
+				g.setCurrentAmount(amount);
+			} else if (g.isSavingGoal()) {
+				List<Transaction> transactions = this.getTransactionsByDate(userID, from, to, true, true, -1,
+						userPrefferedCurrency);
+
+				BigDecimal amount = getBalance(transactions);
+				g.setCurrentAmount(amount);
+			}
+
+		}
+
 		return goalList;
+	}
+
+	private BigDecimal getBalance(List<Transaction> transactions) {
+		BigDecimal sum = new BigDecimal(0);
+
+		for (Transaction t : transactions) {
+			if (t.isIncome()) {
+				sum = sum.add(t.getAmount());
+			} else {
+				sum = sum.subtract(t.getAmount());
+			}
+		}
+		return sum;
+	}
+
+	private BigDecimal sumExpenses(List<Transaction> transactions) {
+		BigDecimal sum = new BigDecimal(0);
+
+		for (Transaction t : transactions) {
+			sum = sum.add(t.getAmount());
+		}
+		return sum;
+	}
+
+	private Date getWeekStart() {
+		// http://stackoverflow.com/a/12075998
+		Calendar c = Calendar.getInstance();
+		c.setFirstDayOfWeek(Calendar.MONDAY);
+		c.setTime(new Date());
+		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getWeekEnd() {
+		// http://stackoverflow.com/a/12075998
+		Calendar c = Calendar.getInstance();
+		c.setFirstDayOfWeek(Calendar.MONDAY);
+		c.setTime(new Date());
+		c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getMonthStart() {
+		// http://stackoverflow.com/a/12075998
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 1);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getMonthEnd() {
+		// http://stackoverflow.com/a/12075998
+		// http://stackoverflow.com/a/13012840
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getYearStart() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 1);
+		c.set(Calendar.MONTH, Calendar.JANUARY);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getYearEnd() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 31);
+		c.set(Calendar.MONTH, Calendar.DECEMBER);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getQuarterStart() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 1);
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.MARCH)) {
+			c.set(Calendar.MONTH, Calendar.JANUARY);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.APRIL) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.APRIL);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.SEPTEMBER)) {
+			c.set(Calendar.MONTH, Calendar.JULY);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.OCTOBER) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.OCTOBER);
+		}
+
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getQuarterEnd() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.MARCH)) {
+			c.set(Calendar.MONTH, Calendar.MARCH);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.APRIL) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.JUNE);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.SEPTEMBER)) {
+			c.set(Calendar.MONTH, Calendar.SEPTEMBER);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.OCTOBER) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.DECEMBER);
+		}
+
+		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getHalfYearStart() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		c.set(Calendar.DATE, 1);
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.JANUARY);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.JULY);
+		}
+
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
+	}
+
+	private Date getHalfYearEnd() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+
+		if ((c.get(Calendar.MONTH) >= Calendar.JANUARY) && (c.get(Calendar.MONTH) <= Calendar.JUNE)) {
+			c.set(Calendar.MONTH, Calendar.JUNE);
+		} else if ((c.get(Calendar.MONTH) >= Calendar.JULY) && (c.get(Calendar.MONTH) <= Calendar.DECEMBER)) {
+			c.set(Calendar.MONTH, Calendar.DECEMBER);
+		}
+
+		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+
+		Date d = c.getTime();
+		return new Date(d.getTime());
 	}
 
 	@Override
@@ -1007,7 +1269,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -1096,7 +1358,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -1173,7 +1435,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -1212,7 +1474,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -1316,7 +1578,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -1604,7 +1866,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		int count = 0;
 
 		List<Transaction> transactions = this.getAllTransactions(userID);
-		List<Goal> goals = this.getAllGoals(userID);
+		List<Goal> goals = this.getAllGoals(userID, null);
 
 		while (!result && count < 3) { // Fail check up to 3 times
 			for (Transaction t : transactions) {
@@ -1700,7 +1962,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 	}
 
 	@Override
-	public boolean deleteUserGoal(int goalID, int userID){
+	public boolean deleteUserGoal(int goalID, int userID) {
 		boolean result = true;
 		Connection conn = null;
 
@@ -1717,14 +1979,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			if (n != 1) {
 				throw new DataSourceException("Did not delete user's goal!");
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			result = false;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
@@ -1734,26 +1994,26 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
 
 	@Override
 	public boolean deleteUserCompletely(int userID) {
 		boolean result = true;
-		
+
 		// Delete all of the User's Data.
 		result = this.deleteAllUserData(userID);
-		
+
 		// Delete All Session.
 		result = this.deleteAllSession(userID);
-		
+
 		// Delete User's Details.
 		result = this.deleteUserDetails(userID);
-		
+
 		// Delete User.
 		result = this.deleteUser(userID);
-				
+
 		return result;
 	}
 
@@ -1775,7 +2035,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			stmt.setInt(4, g.getGoalType());
 			stmt.setInt(5, g.getCategory());
 			stmt.setString(6, g.getGoalPeriod());
-			
+
 			int n = stmt.executeUpdate();
 
 			if (n != 1) {
@@ -1783,17 +2043,14 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			}
 
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			System.err.println(e.getMessage());
 			result = false;
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
-				} 
-				catch (SQLException e) {
+				} catch (SQLException e) {
 					System.err.println(e.getMessage());
 					result = false;
 				}
@@ -1802,7 +2059,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return result;
 	}
-	
+
 	@Override
 	public boolean deleteAllSession(int userID) {
 		boolean result = true;
@@ -1820,14 +2077,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			if (n < 0) {
 				throw new DataSourceException("Did not delete all of the user's session!");
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			result = false;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
@@ -1837,10 +2092,10 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public boolean updateUserTransaction(Transaction t) {
 		boolean result = true;
@@ -1849,7 +2104,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		try {
 			_factory.open();
 			conn = _factory.getConnection();
-			
+
 			String query = "UPDATE transaction SET date = ?, detail = ?, amount = ?, is_income = ?, category_id = ?, currency_short_name = ? WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(query);
 
@@ -1884,7 +2139,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 		return result;
 	}
-	
+
 	@Override
 	public boolean deleteUserDetails(int userID) {
 		boolean result = true;
@@ -1902,14 +2157,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			if (n < 0) {
 				throw new DataSourceException("Did not delete all of the user's details!");
 			}
-			
+
 			stmt.close();
-		} 
-		catch (SQLException | ServiceLocatorException | DataSourceException e) {
+		} catch (SQLException | ServiceLocatorException | DataSourceException e) {
 			result = false;
 			System.err.println(e.getMessage());
-		} 
-		finally {
+		} finally {
 			if (conn != null) {
 				try {
 					_factory.close();
@@ -1919,51 +2172,52 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public Map<String, BigDecimal> getCurrentBudget(int userID, String userPreferredCurrency) {
 		BigDecimal totalBudget = new BigDecimal(0.0);
 		BigDecimal totalExpense = new BigDecimal(0.0);
 		BigDecimal totalIncome = new BigDecimal(0.0);
-		
+
 		Map<String, BigDecimal> result = new HashMap<String, BigDecimal>();
-		
+
 		Date epochTime = new Date(0L);
 		Date currentTime = new Date();
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-		
+
 		System.err.println("Epoch Time: " + sdf.format(epochTime));
 		System.err.println("Current Time: " + sdf.format(currentTime));
-		
-		//List<Transaction> getTransactionsByDate(int userID, Date from, Date to, boolean showIncomes,
-		// boolean showExpenses, int categoryID, String userPrefferedCurrency) 
-		List<Transaction> allTransactions = this.getTransactionsByDate(userID, epochTime, currentTime, true, true, -1, userPreferredCurrency);
 
-		for (Transaction t : allTransactions){
-			
+		// List<Transaction> getTransactionsByDate(int userID, Date from, Date
+		// to, boolean showIncomes,
+		// boolean showExpenses, int categoryID, String userPrefferedCurrency)
+		List<Transaction> allTransactions = this.getTransactionsByDate(userID, epochTime, currentTime, true, true, -1,
+				userPreferredCurrency);
+
+		for (Transaction t : allTransactions) {
+
 			if (t.isIncome()) {
 				System.err.println("Income Amount: " + userPreferredCurrency + " " + t.getAmount());
 				totalBudget = totalBudget.add(t.getAmount());
 				totalIncome = totalIncome.add(t.getAmount());
-			}
-			else if (!t.isIncome()) {
+			} else if (!t.isIncome()) {
 				System.err.println("Expense Amount: " + userPreferredCurrency + " " + t.getAmount());
 				totalBudget = totalBudget.subtract(t.getAmount());
 				totalExpense = totalExpense.add(t.getAmount());
 			}
 		}
-		
+
 		result.put("totalIncome", totalIncome);
 		result.put("totalExpense", totalExpense);
 		result.put("totalBudget", totalBudget);
-		
+
 		System.err.println("Total Current Budget to Date: " + userPreferredCurrency + " " + totalBudget);
-				
+
 		return result;
 	}
 
