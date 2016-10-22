@@ -57,7 +57,7 @@ public interface CommonDAO {
 	public List<Occupation> getAllOccupations();
 	
 	public boolean addGoal(Goal g);
-	public List<Goal> getAllGoals(int userID);
+	public List<Goal> getAllGoals(int userID, String userPreferredCurrency);
 	public boolean deleteUserGoal(int goalID, int userID);
 	
 	public Map<String, BigDecimal> getCurrentBudget(int userID, String userPreferredCurrency);
