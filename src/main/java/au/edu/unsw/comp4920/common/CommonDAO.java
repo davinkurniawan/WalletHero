@@ -1,6 +1,7 @@
 package au.edu.unsw.comp4920.common;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.Map;
 import au.edu.unsw.comp4920.objects.*;
 
 public interface CommonDAO {	
+	public void closeConnection() throws SQLException;
+	
 	public boolean createUser(User u);
 	public boolean createDefaultUserDetails(int userID);
 	
@@ -22,6 +25,7 @@ public interface CommonDAO {
 	public User getUser(String userinfo, String password);
 	public User getUser(String sid);
 	public User getUser(String userinfo, String firstName, String lastName);
+	public List<User> getAllUsers();
 	
 	public boolean updateUserNames(User u);
 	public boolean updateUserEmail(User u);

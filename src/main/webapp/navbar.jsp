@@ -21,8 +21,8 @@
                 		<li class="${currencyConverter }"><a href="${applicationScope['ROUTER_CURRENCYCONVERTER']}">Currency Converter</a></li>
                		</ul>
                 </li>
-                <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
                 <li class="${help }"><a href="${applicationScope['ROUTER_HELP']}">Help</a></li>
+                <li class="${about }"><a href="${applicationScope['ROUTER_ABOUT']}">About</a></li>
               </ul>
             </div>
           </div>

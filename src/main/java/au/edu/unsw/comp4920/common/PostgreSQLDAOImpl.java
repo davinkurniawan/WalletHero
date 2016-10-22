@@ -44,6 +44,11 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		_factory = new DBConnectionFactory();
 		logger.info("Connection opened");
 	}
+	
+	@Override
+	public void closeConnection() throws SQLException {
+		_factory.close();
+	}
 
 	@Override
 	public boolean createUser(User u) {
@@ -1960,5 +1965,43 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		System.err.println("Total Current Budget to Date: " + userPreferredCurrency + " " + totalBudget);
 				
 		return result;
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		Connection conn = null;
+		List <User> userList = new ArrayList<User>();
+		
+		try {
+			_factory.open();
+			conn = _factory.getConnection();
+
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users;");
+
+			ResultSet rs = stmt.executeQuery();
+			User u = null;
+			while (rs.next()) {
+				u = new User(rs);
+				userList.add(u);
+				u = null;
+			}
+
+			stmt.close();
+		} 
+		catch (SQLException | ServiceLocatorException e) {
+			System.err.println(e.getMessage());
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					_factory.close();
+				} 
+				catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+
+		return userList;
 	}
 }

@@ -17,7 +17,8 @@ import static org.quartz.SimpleScheduleBuilder.*;
 import au.edu.unsw.comp4920.scheduler.DealEmailJob;
 
 public class QuartzListener implements ServletContextListener {
-	Scheduler scheduler = null;
+	private Scheduler scheduler = null;
+	public CommonDAO _dao;	
 	
 	@Override
 	public void contextInitialized(ServletContextEvent servletContext) {
@@ -32,7 +33,7 @@ public class QuartzListener implements ServletContextListener {
 		            .withIdentity("trigger1", "group1")
 		            .startNow()
 		            .withSchedule(simpleSchedule()
-		                    .withIntervalInMinutes(1)
+		                    .withIntervalInHours(24 * 3)
 		                    .repeatForever())            
 		            .build();
 

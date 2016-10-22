@@ -112,66 +112,15 @@
 								<button type="submit" class="btn btn-primary">
 									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 								</button>
+							</form>
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
-					</form>
 				</div>
 			</div>
-			<!--  </form> -->
 		</div>
-
-		<!--  <label>Search</label> <input type="hidden" name="operation"
-				value="deals" />
-			<c:if test="${not empty param.query}">
-				<c:set var="query" scope="request" value="${param.query}" />
-			</c:if>
-			<input type="text" name='query' class="form-control"
-				placeholder="Search for..." value=${query}>
-			<div class="form-group" id="div-order" name="div-order">
-				<br>
-				<label>Order by</label> <br /> <select id="order" name="order"
-					class="form-control">
-					<option id="" value="" selected>Select order...</option>
-					<option id="number_sold_desc" value="number_sold_desc">Number
-						sold (High to Low)</option>
-					<option id="number_sold" value="number_sold">Number sold
-						(Low to High)</option>
-					<option id="value_desc" value="value_desc">Original price
-						(High to Low)</option>
-					<option id="value" value="value">Original price (Low to
-						High)</option>
-					<option id="price_desc" value="price_desc">Final price
-						(High to Low)</option>
-					<option id="price" value="price">Final price (Low to High)</option>
-					<option id="expires_at_desc" value="expires_at_desc">Expiration
-						date (Descending)</option>
-					<option id="expires_at" value="expires_at">Expiration date
-						(Ascending)</option>
-					<option id="updated_at_desc" value="updated_at_desc">Newest</option>
-					<option id="updated_at" value="updated_at">Oldest</option>
-				</select>
-			</div>
-			<br> <label>Category</label>
-			<div class="form-group checkbox" id="div-category">
-				<c:forEach items="${categories}" var="c">
-					<c:set var="checked" scope="request" value=""></c:set>
-					<c:forEach items="${paramValues.category}" var="i">
-						<c:choose>
-							<c:when test="${i == c.slug}">
-								<c:set var="checked" scope="request" value="checked"></c:set>
-							</c:when>
-						</c:choose>
-					</c:forEach>
-					<label><input type="checkbox" name="category"
-						id="categoryBox" value="${c.slug}" ${checked}> ${c.name}</label>
-				</c:forEach>
-				<input type="hidden" name="page" value="1" /> <input type="submit"
-					value="Search" class="btn btn-primary" />
-			</div>
-		</form>-->
 		<br>
 		<div class="row featurette">
 			<div class="col-md-12">

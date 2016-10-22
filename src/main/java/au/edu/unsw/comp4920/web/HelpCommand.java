@@ -1,6 +1,7 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -37,10 +38,11 @@ public class HelpCommand implements Command {
         System.out.println("HelpCommand: Action is " + actionString);
 				
 		HttpSession session = request.getSession();
+		User user = null;
 		
         if (session.getAttribute(Constants.SID) != null){
             String sid = session.getAttribute(Constants.SID).toString();
-        	User user = dao.getUser(sid);
+        	user = dao.getUser(sid);
         	
         	if (user != null){
         		request.setAttribute(Constants.EMAIL, user.getEmail());;
@@ -53,9 +55,10 @@ public class HelpCommand implements Command {
 				case EMAIL:
 					String email	= request.getParameter("email");
 					String message 	= request.getParameter("message");
-					sendSupportEmail(email, message, dao);
-					request.setAttribute("success", "yes");
-					break;
+					sendSupportEmail(email, message, user, dao);
+					
+					response.sendRedirect(Constants.ROUTER + Constants.HELP_COMMAND + "&success=yes");
+					return;					
 			}
 		}
 		
@@ -63,27 +66,35 @@ public class HelpCommand implements Command {
 		rd.forward(request, response);
 	}
 
-	private void sendSupportEmail(String useremail, String message, CommonDAO dao) {
-		String email = "nataliadjohari@gmail.com";
-		Date d = new Date();
+	private void sendSupportEmail(String useremail, String message, User user, CommonDAO dao) {
+		Date current = new Date();
+		SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
 		
-		// Send email here 
-		String content = "Hi " + "<br/><br/>";
-		content += "A message regarding wallethero has been received. ";
+		String content = "";
+		
+		if (user != null){
+			content += "Hi " + user.getFirstName() + "," + "<br/><br/>";
+		}
+		else{
+			content += "Hi there, " + "<br/><br/>";
+		}
+		
+		content += "This is a WalletHero notification email that we have received your message.";
+		content += "<br/><br/>";
 		content += "The message is as follows:";
 		content += "<br/><br/>";
-		content += "Sent by: " + useremail + " at " + d.toString();
+		content += "<b>" + message + "</b>";
+		content += "<br/><br/>";	
+		content += "The message was made by: " + useremail + " on " + df.format(current) + ".";		
 		content += "<br/><br/>";
-		content += message;
+		content += "Have fun, and don't hesitate to contact us with your feedback.";
 		content += "<br/><br/>";
-		content += "Remember to reply";
-		content += "<br/><br/>";
-		content += "WalletHero Server";
+		content += "WalletHero Team";
 		content += "<br/><br/>";
 		content += Constants.SERVER;
-		
+
 		MailHelper mh = new MailHelper();
-		mh.sendEmail(email, "WalletHero - Support Email", content);
+		mh.sendEmail(useremail, "WalletHero - Support Notification", content);
 	}
 }
 

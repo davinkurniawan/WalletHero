@@ -187,7 +187,7 @@
 		      </c:if>
 		   	</h5>
 		   	
-		    <c:if test="${success != null && success.equalsIgnoreCase('yes')}" >
+		   <c:if test="${param['success'] != null && param['success'].equalsIgnoreCase('yes')}" >
 			  <h5 style="color:Green;text-align:center">
 				  Your message was received! Allow us a few days to respond to your message.
 			  </h5>

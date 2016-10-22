@@ -26,7 +26,7 @@ public class ControllerServlet extends HttpServlet {
 		
 		System.out.println("WalletHero is started!");
 		
-		// Initialize database connections
+		/** Initialize database connection. **/
 		try {
 			_dao = new PostgreSQLDAOImpl();
 		} 
