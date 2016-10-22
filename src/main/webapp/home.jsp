@@ -56,37 +56,37 @@
 						<h3 class="featurette-heading">Last 7 Days of Expenses</h3>
 						<div id="graphExpense"></div>
 						
+						<br/><br/>
+						
 						<div class="row featurette">
-		
-						<div class="col-md-12">			
-							<table class="table table-bordered" style="table-layout: fixed">
-								<tbody>
-									<tr>
-										<th>Transaction #</th>
-										<th>Details</th>
-										<th>Amount</th>
-										<th>Date</th>
-										<th>Category</th>
-										<th>Recurring</th>
-									</tr>
-									<c:forEach items="${requestScope.incomesList}" var="t" varStatus="myIndex">
-										<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
-										
-										<tr class="${t.getTransactionType()}">
-											<td style="display:none;" name="t_id_${t.transactionID}" id="t_id_${t.transactionID}"><c:out value="${t.transactionID}"></c:out></td>
-											<td name="t_pos_${t.transactionID}" id="t_pos_${t.transactionID}"><c:out value="${requestScope.incomesList.size() - myIndex.index}"></c:out></td>
-											<td name="t_detail_${t.transactionID}" id="t_detail_${t.transactionID}"><c:out value="${t.detail}"></c:out></td>
-											<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><fmt:formatNumber value="${t.amount}" minFractionDigits="2" maxFractionDigits="2"/></td>
-											<td name="t_date_${t.transactionID}" id="t_date_${t.transactionID}"><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
-											<td name="t_cat_${t.transactionID}" id="t_cat_${t.transactionID}"><c:out value="${t.getCategoryName()}"></c:out></td>
-											<td><c:out value="${t.getRecurrenceType()}"></c:out></td>
+							<div class="col-md-12">			
+								<table class="table table-bordered" style="table-layout: fixed">
+									<tbody>
+										<tr>
+											<th>Transaction #</th>
+											<th>Details</th>
+											<th>Amount</th>
+											<th>Date</th>
+											<th>Category</th>
+											<th>Recurring</th>
 										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
+										<c:forEach items="${requestScope.incomesList}" var="t" varStatus="myIndex">
+											<fmt:parseDate pattern="yyyy-MM-dd" value="${t.date}" var="parsedDate" />
+											
+											<tr class="${t.getTransactionType()}">
+												<td style="display:none;" name="t_id_${t.transactionID}" id="t_id_${t.transactionID}"><c:out value="${t.transactionID}"></c:out></td>
+												<td name="t_pos_${t.transactionID}" id="t_pos_${t.transactionID}"><c:out value="${requestScope.incomesList.size() - myIndex.index}"></c:out></td>
+												<td name="t_detail_${t.transactionID}" id="t_detail_${t.transactionID}"><c:out value="${t.detail}"></c:out></td>
+												<td name="t_cur_amt_${t.transactionID}" id="t_cur_amt_${t.transactionID}"><c:out value="${t.currency} "></c:out><fmt:formatNumber value="${t.amount}" minFractionDigits="2" maxFractionDigits="2"/></td>
+												<td name="t_date_${t.transactionID}" id="t_date_${t.transactionID}"><fmt:formatDate value="${parsedDate}" pattern="dd MMMM yyyy" /></td>
+												<td name="t_cat_${t.transactionID}" id="t_cat_${t.transactionID}"><c:out value="${t.getCategoryName()}"></c:out></td>
+												<td><c:out value="${t.getRecurrenceType()}"></c:out></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
 						</div>
-					</div>
-				
 					</c:when>
 					<c:otherwise>
 						<h2 class="featurette-heading">No Expenses Found.</h2>
@@ -94,8 +94,6 @@
 				</c:choose>
 			</div>
 		</div>
-
-		<hr class="featurette-divider">
 		
 		<hr class="featurette-divider">
 
@@ -107,6 +105,8 @@
 						<div id="graphIncome"></div>
 						
 						<div class="row featurette">
+						
+						<br/><br/>
 		
 						<div class="col-md-12">			
 							<table class="table table-bordered" style="table-layout: fixed">
