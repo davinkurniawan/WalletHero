@@ -82,8 +82,10 @@ public class DealEmailJob implements Job {
 						deals.add(d); 
 					}
 					
-					// Delegate tasks.
-					this.makeAndSendEmail(deals, user, link_categories_more);
+					if (deals.size() > 0){
+						// Delegate tasks.
+						this.makeAndSendEmail(deals, user, link_categories_more);
+					}
 				}
 			}
 			catch (IOException e) {
@@ -120,7 +122,7 @@ public class DealEmailJob implements Job {
 		content += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">";
 		content += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />";
 		content += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />";
-		content += "<title>" + Constants.WEB_NAME + " - Home</title>";
+		content += "<title>" + Constants.WEB_NAME + " - Deals Recommendation</title>";
 		content += "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">";
 		content += "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">";
 		content += "<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>";
@@ -135,11 +137,14 @@ public class DealEmailJob implements Job {
 		content += "<div class=\"col-md-12\">";
 		
 		content += "<div class=\"pull-left\">";
-		content += "<h2 class=\"featurette-heading\">Recommended For You</h2>";
+		content += "<h2 class=\"featurette-heading\">We have some Recommended Deals For You</h2>";
+		content += "</div>";
 		content += "<div class=\"col-md-12\">";
 		content += "<div class=\"pull-right\">";
 		content += "<p><a href=\"" + link_categories_more + "\">See More...</a></p>";
-		
+		content += "</div>";
+		content += "</div>";
+		content += "<div class=\"clearfix\"></div>";
 		content += "<div class=\"row\">";
 		
 		for (Deal deal : deals){
@@ -172,23 +177,18 @@ public class DealEmailJob implements Job {
 			counter++;
 		}
 		
-		content += "</div>";
-		
-		content += "</div>";
-		content += "<div class=\"clearfix\"></div>";
-		content += "</div>";
-		content += "</div>";
-	
+		content += "</div>";	
 		content += "</div>";
 		content += "</div>";
 		content += "</div>";
 		
-		content += "<br/><br/>";
+		content += "<div>";
 		content += "Have fun, and don't hesitate to contact us with your feedback.";
 		content += "<br/><br/>";
 		content += "WalletHero Team";
 		content += "<br/><br/>";
 		content += Constants.SERVER;
+		content += "</div>";
 		
 		content += "</body>";
 		content += "</html>";
@@ -196,6 +196,6 @@ public class DealEmailJob implements Job {
 		System.out.println("CT: " + content);
 		
 		MailHelper mh = new MailHelper();
-		mh.sendEmail(user.getEmail(), "WalletHero - Latest Deals", content);
+		mh.sendEmail(user.getEmail(), "WalletHero - Deals for You", content);
 	}
 }
