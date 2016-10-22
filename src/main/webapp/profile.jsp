@@ -181,6 +181,23 @@
 					</select> 
 				</div>
 				
+				<div class="form-group" id="div-get-deals-email" name="div-get-deals-email">
+			  		<label>Receive Deals Email? <label style="color:red">*</label></label>
+			  		<br/>
+					<select id="get_deals_email" name="get_deals_email" class="form-control">				
+						<c:choose>
+							<c:when test="${preference.get_deals_email == true}">
+								<option value="yes" selected>Yes</option>
+								<option value="no">No</option>
+							</c:when>
+							<c:otherwise>
+								<option value="yes">Yes</option>
+								<option value="no" selected>No</option>
+							</c:otherwise>
+						</c:choose>						
+					</select> 
+				</div>
+				
 				<div class="form-group" id="div-age" name="div-age">
 			  		<label>Age <label style="color:red">*</label></label>
 					<input type="number" class="form-control" id="age" name="age" placeholder="Age..." value="${preference.getAge()}" step="1" min="1"/>

@@ -12,6 +12,7 @@ public class Preference {
 	private Currency currency;
 	private Occupation occupation;
 	private String deals;
+	private boolean get_deals_email;
 	
 	public Preference() {
 		super();
@@ -19,7 +20,7 @@ public class Preference {
 		this.occupation = new Occupation();
 	}
 	
-	public Preference(int preferenceID, int userID, int age, String gender, Currency currency, Occupation occupation, String deals) {
+	public Preference(int preferenceID, int userID, int age, String gender, Currency currency, Occupation occupation, String deals, boolean get_deals_email) {
 		super();	
 		this.preferenceID = preferenceID;
 		this.userID = userID;
@@ -28,6 +29,7 @@ public class Preference {
 		this.currency = currency;
 		this.occupation = occupation;
 		this.deals = deals;
+		this.get_deals_email = get_deals_email;
 	}
 
 	public Preference(ResultSet rs) throws SQLException {
@@ -46,6 +48,7 @@ public class Preference {
 		occupation.setName(rs.getString("name"));
 		
 		deals = rs.getString("deals");
+		get_deals_email = rs.getBoolean("get_deals_email");
 	}
 	
 	public int getPreferenceID() {
@@ -112,6 +115,14 @@ public class Preference {
 		occupation.setOccupationID(occupationID);
 	}
 	
+	public boolean isGet_deals_email() {
+		return get_deals_email;
+	}
+
+	public void setGet_deals_email(boolean get_deals_email) {
+		this.get_deals_email = get_deals_email;
+	}
+
 	public Preference clone() {
 		Preference newP = new Preference();
 		newP.setPreferenceID(preferenceID);
@@ -123,6 +134,7 @@ public class Preference {
 		Occupation o = new Occupation(occupation.getOccupationID(), occupation.getName());
 		newP.setOccupation(o);
 		newP.setDeals(deals);;
+		newP.setGet_deals_email(get_deals_email);
 		return newP;
 	}
 
@@ -172,10 +184,11 @@ public class Preference {
 		}
 		this.deals = results;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Preference [preferenceID=" + preferenceID + ", userID=" + userID + ", age=" + age + ", gender=" + gender + ", currency="
-				+ currency + ", occupation=" + occupation + ", deals=" + deals + "]";
+		return "Preference [preferenceID=" + preferenceID + ", userID=" + userID + ", age=" + age + ", gender=" + gender
+				+ ", currency=" + currency + ", occupation=" + occupation + ", deals=" + deals + ", get_deals_email="
+				+ get_deals_email + "]";
 	}
 }

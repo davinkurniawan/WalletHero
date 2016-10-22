@@ -21,7 +21,26 @@ INSERT INTO category VALUES (15, 'Telephone/Mobile');
 INSERT INTO category VALUES (16, 'Utilities');
 
 INSERT INTO occupation(id, name) VALUES(1, 'Student');
-INSERT INTO occupation(id, name) VALUES(2, 'Others');
+INSERT INTO occupation(id, name) VALUES(2, 'Other');
+INSERT INTO occupation(id, name) VALUES(3, 'Aerospace');
+INSERT INTO occupation(id, name) VALUES(4, 'Chemical');
+INSERT INTO occupation(id, name) VALUES(5, 'Computer');
+INSERT INTO occupation(id, name) VALUES(6, 'Construction');
+INSERT INTO occupation(id, name) VALUES(7, 'Defence');
+INSERT INTO occupation(id, name) VALUES(8, 'Education');
+INSERT INTO occupation(id, name) VALUES(9, 'Engineering');
+INSERT INTO occupation(id, name) VALUES(10, 'Energy');
+INSERT INTO occupation(id, name) VALUES(11, 'Entertainment');
+INSERT INTO occupation(id, name) VALUES(12, 'Finance');
+INSERT INTO occupation(id, name) VALUES(13, 'Food');
+INSERT INTO occupation(id, name) VALUES(14, 'Health care');
+INSERT INTO occupation(id, name) VALUES(15, 'Hospitality');
+INSERT INTO occupation(id, name) VALUES(16, 'Manufacturing');
+INSERT INTO occupation(id, name) VALUES(17, 'Media');
+INSERT INTO occupation(id, name) VALUES(18, 'Research');
+INSERT INTO occupation(id, name) VALUES(19, 'Telecommunications');
+INSERT INTO occupation(id, name) VALUES(20, 'Transport');
+INSERT INTO occupation(id, name) VALUES(21, 'Water');
 
 INSERT INTO currency(id, short_name, long_name) VALUES(1, 'DZD', 'Algeria Dinars');
 INSERT INTO currency(id, short_name, long_name) VALUES(2, 'ARS', 'Argentina Pesos');

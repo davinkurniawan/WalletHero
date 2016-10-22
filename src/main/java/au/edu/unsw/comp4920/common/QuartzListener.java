@@ -33,7 +33,7 @@ public class QuartzListener implements ServletContextListener {
 		            .withIdentity("trigger1", "group1")
 		            .startNow()
 		            .withSchedule(simpleSchedule()
-		                    .withIntervalInHours(24 * 3)
+		                    .withIntervalInHours(24 * 3) // Every 3 days, the deals email is sent.
 		                    .repeatForever())            
 		            .build();
 

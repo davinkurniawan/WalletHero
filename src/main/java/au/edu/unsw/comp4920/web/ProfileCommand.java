@@ -185,12 +185,15 @@ public class ProfileCommand implements Command {
 				case PREFERENCE:
 					
 					if ( request.getParameter("age") != null && request.getParameter("gender") != null 
-							&& request.getParameter("currency") != null && request.getParameter("occupation") != null) {
+							&& request.getParameter("currency") != null && request.getParameter("occupation") != null 
+							&& request.getParameter("get_deals_email") != null) {
 
 						String age = request.getParameter("age");
 						String gender = request.getParameter("gender");
 						String currency = request.getParameter("currency");
 						String occupation = request.getParameter("occupation");
+						String deals_email = request.getParameter("get_deals_email");
+						
 						boolean update = false;
 						boolean shouldProceed = false;
 						updatedPreference = preference.clone();
@@ -302,6 +305,29 @@ public class ProfileCommand implements Command {
 								System.err.println("ProfileCommand: Occupation id must be a number.");
 								request.setAttribute(Constants.ERROR, 1);
 								request.setAttribute(Constants.ERRORMSG, "Incorrect occupation format!");
+								update = false;
+								shouldProceed = false;
+							}
+						}
+						
+						if (shouldProceed){
+							if (deals_email.equalsIgnoreCase("yes") || deals_email.equalsIgnoreCase("no")){
+								boolean get_deals_email = (deals_email.equalsIgnoreCase("yes") ? true : false);
+								
+								if (get_deals_email != updatedPreference.isGet_deals_email()){
+									updatedPreference.setGet_deals_email(get_deals_email);
+									update = true;
+									shouldProceed = true;	
+								}
+								else {
+									System.out.println("ProfileCommand: Should Send Deals Email same as previous.");
+									shouldProceed = true;
+								}
+							}
+							else {
+								System.err.println("ProfileCommand: Should Send Email Deals Email must be a true/false.");
+								request.setAttribute(Constants.ERROR, 1);
+								request.setAttribute(Constants.ERRORMSG, "Send Deals Email is not in valid format!");
 								update = false;
 								shouldProceed = false;
 							}

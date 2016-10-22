@@ -53,6 +53,7 @@ CREATE TABLE user_detail (
 	gender char,
 	occupation_id int,
 	deals varchar,
+	get_deals_email BOOLEAN NOT NULL,
 	CONSTRAINT user_detail_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE

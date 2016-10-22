@@ -3,7 +3,9 @@ package au.edu.unsw.comp4920.scheduler;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,43 +51,53 @@ public class DealEmailJob implements Job {
 		for (User user : userList) {
 			try {
 				Preference p = _dao.getUserPreference(user.getUserID());
+				
+				if (p.isGet_deals_email()){
 	
-				String req = Constants.API_URL + "/deals" + "?page=1";
-				String link_categories_more = Constants.SERVER + Constants.ROUTER + Constants.DEALS_COMMAND;
-				
-				String[] categories = p.getDealsList();
-				
-				if (categories.length > 0) {
-					for (String s : categories) {
-						req += "&category_slugs=";
-						req += s;
+					String req = Constants.API_URL + "/deals" + "?page=1";
+					String link_categories_more = Constants.SERVER + Constants.ROUTER + Constants.DEALS_COMMAND;
+					
+					String[] categories = p.getDealsList();
+					
+					if (categories.length > 0) {
+						for (String s : categories) {
+							req += "&category_slugs=";
+							req += s;
+							
+							link_categories_more += "&category=" + s;
+						}
+					}
+		
+					
+					JSONObject deals_json = DealsCommand.sendAPIRequest(req);
+					
+					if (deals_json == null || !deals_json.isNull("error")) {
+						System.err.println("Fail to find the Deals. So skip sending email.");
+						continue;
+					}
+					else {
+						JSONArray array = deals_json.getJSONArray("deals");
+						ObjectMapper mapper = new ObjectMapper();
+						ArrayList<Deal> deals = new ArrayList<Deal>();
 						
-						link_categories_more += "&category=" + s;
+						for (int i = 0; i < array.length(); ++i) {
+							String deal = array.getJSONObject(i).getJSONObject("deal").toString();
+							Deal d = mapper.readValue(deal, Deal.class);
+							deals.add(d); 
+						}
+						
+						if (deals.size() > 0){
+							// Randomize the list of deals so that user doesn't get the same deals every 3 days
+							long seed = System.nanoTime();
+							Collections.shuffle(deals, new Random(seed));
+							
+							// Delegate tasks.
+							this.makeAndSendEmail(deals, user, link_categories_more);
+						}
 					}
 				}
-	
-				
-				JSONObject deals_json = DealsCommand.sendAPIRequest(req);
-				
-				if (deals_json == null || !deals_json.isNull("error")) {
-					System.err.println("Fail to find the Deals. So skip sending email.");
-					continue;
-				}
-				else {
-					JSONArray array = deals_json.getJSONArray("deals");
-					ObjectMapper mapper = new ObjectMapper();
-					ArrayList<Deal> deals = new ArrayList<Deal>();
-					
-					for (int i = 0; i < array.length(); ++i) {
-						String deal = array.getJSONObject(i).getJSONObject("deal").toString();
-						Deal d = mapper.readValue(deal, Deal.class);
-						deals.add(d); 
-					}
-					
-					if (deals.size() > 0){
-						// Delegate tasks.
-						this.makeAndSendEmail(deals, user, link_categories_more);
-					}
+				else{
+					System.err.println("Not sending deals email to " + user.getEmail());
 				}
 			}
 			catch (IOException e) {
@@ -109,7 +121,7 @@ public class DealEmailJob implements Job {
 	}
 	
 	private void makeAndSendEmail(ArrayList<Deal> deals, User user, String link_categories_more) {
-		System.out.println("Making and Sending Email");
+		System.out.println("Making and Sending Email to " + user.getEmail());
 		
 		int counter = 0;
 
