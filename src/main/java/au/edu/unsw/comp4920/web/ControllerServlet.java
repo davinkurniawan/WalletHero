@@ -24,13 +24,16 @@ public class ControllerServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		
+		System.out.println("WalletHero is started!");
+		
 		// Initialize database connections
 		try {
 			_dao = new PostgreSQLDAOImpl();
-		} catch (ServiceLocatorException | SQLException e) {
+		} 
+		catch (ServiceLocatorException | SQLException e) {
 			System.out.println(e.getMessage());
 		}
-
+		
 		// Initialize hashmap of commands
 		_commands = new HashMap<String, Command>();
 		_commands.put(Constants.SIGNIN_COMMAND,	 			new SignInCommand());
