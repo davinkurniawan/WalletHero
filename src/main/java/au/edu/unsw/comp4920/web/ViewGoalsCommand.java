@@ -1,10 +1,6 @@
 package au.edu.unsw.comp4920.web;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
 import au.edu.unsw.comp4920.objects.Goal;
-import au.edu.unsw.comp4920.objects.Transaction;
 
 public class ViewGoalsCommand implements Command {
 
