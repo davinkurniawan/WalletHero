@@ -15,7 +15,6 @@ public final class Constants {
 	public static final String PROFILE_COMMAND 				= "profile";
 	public static final String PUBLIC_COMMAND 				= "public";
 	public static final String HOME_COMMAND					= "home";
-	public static final String SEARCH_COMMAND 				= "search";
 	public static final String NOTFOUND_COMMAND 			= "PAGE_NOT_FOUND";
 	public static final String ABOUT_COMMAND 				= "about";
 	public static final String ADDTRANSACTION_COMMAND   	= "addTransaction";
@@ -41,8 +40,6 @@ public final class Constants {
 	public static final String OPERATION 					= "operation";
 	public static final String ERROR 						= "errorFlg";
 	public static final String ERRORMSG						= "errorMessage";
-	public static final String RESULT						= "result";
-	public static final String SEARCH						= "search";
 	public static final String TOKEN						= "token";
 	public static final String USERNAME						= "username";
 	public static final String EMAIL						= "email";
@@ -58,7 +55,6 @@ public final class Constants {
 	// Session Parameters
 	public static final String USERID	 					= "userID";
 	public static final String SID 							= "sessionID";
-	public static final String SEARCHRESULT					= "searchResult";
 	public static final String USER 						= "user";
 	public static final String CURRENCY 					= "currency";
 	public static final String CATEGORY 					= "category";
@@ -83,7 +79,6 @@ public final class Constants {
 	public static final String ROUTER_PROFILE				= "ROUTER_PROFILE";
 	public static final String ROUTER_PUBLIC				= "ROUTER_PUBLIC";
 	public static final String ROUTER_HOME					= "ROUTER_HOME";
-	public static final String ROUTER_SEARCH				= "ROUTER_SEARCH";
 	public static final String ROUTER_NOTFOUND				= "ROUTER_NOTFOUND";
 	public static final String ROUTER_VALIDATE				= "ROUTER_VALIDATE";
 	public static final String ROUTER_EMAILUPDATE			= "ROUTER_EMAILUPDATE";

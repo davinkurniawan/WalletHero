@@ -17,20 +17,6 @@
 	<jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
   </properties>
   
-  <repositories>
-      <repository>
-         <id>twitter4j.org</id>
-         <name>twitter4j.org Repository</name>
-         <url>http://twitter4j.org/maven2</url>
-         <releases>
-            <enabled>true</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-         </snapshots>
-      </repository>
-   </repositories>
-  
   <dependencies>
   		<!-- For Periodic Sending Email -->
 	  	<!-- QuartzJobBean in spring-context-support.jar -->
@@ -53,21 +39,6 @@
 			<artifactId>quartz</artifactId>
 			<version>2.2.1</version>
 		</dependency>
-		
-		
-		<!-- Social Media -->
-  		<!-- https://mvnrepository.com/artifact/com.restfb/restfb -->
-		<dependency>
-		    <groupId>com.restfb</groupId>
-		    <artifactId>restfb</artifactId>
-		    <version>LATEST</version>
-		</dependency>
-
-  		<dependency>
-        	<groupId>org.twitter4j</groupId>
-        	<artifactId>twitter4j-core</artifactId>
-        	<version>[4.0,)</version>
-      	</dependency>
       
       
       	<!-- JSON Parser -->

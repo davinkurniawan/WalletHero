@@ -87,7 +87,22 @@
           			PostgreSQL
           		</li>
           		<li>
+          			Apache
+          		</li>
+          		<li>
+          			JSTL
+          		</li>
+          		<li>
+          			Javax Mail
+          		</li>
+          		<li>
           			Spring Framework
+          		</li>
+          		<li>
+          			Jackson Framework
+          		</li>
+          		<li>
+          			Quartz Framework
           		</li>
           		<li>
           			HighChart.js

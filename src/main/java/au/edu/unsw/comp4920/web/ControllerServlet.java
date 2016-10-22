@@ -42,7 +42,6 @@ public class ControllerServlet extends HttpServlet {
 		_commands.put(Constants.PROFILE_COMMAND, 			new ProfileCommand());
 		_commands.put(Constants.PUBLIC_COMMAND, 			new PublicCommand());
 		_commands.put(Constants.HOME_COMMAND, 				new HomeCommand());
-		_commands.put(Constants.SEARCH_COMMAND,				new SearchCommand());
 		_commands.put(Constants.NOTFOUND_COMMAND, 			new ErrorCommand());
 		_commands.put(Constants.VALIDATE_COMMAND, 			new EmailValidationCommand());
 		_commands.put(Constants.EMAILUPDATE_COMMAND, 		new EmailUpdateCommand());
@@ -67,7 +66,6 @@ public class ControllerServlet extends HttpServlet {
         servletContext.setAttribute(Constants.ROUTER_PROFILE, 				Constants.ROUTER + Constants.PROFILE_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_PUBLIC, 				Constants.ROUTER + Constants.PUBLIC_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_HOME, 					Constants.ROUTER + Constants.HOME_COMMAND);
-        servletContext.setAttribute(Constants.ROUTER_SEARCH, 				Constants.ROUTER + Constants.SEARCH_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_NOTFOUND, 				Constants.ROUTER + Constants.NOTFOUND_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_VALIDATE, 				Constants.ROUTER + Constants.VALIDATE_COMMAND);
         servletContext.setAttribute(Constants.ROUTER_EMAILUPDATE, 			Constants.ROUTER + Constants.EMAILUPDATE_COMMAND);
