@@ -113,9 +113,6 @@
           		<li>
           			Progressbar.js
           		</li>
-          		<li style="color:red">
-          			List here...
-          		</li>
           	</ul>
         </div>
       </div>
