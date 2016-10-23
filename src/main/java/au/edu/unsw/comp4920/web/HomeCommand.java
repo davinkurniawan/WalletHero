@@ -123,6 +123,11 @@ public class HomeCommand implements Command {
 				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
 				Deal d = mapper.readValue(deal, Deal.class);
 				deals.add(d); 
+				
+				// Convert from USD to home currency.
+				Double exchangeRate = dao.getCurrencyExchangeRate(userPreferredCurrency + "USD").doubleValue();
+				d.setPrice(d.getPrice() / exchangeRate);
+				d.setValue(d.getValue() / exchangeRate);
 			}
 			
 			if (deals.size() > 0){
@@ -165,6 +170,8 @@ public class HomeCommand implements Command {
 		
 		List<Goal> goals = dao.getAllGoals(user.getUserID(), userPreferredCurrency);
 		request.setAttribute("goalList", goals);
+		
+		request.setAttribute("userPreferredCurrency", userPreferredCurrency);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
 		rd.forward(request, response);

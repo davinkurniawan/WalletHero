@@ -205,7 +205,7 @@
 											  
 											  step: (state, bar) => {
 
-											    bar.setText('You have saved <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} savings goal.');
+											    bar.setText('You have saved <b>${requestScope.userPreferredCurrency} $${g.getCurrentAmount()}</b> of your <b>${requestScope.userPreferredCurrency} $${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} savings goal.');
 											    bar.path.setAttribute('stroke', state.color);
 											  }
 											});
@@ -247,7 +247,7 @@
 										  to: {color: '#e75757'},
 										  
 										  step: (state, bar) => {
-											bar.setText('You have spent <b>$${g.getCurrentAmount()}</b> of your <b>$${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} limit on <b>${g.categoryString}</b>.');
+											bar.setText('You have spent <b>${requestScope.userPreferredCurrency} $${g.getCurrentAmount()}</b> of your <b>${requestScope.userPreferredCurrency} $${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} limit on <b>${g.categoryString}</b>.');
 										    bar.path.setAttribute('stroke', state.color);
 										  }
 										});
@@ -296,11 +296,10 @@
 												<a target="_blank" href="${i.url}">${i.short_title}</a>
 											</h3>
 											<p>
-												From $
-												<fmt:formatNumber value="${i.value}" minFractionDigits="2"
+												From ${requestScope.userPreferredCurrency} $<fmt:formatNumber value="${i.value}" minFractionDigits="2"
 													maxFractionDigits="2" />
-												down to <b>$<fmt:formatNumber value="${i.price}"
-														minFractionDigits="2" maxFractionDigits="2" /></b>
+												down to <b>${requestScope.userPreferredCurrency} $<fmt:formatNumber value="${i.price}"
+														minFractionDigits="2" maxFractionDigits="2" /></b>!
 											</p>
 										</div>
 									</div>

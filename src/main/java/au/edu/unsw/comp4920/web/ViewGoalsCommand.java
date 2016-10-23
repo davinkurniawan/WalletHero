@@ -34,7 +34,9 @@ public class ViewGoalsCommand implements Command {
 		String userPrefferedCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
 
 		List<Goal> goals = dao.getAllGoals(personID, userPrefferedCurrency);
+		
 		request.setAttribute("goalList", goals);
+		request.setAttribute("userPreferredCurrency", userPrefferedCurrency);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/viewgoals.jsp");
 		rd.forward(request, response);
