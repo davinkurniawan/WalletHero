@@ -95,6 +95,9 @@ public class DealsCommand implements Command {
 		List<DealsCategory> categories = new ArrayList<DealsCategory>();
 		HttpSession session = request.getSession(true);
 		
+        String sid = session.getAttribute(Constants.SID).toString();
+		String userPreferredCurrency = dao.getUserPreference(sid).getCurrency().getShortName();
+		
 		if (session.getAttribute("categories") == null) {
 			// get categories of deals to select from
 			JSONObject categories_json = sendAPIRequest(Constants.API_URL + "/categories");
@@ -181,6 +184,11 @@ public class DealsCommand implements Command {
 				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
 				Deal d = mapper.readValue(deal, Deal.class);
 				deals.add(d); 
+				
+				// Convert from USD to home currency.
+				Double exchangeRate = dao.getCurrencyExchangeRate(userPreferredCurrency + "USD").doubleValue();
+				d.setPrice(d.getPrice() / exchangeRate);
+				d.setValue(d.getValue() / exchangeRate);
 			}
 			
 			request.setAttribute("deals_list", deals);
@@ -189,6 +197,8 @@ public class DealsCommand implements Command {
 		
 		request.setAttribute("starting_page", starting_page);
 		request.setAttribute("ending_page", ending_page);
+		
+		request.setAttribute("userPreferredCurrency", userPreferredCurrency);
 		
 		// Display resulting deals page
 		RequestDispatcher rd = request.getRequestDispatcher("/deals.jsp");

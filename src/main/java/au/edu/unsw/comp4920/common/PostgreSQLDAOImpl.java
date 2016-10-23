@@ -814,7 +814,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		return rate;
 	}
 
-	private BigDecimal getCurrencyExchangeRate(String currencyPair) {
+	public BigDecimal getCurrencyExchangeRate(String currencyPair) {
 		BigDecimal rate = getCurrencyExchangeRateDatabase(currencyPair);
 
 		if (rate != null) {
@@ -1867,7 +1867,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 		int count = 0;
 
 		List<Transaction> transactions = this.getAllTransactions(userID);
-		List<Goal> goals = this.getAllGoals(userID, null);
+		List<Goal> goals = this.getAllGoals(userID, this.getUserPreference(userID).getCurrency().getShortName());
 
 		while (!result && count < 3) { // Fail check up to 3 times
 			for (Transaction t : transactions) {

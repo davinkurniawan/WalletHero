@@ -141,7 +141,7 @@
 										</div>
 									</td>
 									<td align="left"><b style="font-size: 18px;"><a target="_blank" href="${i.url}">${i.title}</a></font></b> <font style="color:#6b6b6b;">- ${i.provider_name}</font>
-										<br/><br/><b style="font-size: 17px; color: #cf0c0c;">USD <fmt:formatNumber value="${i.price}" minFractionDigits="2" maxFractionDigits="2"/></b> <s style="color:#6b6b6b;"><fmt:formatNumber value="${i.value}" minFractionDigits="2" maxFractionDigits="2"/></s>
+										<br/><br/><b style="font-size: 17px; color: #cf0c0c;">${requestScope.userPreferredCurrency} <fmt:formatNumber value="${i.price}" minFractionDigits="2" maxFractionDigits="2"/></b> <s style="color:#6b6b6b;"><fmt:formatNumber value="${i.value}" minFractionDigits="2" maxFractionDigits="2"/></s>
 										<br/><br/>
 										<div id="fine_print">
 										${i.fine_print}

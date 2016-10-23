@@ -43,6 +43,8 @@ public interface CommonDAO {
 	public boolean deleteUserTransaction(int transactionID);
 	public boolean deleteRecurrence(int transactionID);
 	
+	public BigDecimal getCurrencyExchangeRate(String currencyPair);
+	
 	public boolean createSession(Session session);
 	public Session getSession(String sessionID);
 	public Session getUserSession(String userID, String sessionID);
