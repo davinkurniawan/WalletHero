@@ -6,10 +6,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -121,6 +123,12 @@ public class HomeCommand implements Command {
 				String deal = array.getJSONObject(i).getJSONObject("deal").toString();
 				Deal d = mapper.readValue(deal, Deal.class);
 				deals.add(d); 
+			}
+			
+			if (deals.size() > 0){
+				// Randomize the list of deals so that user doesn't get the same deals every 3 days
+				long seed = System.nanoTime();
+				Collections.shuffle(deals, new Random(seed));				
 			}
 			
 			request.setAttribute("deals_list", deals);
