@@ -934,7 +934,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 
 			StringBuilder query = new StringBuilder();
 			query.append(
-					"SELECT g.id, g.detail, g.goal_amount, g.goal_type, g.frequency, g.category, c.name FROM goal g "
+					"SELECT g.id, g.detail, g.currency, g.goal_amount, g.goal_type, g.frequency, g.category, c.name FROM goal g "
 							+ "LEFT JOIN category c ON c.id = g.category " + "WHERE g.user_id = ?");
 
 			query.append(";");
@@ -951,6 +951,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				g.setGoalPeriod(rs.getString("frequency"));
 				g.setCategoryString(rs.getString("name"));
 				g.setCategory(rs.getInt("category"));
+				g.setCurrency(rs.getString("currency"));
 
 				int goalType = rs.getInt("goal_type");
 
@@ -1026,6 +1027,12 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 				g.setCurrentAmount(amount);
 			}
 
+		}
+		
+		// Convert to appropriate currency.
+		for (Goal g : goalList) {
+			BigDecimal exchangeRate = this.getCurrencyExchangeRate(g.getCurrency() + userPrefferedCurrency);
+			g.setCurrentAmount(g.getCurrentAmount().divide(exchangeRate, 2, RoundingMode.HALF_UP));
 		}
 
 		return goalList;
@@ -2028,7 +2035,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			conn = _factory.getConnection();
 
 			PreparedStatement stmt = conn.prepareStatement(
-					"INSERT INTO goal (user_id, detail, goal_amount, goal_type, category, frequency) VALUES (?, ?, ?, ?, ?, ?);");
+					"INSERT INTO goal (user_id, detail, goal_amount, goal_type, category, frequency, currency) VALUES (?, ?, ?, ?, ?, ?, ?);");
 
 			stmt.setInt(1, g.getUserID());
 			stmt.setString(2, g.getDetail());
@@ -2036,6 +2043,7 @@ public class PostgreSQLDAOImpl implements CommonDAO {
 			stmt.setInt(4, g.getGoalType());
 			stmt.setInt(5, g.getCategory());
 			stmt.setString(6, g.getGoalPeriod());
+			stmt.setString(7, g.getCurrency());
 
 			int n = stmt.executeUpdate();
 

@@ -11,10 +11,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	
-	<script src="js/progressbar.min.js"></script>
 	<title>${applicationScope['WEB_NAME']} - Home</title>
 	<%@ include file="bootstrapHeader.jsp"%>
 	
+	<script src="js/progressbar.min.js"></script>
 	<script src="js/highcharts.js"></script>
 	<script src="js/exporting.js"></script>
 </head>
@@ -161,6 +161,7 @@
 								<tr>
 									<th>Goal #</th>
 									<th>Goal Type</th>
+									<th>Goal Currency</th>
 									<th>Details</th>
 									<th>Frequency</th>
 									<th>Period</th>
@@ -172,6 +173,7 @@
 									<tr>
 										<td><c:out value="${myIndex.index + 1}"></c:out></td>
 										<td><c:out value="${g.getGoalTypeString()}"></c:out></td>
+										<td><c:out value="${g.getCurrency()}"></c:out></td>
 										<td><c:out value="${g.detail}"></c:out></td>
 										<td><c:out value="${g.getFrequencyString()}"></c:out></td>
 										<td><c:out value="${g.getDatePeriodString()}"></c:out></td>
@@ -205,7 +207,7 @@
 											  
 											  step: (state, bar) => {
 
-											    bar.setText('You have saved <b>${requestScope.userPreferredCurrency} $${g.getCurrentAmount()}</b> of your <b>${requestScope.userPreferredCurrency} $${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} savings goal.');
+											    bar.setText('You have saved <b>${g.getCurrency()} $${g.getCurrentAmount()}</b> of your <b>${g.getCurrency()} $${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} savings goal.');
 											    bar.path.setAttribute('stroke', state.color);
 											  }
 											});
@@ -247,7 +249,7 @@
 										  to: {color: '#e75757'},
 										  
 										  step: (state, bar) => {
-											bar.setText('You have spent <b>${requestScope.userPreferredCurrency} $${g.getCurrentAmount()}</b> of your <b>${requestScope.userPreferredCurrency} $${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} limit on <b>${g.categoryString}</b>.');
+											bar.setText('You have spent <b>${g.getCurrency()} $${g.getCurrentAmount()}</b> of your <b>${g.getCurrency()} $${g.getGoalAmount()}</b> ${g.getFrequencyString().toLowerCase()} limit on <b>${g.categoryString}</b>.');
 										    bar.path.setAttribute('stroke', state.color);
 										  }
 										});
