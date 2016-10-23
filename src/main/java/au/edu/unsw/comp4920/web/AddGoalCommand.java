@@ -23,9 +23,13 @@ public class AddGoalCommand implements Command {
 		System.out.println("Inside: AddGoalCommand");
 		
 		HttpSession session = request.getSession(true);	
+		String sid = session.getAttribute(Constants.SID).toString();
+
 		if (session.getAttribute(Constants.CURRENCY) == null){
 			session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
 		}
+		
+		session.setAttribute(Constants.PREFERENCE, dao.getUserPreference(sid).getCurrency());
 		
 		// User has just navigated to the page and has not yet attempted to
 		// enter in a goal.
