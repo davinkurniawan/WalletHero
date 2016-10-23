@@ -99,8 +99,8 @@ public final class Constants {
 	
 	// Deals
 	public static  final String API_URL = "http://api.sqoot.com/v2";
-	public static final String PUBLIC_API_KEY = "api_key 8bv8fw";
-	public static final String PRIVATE_API_KEY = "api_key DlRDddP_GW6htiuxZiRY";
+	public static final String PUBLIC_API_KEY = "api_key xcj4ln";
+	public static final String PRIVATE_API_KEY = "api_key cu77f4_x1UhIj2CHiHZN";
 	
 	// Prevent instantiation
 	private Constants() {};
