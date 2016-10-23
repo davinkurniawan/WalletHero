@@ -16,6 +16,7 @@ public class Goal {
 	private String categoryString;
 	private String datePeriodString;
 	private int userID;
+	private String currency;
 
 	public static int SAVING_GOAL = 1;
 	public static int EXPENSE_RESTRICTION_GOAL = 2;
@@ -25,7 +26,7 @@ public class Goal {
 	}
 
 	public Goal(int goalID, int personID, String goalPeriod, String detail, BigDecimal goalAmount,
-			BigDecimal currentAmount, int type, int category, String categoryString, String statusString, int userID) {
+			BigDecimal currentAmount, int type, int category, String categoryString, String statusString, int userID, String currency) {
 		super();
 		this.goalID = goalID;
 		this.personID = personID;
@@ -37,6 +38,7 @@ public class Goal {
 		this.category = category;
 		this.categoryString = categoryString;
 		this.userID = userID;
+		this.setCurrency(currency);
 	}
 
 	public int getGoalID() {
@@ -161,6 +163,15 @@ public class Goal {
 	public String toString() {
 		return "Goal [goalID=" + goalID + ", personID=" + personID + ", goalPeriod=" + goalPeriod + ", detail=" + detail
 				+ ", goalAmount=" + goalAmount + ", currentAmount=" + currentAmount + ", type=" + type + ", category="
-				+ category + ", categoryString=" + categoryString + ", statusString=" + ", userID=" + userID + "]";
+				+ category + ", categoryString=" + categoryString + ", datePeriodString=" + datePeriodString
+				+ ", userID=" + userID + ", currency=" + currency + "]";
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 }

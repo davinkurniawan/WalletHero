@@ -7,6 +7,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import au.edu.unsw.comp4920.common.CommonDAO;
 import au.edu.unsw.comp4920.common.Constants;
@@ -21,6 +22,11 @@ public class AddGoalCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response, CommonDAO dao) throws ServletException, IOException {
 		System.out.println("Inside: AddGoalCommand");
 		
+		HttpSession session = request.getSession(true);	
+		if (session.getAttribute(Constants.CURRENCY) == null){
+			session.setAttribute(Constants.CURRENCY, dao.getAllCurrencies());
+		}
+		
 		// User has just navigated to the page and has not yet attempted to
 		// enter in a goal.
 		if (request.getParameterMap().size() == 1) {
@@ -31,6 +37,8 @@ public class AddGoalCommand implements Command {
 			String details = request.getParameter("details");
 
 			BigDecimal value = new BigDecimal(Double.parseDouble(request.getParameter("amount")));
+			String currency = request.getParameter("currency");
+
 			String goalFreq = request.getParameter("goalFreq");
 			int category;
 
@@ -40,6 +48,7 @@ public class AddGoalCommand implements Command {
 			g.setDetail(details);
 			g.setUserID(userID);
 			g.setGoalPeriod(goalFreq);
+			g.setCurrency(currency);
 
 			if (request.getParameter("goalType").equals("limitExpenses")) {
 				category = Integer.parseInt(request.getParameter("categoryOption"));

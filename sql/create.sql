@@ -112,6 +112,7 @@ CREATE TABLE goal (
 	goal_type int NOT NULL,
 	category int NOT NULL,
 	frequency varchar NOT NULL,
+	currency varchar NOT NULL,
 	CONSTRAINT goal_pk PRIMARY KEY (id)
 ) WITH (
   OIDS=FALSE
