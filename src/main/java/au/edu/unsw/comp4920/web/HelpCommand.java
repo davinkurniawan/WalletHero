@@ -56,6 +56,7 @@ public class HelpCommand implements Command {
 					String email	= request.getParameter("email");
 					String message 	= request.getParameter("message");
 					sendSupportEmail(email, message, user, dao);
+					sendAdminEmail(email, message, dao);
 					
 					response.sendRedirect(Constants.ROUTER + Constants.HELP_COMMAND + "&success=yes");
 					return;					
@@ -65,7 +66,26 @@ public class HelpCommand implements Command {
 		RequestDispatcher rd = request.getRequestDispatcher("/help.jsp");
 		rd.forward(request, response);
 	}
+	
+	private void sendAdminEmail(String useremail, String message, CommonDAO dao) {
+		Date current = new Date();
+		SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
+		
+		String content = "";
+		
+		content += "This is a WalletHero notification email that we have received your message.";
+		content += "<br/><br/>";
+		content += "The message is as follows:";
+		content += "<br/><br/>";
+		content += "<b>" + message + "</b>";
+		content += "<br/><br/>";	
+		content += "The message was made by: " + useremail + " on " + df.format(current) + ".";		
+		content += Constants.SERVER;
 
+		MailHelper mh = new MailHelper();
+		mh.sendEmail("thewallethero@gmail.com", "WalletHero - Support Notification", content);
+	}
+	
 	private void sendSupportEmail(String useremail, String message, User user, CommonDAO dao) {
 		Date current = new Date();
 		SimpleDateFormat df = new SimpleDateFormat(Constants.SIMPLE_DEFAULT_DATE_FORMAT);
