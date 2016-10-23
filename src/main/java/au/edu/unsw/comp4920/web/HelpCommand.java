@@ -79,7 +79,8 @@ public class HelpCommand implements Command {
 		content += "<br/><br/>";
 		content += "<b>" + message + "</b>";
 		content += "<br/><br/>";	
-		content += "The message was made by: " + useremail + " on " + df.format(current) + ".";		
+		content += "The message was made by: " + useremail + " on " + df.format(current) + ".";
+		content += "<br/><br/>";
 		content += Constants.SERVER;
 
 		MailHelper mh = new MailHelper();
