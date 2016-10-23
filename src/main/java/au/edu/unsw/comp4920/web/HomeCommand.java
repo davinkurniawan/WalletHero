@@ -126,7 +126,7 @@ public class HomeCommand implements Command {
 			}
 			
 			if (deals.size() > 0){
-				// Randomize the list of deals so that user doesn't get the same deals every 3 days
+				// Randomize the list of deals so that user doesn't see the same deals on the home page.
 				long seed = System.nanoTime();
 				Collections.shuffle(deals, new Random(seed));				
 			}
